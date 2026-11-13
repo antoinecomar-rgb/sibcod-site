@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { lire } from "../lib/supabase";
 
 export default async function Accueil() {
@@ -11,7 +12,7 @@ export default async function Accueil() {
       <p>Page de test : {oeuvres.length} œuvres lues dans la base.</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 16 }}>
         {oeuvres.map((o) => (
-          <div key={o.id} style={{ background: "#fff", border: "1px solid #e5e0d8" }}>
+          <Link key={o.id} href={`/oeuvre/${o.id}`} style={{ background: "#fff", border: "1px solid #e5e0d8", color: "inherit", textDecoration: "none" }}>
             <div style={{ aspectRatio: "4 / 3", background: "#eee9e1" }}>
               {image(o) && (
                 <img
@@ -28,7 +29,7 @@ export default async function Accueil() {
                 {fmt(o).length ? fmt(o).join(" · ") + " cm" : "format à préciser"}
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </main>
