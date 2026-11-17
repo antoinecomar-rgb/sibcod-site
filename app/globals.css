@@ -87,7 +87,6 @@ a { color:inherit; }
 .dots button.on { background:#fff; }
 @media (max-width:600px){ .banner{height:70vh} .arr{width:36px;height:36px} }
 @media (prefers-reduced-motion:reduce){ .slide{transition:none} }
-html,body{overflow-x:hidden}
 
 /* en-tête collant : logo + menu (ligne 1), puis filtres qui restent visibles en dessous */
 .stick { position:sticky; top:0; z-index:30; background:var(--bg); }
