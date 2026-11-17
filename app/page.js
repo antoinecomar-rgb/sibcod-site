@@ -53,6 +53,7 @@ export default async function Accueil({ searchParams }) {
     return s ? `/?${s}` : "/";
   };
 
+  const detail = (id) => `/oeuvre/${id}${lang === "fr" ? "?lang=fr" : ""}`;
   const oeuvres = await lire(
     "fichiers_maitres",
     "select=id,titre_fr,titre_en,taille_max_pictorem_po,pictorem_url,url_vignette" +
@@ -99,12 +100,12 @@ export default async function Accueil({ searchParams }) {
           const titre = lang === "fr" ? o.titre_fr : o.titre_en;
           return (
             <article key={o.id} className="card">
-              <span className="img">
+              <Link className="img" href={detail(o.id)}>
                 {o.url_vignette && <img src={o.url_vignette} alt={titre} loading="lazy" />}
-              </span>
+              </Link>
               <div className="meta">
                 <div>
-                  <div className="t">{titre}</div>
+                  <Link className="t" href={detail(o.id)}>{titre}</Link>
                   <div className="s">{t.upTo(o.taille_max_pictorem_po)}</div>
                 </div>
                 {o.pictorem_url ? (

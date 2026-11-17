@@ -1,59 +1,88 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { lire } from "../../../lib/supabase";
+import ScaleView from "./ScaleView";
 
-const surface = { background: "#fff", border: "1px solid #e5e0d8" };
+const T = {
+  en: {
+    back: "← All works",
+    by: "Original artwork by Sibcod",
+    desc: (t) => `“${t}” is an original artwork by Sibcod, inspired by Martinique. It is printed to order on the support of your choice.`,
+    format: "Format", sizes: "Available sizes", supports: "Supports", made: "Made", madeV: "Printed to order and shipped by Pictorem",
+    supportsV: "Canvas, metal, acrylic, wood, paper",
+    buy: "Buy", soon: "Coming soon",
+    scaleT: "See it at scale", scaleH: "Choose a size to see the artwork next to a 2.2 m sofa.",
+    fmt: (p) => (p ? `${p} ratio` : "—"),
+    sz: (max) => `From 8 in (20 cm) up to ${max} in (${Math.round(max * 2.54)} cm) on the longest side`,
+  },
+  fr: {
+    back: "← Toutes les œuvres",
+    by: "Œuvre originale de Sibcod",
+    desc: (t) => `« ${t} » est une œuvre originale de Sibcod, inspirée de la Martinique. Elle est imprimée à la commande sur le support de votre choix.`,
+    format: "Format", sizes: "Tailles disponibles", supports: "Supports", made: "Fabrication", madeV: "Imprimé à la commande et expédié par Pictorem",
+    supportsV: "Toile, métal, acrylique, bois, papier",
+    buy: "Acheter", soon: "Bientôt disponible",
+    scaleT: "Voir à l'échelle", scaleH: "Choisissez une taille pour voir l'œuvre à côté d'un canapé de 2,2 m.",
+    fmt: (p) => (p ? `Proportion ${p}` : "—"),
+    sz: (max) => `De 20 cm (8 po) à ${Math.round(max * 2.54)} cm (${max} po) sur le plus grand côté`,
+  },
+};
 
-export default async function Oeuvre({ params }) {
-  const { id } = await params;
-  const [oeuvres, prix] = await Promise.all([
-    lire("oeuvres", `select=id,titre,description,variantes(id,format,url_vignette,signe)&id=eq.${encodeURIComponent(id)}`),
-    lire("prix", "select=format,prix_eur"),
-  ]);
-  const oeuvre = oeuvres[0];
-  if (!oeuvre) notFound();
+async function charger(id) {
+  const r = await lire("fichiers_maitres", `select=*&id=eq.${encodeURIComponent(id)}`);
+  return r[0];
+}
 
-  const prixParFormat = Object.fromEntries(prix.map((p) => [p.format, p.prix_eur]));
-  const variantes = [...oeuvre.variantes].sort((a, b) => (a.format || "").localeCompare(b.format || "", "fr", { numeric: true }));
-  const principale = variantes.find((v) => v.url_vignette);
+export async function generateMetadata({ params, searchParams }) {
+  const { id } = await params; const sp = await searchParams;
+  const o = await charger(id);
+  if (!o) return {};
+  return { title: `${sp.lang === "fr" ? o.titre_fr : o.titre_en} – SIBCOD` };
+}
+
+export default async function Oeuvre({ params, searchParams }) {
+  const { id } = await params; const sp = await searchParams;
+  const lang = sp.lang === "fr" ? "fr" : "en";
+  const t = T[lang];
+  const o = await charger(id);
+  if (!o) notFound();
+  const titre = lang === "fr" ? o.titre_fr : o.titre_en;
+  const q = lang === "fr" ? "?lang=fr" : "";
+  const prop = (o.proportion || "").match(/\(?\s*([\d.]+:[\d.]+)\s*\)?$/)?.[1];
 
   return (
-    <main style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 20px" }}>
-      <p><Link href="/" style={{ color: "#666" }}>← Toutes les œuvres</Link></p>
-      <h1 style={{ marginBottom: 4 }}>{oeuvre.titre}</h1>
-      {oeuvre.description && <p style={{ maxWidth: 650 }}>{oeuvre.description}</p>}
+    <div className="wrap">
+      <header className="top">
+        <Link href={`/${q}`} className="logo">SIBCOD</Link>
+        <div className="lang">
+          <Link href={`/oeuvre/${id}`} className={lang === "en" ? "on" : ""}>EN</Link>
+          <Link href={`/oeuvre/${id}?lang=fr`} className={lang === "fr" ? "on" : ""}>FR</Link>
+        </div>
+      </header>
+      <Link href={`/${q}`} className="back">{t.back}</Link>
 
-      {principale && (
-        <img
-          src={principale.url_vignette}
-          alt={oeuvre.titre}
-          style={{ width: "100%", maxHeight: 560, objectFit: "contain", background: "#eee9e1", display: "block", margin: "20px 0" }}
-        />
-      )}
-
-      <h2 style={{ fontSize: 18 }}>Formats disponibles</h2>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 16 }}>
-        {variantes.map((v) => {
-          const p = prixParFormat[v.format];
-          return (
-            <div key={v.id} style={surface}>
-              <div style={{ aspectRatio: "4 / 3", background: "#eee9e1" }}>
-                {v.url_vignette && (
-                  <img src={v.url_vignette} alt={`${oeuvre.titre} ${v.format || ""}`} loading="lazy"
-                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                )}
-              </div>
-              <div style={{ padding: 12 }}>
-                <strong>{v.format ? `${v.format} cm` : "Format à préciser"}</strong>
-                <div style={{ fontSize: 14, color: "#555", marginTop: 4 }}>
-                  {p != null ? `${Number(p).toLocaleString("fr-FR")} €` : "Prix à venir"}
-                  {v.signe ? " · signée" : ""}
-                </div>
-              </div>
-            </div>
-          );
-        })}
+      <div className="detail">
+        <div className="big">{o.url_vignette && <img src={o.url_vignette} alt={titre} />}</div>
+        <div>
+          <h1>{titre}</h1>
+          <div className="by">{t.by}</div>
+          <p>{t.desc(titre)}</p>
+          <table className="facts"><tbody>
+            <tr><th>{t.format}</th><td>{t.fmt(prop)}</td></tr>
+            <tr><th>{t.sizes}</th><td>{t.sz(o.taille_max_pictorem_po)}</td></tr>
+            <tr><th>{t.supports}</th><td>{t.supportsV}</td></tr>
+            <tr><th>{t.made}</th><td>{t.madeV}</td></tr>
+          </tbody></table>
+          {o.pictorem_url
+            ? <a className="buybig" href={o.pictorem_url} target="_blank" rel="noopener noreferrer">{t.buy}</a>
+            : <span className="soonbig">{t.soon}</span>}
+        </div>
       </div>
-    </main>
+
+      {o.url_vignette && (
+        <ScaleView src={o.url_vignette} alt={titre} maxIn={o.taille_max_pictorem_po} lang={lang} title={t.scaleT} hint={t.scaleH} />
+      )}
+      <footer className="foot">{lang === "fr" ? "Tirages réalisés à la commande par Pictorem. © Sibcod" : "Prints made to order by Pictorem. © Sibcod"}</footer>
+    </div>
   );
 }
