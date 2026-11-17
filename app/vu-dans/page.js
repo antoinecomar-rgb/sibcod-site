@@ -1,3 +1,4 @@
+import Pied from "../Pied";
 import Entete from "../Entete";
 
 const T = {
@@ -25,7 +26,7 @@ export default async function VuDans({ searchParams }) {
         </a>
         <img src="/presse/Sibcod_1.jpg" alt="Sibcod" />
       </section>
-      <footer className="foot">{t.foot}</footer>
+      <Pied lang={lang} />
     </div>
   );
 }

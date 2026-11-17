@@ -1,3 +1,4 @@
+import Pied from "./Pied";
 import Link from "next/link";
 import { lire } from "../lib/supabase";
 import Galerie from "./Galerie";
@@ -150,7 +151,7 @@ export default async function Accueil({ searchParams }) {
 
       <Galerie items={items} buy={t.buy} soon={t.soon} />
 
-      <footer className="foot">{t.foot}</footer>
+      <Pied lang={lang} />
     </div>
   );
 }

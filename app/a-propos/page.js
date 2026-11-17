@@ -1,3 +1,4 @@
+import Pied from "../Pied";
 import Entete from "../Entete";
 
 const T = {
@@ -36,7 +37,7 @@ export default async function APropos({ searchParams }) {
         <h1>{t.title}</h1>
         {t.p.map((x, i) => <p key={i}>{x}</p>)}
       </section>
-      <footer className="foot">{t.foot}</footer>
+      <Pied lang={lang} />
     </div>
   );
 }

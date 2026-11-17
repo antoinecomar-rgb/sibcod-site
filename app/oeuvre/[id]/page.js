@@ -1,3 +1,4 @@
+import Pied from "../../Pied";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { lire } from "../../../lib/supabase";
@@ -79,7 +80,7 @@ export default async function Oeuvre({ params, searchParams }) {
       {o.url_vignette && (
         <ScaleView src={o.url_vignette} alt={titre} maxIn={o.taille_max_pictorem_po} lang={lang} title={t.scaleT} hint={t.scaleH} />
       )}
-      <footer className="foot">{lang === "fr" ? "Tirages réalisés à la commande par Pictorem. © Sibcod" : "Prints made to order by Pictorem. © Sibcod"}</footer>
+      <Pied lang={lang} />
     </div>
   );
 }

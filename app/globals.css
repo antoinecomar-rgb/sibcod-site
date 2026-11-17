@@ -101,3 +101,9 @@ a { color:inherit; }
 .presse img { width:100%; height:auto; display:block; margin:24px 0 0; }
 .presse img.logo-gala { width:128px; margin:8px 0 8px; }
 @media (max-width:700px){ .menu{gap:12px; font-size:10.5px; letter-spacing:.06em} .logo{font-size:15px} .filters{gap:4px 14px; font-size:11px; padding:8px 0} .lang{font-size:11px} .lang a{padding:0 3px} }
+
+.contact { margin-bottom:28px; }
+.contact p { font-family:Georgia,"Times New Roman",serif; font-size:18px; color:var(--ink); margin:0 0 14px; }
+.contact nav { display:flex; flex-wrap:wrap; justify-content:center; gap:8px 26px; font-size:13px; letter-spacing:.12em; text-transform:uppercase; }
+.contact a { color:var(--ink); text-decoration:none; border-bottom:1px solid var(--ink); padding-bottom:2px; }
+.contact a:hover { opacity:.6; }
