@@ -32,6 +32,7 @@ export default function Pictorem({ lang }) {
   return (
     <section className="pictorem" aria-label="Pictorem">
       <div className="pic-text">
+        <a href={GALERIE_PICTOREM} target="_blank" rel="noopener noreferrer" className="pic-logo"><img src="/pictorem-logo.png" alt="Pictorem" height="44" /></a>
         <div className="kicker">{t.kicker}</div>
         <h2>{t.title}</h2>
         <p>{t.text}</p>
