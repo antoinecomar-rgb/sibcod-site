@@ -91,6 +91,11 @@ export default async function Studio({ searchParams }) {
         <Graphique titre="Site – visiteurs par jour" serie={serie("site", "visiteurs")} lien={LIENS.ga} lienTexte="Ouvrir Google Analytics" note="Visiteurs ayant accepté les cookies" />
       </div>
 
+      <h2 style={{ fontSize: 16, marginTop: 24 }}>Bot Analyste</h2>
+      <div style={box}>
+        <a href="/studio/rapport"><button>Rapport de la semaine</button></a>
+      </div>
+
       <h2 style={{ fontSize: 16, marginTop: 24 }}>Actions</h2>
       <div style={{ ...box, display: "grid", gap: 12 }}>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
