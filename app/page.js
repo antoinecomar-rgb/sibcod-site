@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { lire } from "../lib/supabase";
 import Galerie from "./Galerie";
+import Banniere from "./Banniere";
 import COUL from "../data/couleurs.json";
 
 const TXT = {
@@ -129,22 +130,14 @@ export default async function Accueil({ searchParams }) {
         </div>
       </header>
 
-      <section className="hero" aria-label="Sibcod in real interiors">
-        {[[1, 2, 3, 4], [5, 6, 7, 8]].map((set, k) => (
-          <div key={k} className={`heroset s${k}`}>
-            {set.map((n) => (
-              <img key={n} src={`/hero/hero-${n}.jpg`} alt="Sibcod artwork in an interior" loading={k === 0 ? "eager" : "lazy"} />
-            ))}
-          </div>
-        ))}
-      </section>
+      <Banniere lang={lang} />
 
       <section className="intro">
         <h1>{t.title}</h1>
         {t.intro.map((p, i) => <p key={i}>{p}</p>)}
       </section>
 
-      <nav className="filters">
+      <nav className="filters" id="oeuvres">
         {FILTRES.map((f, i) => (
           <Link key={f.cle} href={href(f.cle)} className={f.cle === filtre.cle ? "on" : ""}>
             {lang === "en" && f.cle !== "tous" && f.cle !== "grand" ? `${f.min} in and up` : t.filters[i]}
