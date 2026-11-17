@@ -88,3 +88,17 @@ a { color:inherit; }
 @media (max-width:600px){ .banner{height:70vh} .arr{width:36px;height:36px} }
 @media (prefers-reduced-motion:reduce){ .slide{transition:none} }
 html,body{overflow-x:hidden}
+
+/* en-tête collant : logo + menu (ligne 1), puis filtres qui restent visibles en dessous */
+.stick { position:sticky; top:0; z-index:30; background:var(--bg); }
+.stick .top { height:56px; padding:0; box-sizing:border-box; }
+.filters { position:sticky; top:56px; z-index:29; background:var(--bg); padding:12px 0; }
+.menu { display:flex; gap:26px; font-size:13px; letter-spacing:.12em; text-transform:uppercase; }
+.menu a { text-decoration:none; color:var(--muted); padding-bottom:3px; }
+.menu a.on { color:var(--ink); border-bottom:1px solid var(--ink); }
+.page { max-width:720px; margin:48px auto 24px; }
+.page h1 { font-family:Georgia,"Times New Roman",serif; font-weight:400; font-size:clamp(30px,4vw,44px); margin:0 0 28px; }
+.page p { font-size:16px; line-height:1.8; color:#444; margin:0 0 18px; }
+.presse img { width:100%; height:auto; display:block; margin:24px 0 0; }
+.presse img.logo-gala { width:128px; margin:8px 0 8px; }
+@media (max-width:700px){ .menu{gap:12px; font-size:10.5px; letter-spacing:.06em} .logo{font-size:15px} .filters{gap:4px 14px; font-size:11px; padding:8px 0} .lang{font-size:11px} .lang a{padding:0 3px} }

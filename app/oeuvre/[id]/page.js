@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { lire } from "../../../lib/supabase";
+import Entete from "../../Entete";
 import ScaleView from "./ScaleView";
 
 const T = {
@@ -54,13 +55,7 @@ export default async function Oeuvre({ params, searchParams }) {
 
   return (
     <div className="wrap">
-      <header className="top">
-        <Link href={`/${q}`} className="logo">SIBCOD</Link>
-        <div className="lang">
-          <Link href={`/oeuvre/${id}`} className={lang === "en" ? "on" : ""}>EN</Link>
-          <Link href={`/oeuvre/${id}?lang=fr`} className={lang === "fr" ? "on" : ""}>FR</Link>
-        </div>
-      </header>
+      <Entete lang={lang} hrefLang={(l) => (l === "fr" ? `/oeuvre/${id}?lang=fr` : `/oeuvre/${id}`)} />
       <Link href={`/${q}`} className="back">{t.back}</Link>
 
       <div className={pano ? "detail pano" : "detail"}>

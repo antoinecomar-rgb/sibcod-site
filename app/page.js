@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { lire } from "../lib/supabase";
 import Galerie from "./Galerie";
-import Banniere from "./Banniere";
+import Entete from "./Entete";
 import COUL from "../data/couleurs.json";
 
 const TXT = {
@@ -122,15 +122,17 @@ export default async function Accueil({ searchParams }) {
 
   return (
     <div className="wrap">
-      <header className="top">
-        <Link href={href(filtre.cle)} className="logo">SIBCOD</Link>
-        <div className="lang">
-          <Link href={href(filtre.cle, "en")} className={lang === "en" ? "on" : ""}>EN</Link>
-          <Link href={href(filtre.cle, "fr")} className={lang === "fr" ? "on" : ""}>FR</Link>
-        </div>
-      </header>
+      <Entete lang={lang} actif="oeuvres" hrefLang={(l) => href(filtre.cle, l)} />
 
-      <Banniere lang={lang} />
+      <section className="hero" aria-label="Sibcod in real interiors">
+        {[[1, 2, 3, 4], [5, 6, 7, 8]].map((set, k) => (
+          <div key={k} className={`heroset s${k}`}>
+            {set.map((n) => (
+              <img key={n} src={`/hero/hero-${n}.jpg`} alt="Sibcod artwork in an interior" loading={k === 0 ? "eager" : "lazy"} />
+            ))}
+          </div>
+        ))}
+      </section>
 
       <section className="intro">
         <h1>{t.title}</h1>
