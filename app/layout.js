@@ -1,4 +1,5 @@
 import "./globals.css";
+import Consentement from "./Consentement";
 
 export const metadata = {
   title: "SIBCOD – Art prints from Martinique",
@@ -8,7 +9,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>{children}<Consentement /></body>
     </html>
   );
 }
