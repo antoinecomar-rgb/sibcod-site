@@ -15,12 +15,11 @@ a { color:inherit; }
 .filters a { text-decoration:none; color:var(--muted); padding-bottom:3px; }
 .filters a.on { color:var(--ink); border-bottom:1px solid var(--ink); }
 .count { text-align:center; color:var(--muted); font-size:13px; margin:18px 0 36px; }
-.panos { margin:0 0 48px; }
-.card.pano { margin:0 0 36px; }
-.grid { columns:4 260px; column-gap:28px; }
-.card { break-inside:avoid; margin:0 0 40px; }
+.grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); grid-auto-rows:8px; grid-auto-flow:row dense; column-gap:28px; transition:opacity .2s; }
+.cell.s2 { grid-column:span 2; } .cell.s3 { grid-column:span 3; }
+.card { margin:0; }
 .card .img { background:#efece6; display:block; overflow:hidden; }
-.card img { width:100%; height:auto; display:block; transition:transform .6s cubic-bezier(.2,.7,.2,1); }
+.card img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s cubic-bezier(.2,.7,.2,1); }
 .card .img:hover img { transform:scale(1.08); }
 .card .meta { display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding-top:12px; }
 .card .t { text-decoration:none; font-family:Georgia,"Times New Roman",serif; font-size:16px; }
@@ -29,7 +28,7 @@ a { color:inherit; }
 .buy:hover { background:var(--ink); color:#fff; }
 .soon { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
 .foot { border-top:1px solid var(--line); margin-top:40px; padding:36px 0 60px; text-align:center; color:var(--muted); font-size:13px; line-height:1.7; }
-@media (max-width:600px){ .wrap{padding:0 16px} .grid{column-gap:14px; columns:2 140px} .card .meta{flex-direction:column; align-items:flex-start} }
+@media (max-width:600px){ .wrap{padding:0 16px} .grid{column-gap:14px; grid-template-columns:repeat(2,minmax(0,1fr))} .cell.s3{grid-column:span 2} .card .meta{flex-direction:column; align-items:flex-start} }
 
 .hero { position:relative; aspect-ratio:16/5; margin-top:8px; }
 .heroset { position:absolute; inset:0; display:grid; grid-template-columns:repeat(4,1fr); gap:10px; animation:fade 12s infinite; }

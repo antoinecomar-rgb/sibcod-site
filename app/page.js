@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { lire } from "../lib/supabase";
+import Galerie from "./Galerie";
 
 const TXT = {
   en: {
@@ -65,29 +66,42 @@ export default async function Accueil({ searchParams }) {
     const m = String(o.proportion || "").match(/(\d+(?:\.\d+)?):(\d+(?:\.\d+)?)/);
     return m ? Number(m[1]) / Number(m[2]) : 1;
   };
-  const panos = visibles.filter((o) => ratio(o) >= 1.9);
-  const autres = visibles.filter((o) => ratio(o) < 1.9);
-  const carte = (o, pano) => {
-    const titre = lang === "fr" ? o.titre_fr : o.titre_en;
-    return (
-      <article key={o.id} className={pano ? "card pano" : "card"}>
-        <Link className="img" href={detail(o.id)}>
-          {o.url_vignette && <img src={o.url_vignette} alt={titre} loading="lazy" />}
-        </Link>
-        <div className="meta">
-          <div>
-            <Link className="t" href={detail(o.id)}>{titre}</Link>
-            <div className="s">{t.upTo(o.taille_max_pictorem_po)}</div>
-          </div>
-          {o.pictorem_url ? (
-            <a className="buy" href={o.pictorem_url} target="_blank" rel="noopener noreferrer">{t.buy}</a>
-          ) : (
-            <span className="soon">{t.soon}</span>
-          )}
-        </div>
-      </article>
-    );
-  };
+  // clé de similarité : titre sans numéro final (« Sea and Sky 2 » -> « sea and sky »)
+  const cle = (o) =>
+    (o.titre_en || "").toLowerCase().replace(/(\s+(\d+|i{1,3}|iv|v|vi{0,3}|[a-d]))+$/i, "").trim();
+  // mélange déterministe (même ordre à chaque visite)
+  let graine = 7;
+  const alea = () => ((graine = (graine * 16807) % 2147483647) / 2147483647);
+  const melange = [...visibles];
+  for (let i = melange.length - 1; i > 0; i--) {
+    const j = Math.floor(alea() * (i + 1));
+    [melange[i], melange[j]] = [melange[j], melange[i]];
+  }
+  // on évite de placer côte à côte des œuvres similaires (même clé) ou deux panoramas proches
+  const ordre = [];
+  const reste = melange;
+  while (reste.length) {
+    const recents = ordre.slice(-8);
+    const ok = (o) =>
+      !recents.some((r) => cle(r) === cle(o)) &&
+      !(ratio(o) >= 1.9 && ordre.slice(-5).some((r) => ratio(r) >= 1.9));
+    let k = reste.findIndex(ok);
+    if (k < 0) k = 0;
+    ordre.push(reste.splice(k, 1)[0]);
+  }
+  const items = ordre.map((o) => {
+    const r = ratio(o);
+    return {
+      id: o.id,
+      titre: lang === "fr" ? o.titre_fr : o.titre_en,
+      sous: t.upTo(o.taille_max_pictorem_po),
+      href: detail(o.id),
+      src: o.url_vignette,
+      buyUrl: o.pictorem_url,
+      ratio: r,
+      span: r >= 2.2 ? 3 : r >= 1.9 ? 2 : 1,
+    };
+  });
 
   return (
     <div className="wrap">
@@ -123,15 +137,7 @@ export default async function Accueil({ searchParams }) {
       </nav>
       <p className="count">{t.works(visibles.length)}</p>
 
-      {panos.length > 0 && (
-        <section className="panos" aria-label="Panoramas">
-          {panos.map((o) => carte(o, true))}
-        </section>
-      )}
-
-      <div className="grid">
-        {autres.map((o) => carte(o, false))}
-      </div>
+      <Galerie items={items} buy={t.buy} soon={t.soon} />
 
       <footer className="foot">{t.foot}</footer>
     </div>
