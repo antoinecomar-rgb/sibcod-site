@@ -142,3 +142,10 @@ a { color:inherit; }
 .pic-logo { display:inline-block; line-height:0; margin-bottom:18px; }
 .pic-logo img { height:44px; width:auto; display:block; }
 @media (max-width:700px){ .soc a.pict img { height:24px; } }
+
+/* logo Pictorem noir sur fond transparent */
+.soc a.pict, .soc a.pict:hover { background:none; border:0; padding:0; opacity:1; }
+.soc a.pict img { height:26px; }
+.soc a.pict:hover img { opacity:.7; }
+.pic-logo img { height:40px; }
+@media (max-width:700px){ .soc a.pict img { height:20px; } }
