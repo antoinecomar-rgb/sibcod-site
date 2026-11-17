@@ -70,6 +70,16 @@ export default async function Accueil({ searchParams }) {
         </div>
       </header>
 
+      <section className="hero" aria-label="Sibcod in real interiors">
+        {[[1, 2, 3, 4], [5, 6, 7, 8]].map((set, k) => (
+          <div key={k} className={`heroset s${k}`}>
+            {set.map((n) => (
+              <img key={n} src={`/hero/hero-${n}.jpg`} alt="Sibcod artwork in an interior" loading={k === 0 ? "eager" : "lazy"} />
+            ))}
+          </div>
+        ))}
+      </section>
+
       <section className="intro">
         <h1>{t.title}</h1>
         {t.intro.map((p, i) => <p key={i}>{p}</p>)}

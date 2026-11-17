@@ -27,3 +27,13 @@ a { color:inherit; }
 .soon { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
 .foot { border-top:1px solid var(--line); margin-top:40px; padding:36px 0 60px; text-align:center; color:var(--muted); font-size:13px; line-height:1.7; }
 @media (max-width:600px){ .wrap{padding:0 16px} .grid{column-gap:14px; columns:2 140px} .card .meta{flex-direction:column; align-items:flex-start} }
+
+.hero { position:relative; aspect-ratio:16/5; margin-top:8px; }
+.heroset { position:absolute; inset:0; display:grid; grid-template-columns:repeat(4,1fr); gap:10px; animation:fade 12s infinite; }
+.heroset.s1 { animation-delay:6s; animation-fill-mode:both; }
+.heroset img { width:100%; height:100%; object-fit:cover; display:block; }
+@keyframes fade { 0%{opacity:0} 8%{opacity:1} 50%{opacity:1} 58%{opacity:0} 100%{opacity:0} }
+.heroset.s0 { animation-name:fade0; }
+@keyframes fade0 { 0%{opacity:1} 50%{opacity:1} 58%{opacity:0} 92%{opacity:0} 100%{opacity:1} }
+@media (max-width:600px){ .hero{aspect-ratio:1/1} .heroset{grid-template-columns:repeat(2,1fr)} .heroset img:nth-child(n+3){display:none} }
+@media (prefers-reduced-motion:reduce){ .heroset{animation:none!important} .heroset.s1{display:none} .heroset.s0{opacity:1} }
