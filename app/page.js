@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { lire } from "../lib/supabase";
 import Galerie from "./Galerie";
+import COUL from "../data/couleurs.json";
 
 const TXT = {
   en: {
@@ -62,33 +63,48 @@ export default async function Accueil({ searchParams }) {
   );
   const visibles = oeuvres.filter((o) => (o.taille_max_pictorem_po || 0) >= filtre.min);
 
+  // ratio réel de l'image (largeur/hauteur), mesuré sur la vignette ; repli sur la proportion déclarée
   const ratio = (o) => {
+    if (COUL[o.id]) return COUL[o.id].r;
     const m = String(o.proportion || "").match(/(\d+(?:\.\d+)?):(\d+(?:\.\d+)?)/);
     return m ? Number(m[1]) / Number(m[2]) : 1;
   };
   // clé de similarité : titre sans numéro final (« Sea and Sky 2 » -> « sea and sky »)
   const cle = (o) =>
     (o.titre_en || "").toLowerCase().replace(/(\s+(\d+|i{1,3}|iv|v|vi{0,3}|[a-d]))+$/i, "").trim();
-  // mélange déterministe (même ordre à chaque visite)
+  // ordre par proximité de couleur (distance Lab), en évitant les œuvres de la même série à moins de 8 places
+  const dist = (x, y) => {
+    const a = COUL[x.id]?.c || [50, 0, 0], b = COUL[y.id]?.c || [50, 0, 0];
+    return Math.hypot(a[0] - b[0], 1.5 * (a[1] - b[1]), 1.5 * (a[2] - b[2]));
+  };
+  const estPano = (o) => ratio(o) >= 1.9;
   let graine = 7;
   const alea = () => ((graine = (graine * 16807) % 2147483647) / 2147483647);
-  const melange = [...visibles];
-  for (let i = melange.length - 1; i > 0; i--) {
-    const j = Math.floor(alea() * (i + 1));
-    [melange[i], melange[j]] = [melange[j], melange[i]];
-  }
-  // on évite de placer côte à côte des œuvres similaires (même clé) ou deux panoramas proches
+  const panosL = visibles.filter(estPano);
+  const reste = visibles.filter((o) => !estPano(o));
   const ordre = [];
-  const reste = melange;
+  if (reste.length) ordre.push(reste.splice(Math.floor(alea() * reste.length), 1)[0]);
   while (reste.length) {
+    const dernier = ordre[ordre.length - 1];
     const recents = ordre.slice(-8);
-    const ok = (o) =>
-      !recents.some((r) => cle(r) === cle(o)) &&
-      !(ratio(o) >= 1.9 && ordre.slice(-5).some((r) => ratio(r) >= 1.9));
-    let k = reste.findIndex(ok);
-    if (k < 0) k = 0;
-    ordre.push(reste.splice(k, 1)[0]);
+    let meilleur = -1, md = Infinity;
+    reste.forEach((o, k) => {
+      if (recents.some((r) => cle(r) === cle(o))) return;
+      const d = dist(dernier, o);
+      if (d < md) { md = d; meilleur = k; }
+    });
+    ordre.push(reste.splice(meilleur < 0 ? 0 : meilleur, 1)[0]);
   }
+  // panoramas répartis dans la page (vers 20 %, 50 % et 80 %), placés au meilleur voisinage de couleur
+  panosL.forEach((p, i) => {
+    const cible = Math.round(ordre.length * (0.2 + (0.6 * i) / Math.max(1, panosL.length - 1)));
+    let best = cible, bd = Infinity;
+    for (let k = Math.max(4, cible - 12); k <= Math.min(ordre.length, cible + 12); k++) {
+      const d = dist(p, ordre[Math.max(0, k - 1)]);
+      if (d < bd) { bd = d; best = k; }
+    }
+    ordre.splice(best, 0, p);
+  });
   const items = ordre.map((o) => {
     const r = ratio(o);
     return {
