@@ -56,10 +56,38 @@ export default async function Accueil({ searchParams }) {
   const detail = (id) => `/oeuvre/${id}${lang === "fr" ? "?lang=fr" : ""}`;
   const oeuvres = await lire(
     "fichiers_maitres",
-    "select=id,titre_fr,titre_en,taille_max_pictorem_po,pictorem_url,url_vignette" +
+    "select=id,titre_fr,titre_en,proportion,taille_max_pictorem_po,pictorem_url,url_vignette" +
       "&statut=eq.Fichier%20ma%C3%AEtre&order=titre_en"
   );
   const visibles = oeuvres.filter((o) => (o.taille_max_pictorem_po || 0) >= filtre.min);
+
+  const ratio = (o) => {
+    const m = String(o.proportion || "").match(/(\d+(?:\.\d+)?):(\d+(?:\.\d+)?)/);
+    return m ? Number(m[1]) / Number(m[2]) : 1;
+  };
+  const panos = visibles.filter((o) => ratio(o) >= 1.9);
+  const autres = visibles.filter((o) => ratio(o) < 1.9);
+  const carte = (o, pano) => {
+    const titre = lang === "fr" ? o.titre_fr : o.titre_en;
+    return (
+      <article key={o.id} className={pano ? "card pano" : "card"}>
+        <Link className="img" href={detail(o.id)}>
+          {o.url_vignette && <img src={o.url_vignette} alt={titre} loading="lazy" />}
+        </Link>
+        <div className="meta">
+          <div>
+            <Link className="t" href={detail(o.id)}>{titre}</Link>
+            <div className="s">{t.upTo(o.taille_max_pictorem_po)}</div>
+          </div>
+          {o.pictorem_url ? (
+            <a className="buy" href={o.pictorem_url} target="_blank" rel="noopener noreferrer">{t.buy}</a>
+          ) : (
+            <span className="soon">{t.soon}</span>
+          )}
+        </div>
+      </article>
+    );
+  };
 
   return (
     <div className="wrap">
@@ -95,28 +123,14 @@ export default async function Accueil({ searchParams }) {
       </nav>
       <p className="count">{t.works(visibles.length)}</p>
 
+      {panos.length > 0 && (
+        <section className="panos" aria-label="Panoramas">
+          {panos.map((o) => carte(o, true))}
+        </section>
+      )}
+
       <div className="grid">
-        {visibles.map((o) => {
-          const titre = lang === "fr" ? o.titre_fr : o.titre_en;
-          return (
-            <article key={o.id} className="card">
-              <Link className="img" href={detail(o.id)}>
-                {o.url_vignette && <img src={o.url_vignette} alt={titre} loading="lazy" />}
-              </Link>
-              <div className="meta">
-                <div>
-                  <Link className="t" href={detail(o.id)}>{titre}</Link>
-                  <div className="s">{t.upTo(o.taille_max_pictorem_po)}</div>
-                </div>
-                {o.pictorem_url ? (
-                  <a className="buy" href={o.pictorem_url} target="_blank" rel="noopener noreferrer">{t.buy}</a>
-                ) : (
-                  <span className="soon">{t.soon}</span>
-                )}
-              </div>
-            </article>
-          );
-        })}
+        {autres.map((o) => carte(o, false))}
       </div>
 
       <footer className="foot">{t.foot}</footer>

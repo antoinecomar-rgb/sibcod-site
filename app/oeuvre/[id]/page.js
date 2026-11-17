@@ -48,6 +48,8 @@ export default async function Oeuvre({ params, searchParams }) {
   if (!o) notFound();
   const titre = lang === "fr" ? o.titre_fr : o.titre_en;
   const q = lang === "fr" ? "?lang=fr" : "";
+  const rm = (o.proportion || "").match(/([\d.]+):([\d.]+)/);
+  const pano = rm ? Number(rm[1]) / Number(rm[2]) >= 1.9 : false;
   const prop = (o.proportion || "").match(/\(?\s*([\d.]+:[\d.]+)\s*\)?$/)?.[1];
 
   return (
@@ -61,7 +63,7 @@ export default async function Oeuvre({ params, searchParams }) {
       </header>
       <Link href={`/${q}`} className="back">{t.back}</Link>
 
-      <div className="detail">
+      <div className={pano ? "detail pano" : "detail"}>
         <div className="big">{o.url_vignette && <img src={o.url_vignette} alt={titre} />}</div>
         <div>
           <h1>{titre}</h1>
