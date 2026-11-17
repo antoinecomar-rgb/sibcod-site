@@ -3,6 +3,7 @@ import Link from "next/link";
 import { lire } from "../lib/supabase";
 import Galerie from "./Galerie";
 import Entete from "./Entete";
+import Pictorem from "./Pictorem";
 import COUL from "../data/couleurs.json";
 
 const TXT = {
@@ -139,6 +140,8 @@ export default async function Accueil({ searchParams }) {
         <h1>{t.title}</h1>
         {t.intro.map((p, i) => <p key={i}>{p}</p>)}
       </section>
+
+      <Pictorem lang={lang} />
 
       <nav className="filters" id="oeuvres">
         {FILTRES.map((f, i) => (

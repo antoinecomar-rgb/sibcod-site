@@ -107,3 +107,31 @@ a { color:inherit; }
 .contact nav { display:flex; flex-wrap:wrap; justify-content:center; gap:8px 26px; font-size:13px; letter-spacing:.12em; text-transform:uppercase; }
 .contact a { color:var(--ink); text-decoration:none; border-bottom:1px solid var(--ink); padding-bottom:2px; }
 .contact a:hover { opacity:.6; }
+
+/* icônes réseaux dans l'en-tête */
+.soc { display:flex; align-items:center; gap:14px; margin-left:auto; margin-right:22px; }
+.soc a { color:var(--ink); display:inline-flex; opacity:.8; }
+.soc a:hover { opacity:1; }
+.soc a.pict { font-size:12px; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; border:1px solid var(--ink); padding:5px 10px; opacity:1; }
+.soc a.pict:hover { background:var(--ink); color:#fff; }
+.top .menu { margin-left:28px; }
+/* bloc Pictorem mis en avant */
+.pictorem { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:48px; align-items:center; background:#f1ede5; padding:44px 48px; margin:0 0 48px; }
+.pictorem .kicker { font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+.pictorem h2 { font-family:Georgia,"Times New Roman",serif; font-weight:400; font-size:clamp(24px,2.6vw,32px); line-height:1.25; margin:0 0 16px; }
+.pictorem p { font-size:15px; line-height:1.75; color:#444; margin:0 0 24px; }
+.pic-cta { display:inline-block; background:var(--ink); color:#fff; text-decoration:none; font-size:13px; letter-spacing:.12em; text-transform:uppercase; padding:14px 28px; }
+.pic-cta:hover { opacity:.85; }
+.pic-note { font-size:12px; color:var(--muted); margin-top:14px; }
+.pic-points { list-style:none; margin:0; padding:0; display:grid; gap:0; }
+.pic-points li { display:flex; flex-direction:column; gap:3px; padding:16px 0; border-top:1px solid #d9d3c7; font-size:14px; color:#555; }
+.pic-points li:last-child { border-bottom:1px solid #d9d3c7; }
+.pic-points strong { font-weight:500; color:var(--ink); font-size:15px; }
+@media (max-width:820px){ .pictorem{grid-template-columns:1fr; gap:24px; padding:28px 22px} }
+@media (max-width:700px){
+  .stick .top { height:84px; flex-wrap:wrap; align-content:center; row-gap:6px; }
+  .filters { top:84px; }
+  .soc { margin:0 0 0 auto; gap:12px; }
+  .soc a.pict { font-size:10px; padding:3px 7px; }
+  .top .menu { margin:0; order:3; width:100%; justify-content:center; }
+}
