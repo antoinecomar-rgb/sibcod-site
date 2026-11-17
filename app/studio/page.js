@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { connexion, deconnexion } from "./actions";
 import { jeton } from "../../lib/studio-auth";
 import { lireMeta } from "../../lib/meta";
+import { lireGA } from "../../lib/ga";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +37,7 @@ export default async function Studio({ searchParams }) {
     );
   }
 
-  const m = await lireMeta();
+  const [m, ga] = await Promise.all([lireMeta(), lireGA()]);
   const exp = process.env.META_TOKEN_EXPIRES || "2027-01-16";
   const jours = Math.ceil((new Date(exp) - new Date()) / 86400000);
   const reach = m.portee?.data?.data?.find((x) => x.name === "reach")?.total_value?.value;
@@ -58,6 +59,32 @@ export default async function Studio({ searchParams }) {
       )}
       {erreurs.length > 0 && (
         <p style={{ ...box, borderColor: "#b00", color: "#b00" }}>Erreur Meta : {erreurs.join(" | ")}</p>
+      )}
+
+      <h2 style={{ fontSize: 16, marginTop: 24 }}>Site sibcod.com – 7 derniers jours</h2>
+      {ga.erreur ? (
+        <p style={{ ...box, borderColor: "#b00", color: "#b00" }}>Erreur Google Analytics : {ga.erreur}</p>
+      ) : (
+        <>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: 12 }}>
+            <Carte titre="Visiteurs" valeur={ga.visiteurs} />
+            <Carte titre="Sessions" valeur={ga.sessions} />
+            <Carte titre="Pages vues" valeur={ga.pagesVues} />
+            <Carte titre="Clics « Acheter » (Pictorem)" valeur={ga.clicsPictorem} />
+            <Carte titre="Clics contact" valeur={ga.clicsContact} />
+          </div>
+          <p style={{ fontSize: 12, color: "#666" }}>
+            Visiteurs ayant accepté les cookies uniquement (bandeau de consentement).
+          </p>
+          {ga.topPages.length > 0 && (
+            <div style={{ ...box, marginTop: 8 }}>
+              <div style={{ fontSize: 13, color: "#666" }}>Pages les plus vues</div>
+              {ga.topPages.map((p) => (
+                <div key={p.page}>{p.page} — {p.vues}</div>
+              ))}
+            </div>
+          )}
+        </>
       )}
 
       <h2 style={{ fontSize: 16, marginTop: 24 }}>Instagram @{m.profil?.data?.username || "sibcod"}</h2>
