@@ -1,89 +1,114 @@
 import Link from "next/link";
 import { lire } from "../lib/supabase";
 
-// Filtres : taille maximale disponible chez Pictorem (en pouces) -> libellé en cm
+const TXT = {
+  en: {
+    title: "Visual creations born of an architect's eye, nourished by Martinique.",
+    intro: [
+      "Sibcod is a brand of visual creations, born of an architect's eye nourished by Martinique. Wall art, textiles and accessories: each piece extends this sensitive memory into forms made to live with at home.",
+      "After years of free creation and projects made to order for professionals and individuals, Sibcod now opens part of its universe to online ordering.",
+      "Each work is printed to order on canvas, metal, acrylic, wood or paper. Custom work is available on request.",
+    ],
+    filters: ["All", "16 in and up", "20 in and up", "28 in and up", "Grand formats"],
+    works: (n) => `${n} works`,
+    upTo: (po) => `Up to ${po} in`,
+    buy: "Buy",
+    soon: "Coming soon",
+    foot: "Prints made to order by Pictorem. © Sibcod",
+  },
+  fr: {
+    title: "Des créations visuelles nées d'un regard d'architecte, nourri par la Martinique.",
+    intro: [
+      "Sibcod est une marque de créations visuelles, née d'un regard d'architecte nourri par la Martinique. Décoration murale, produits textiles et accessoires : chaque pièce prolonge cette mémoire sensible dans des formes à intégrer chez soi.",
+      "Après des années de création libre et de projets réalisés à la demande pour des professionnels et des particuliers, Sibcod ouvre aujourd'hui une partie de son univers à la commande en ligne.",
+      "Chaque œuvre est imprimée à la commande sur toile, métal, acrylique, bois ou papier. Des créations sur mesure sont possibles sur demande.",
+    ],
+    filters: ["Toutes", "40 cm et +", "50 cm et +", "70 cm et +", "Grands formats"],
+    works: (n) => `${n} œuvres`,
+    upTo: (po) => `Jusqu'à ${Math.round(po * 2.54)} cm`,
+    buy: "Acheter",
+    soon: "Bientôt disponible",
+    foot: "Tirages réalisés à la commande par Pictorem. © Sibcod",
+  },
+};
+// clé de filtre -> taille minimale (pouces)
 const FILTRES = [
-  { cle: "tous", label: "Toutes", min: 0 },
-  { cle: "40", label: "40 cm et +", min: 16 },
-  { cle: "50", label: "50 cm et +", min: 20 },
-  { cle: "70", label: "70 cm et +", min: 28 },
-  { cle: "grand", label: "Grands formats (> 70 cm)", min: 29 },
+  { cle: "tous", min: 0 },
+  { cle: "16", min: 16 },
+  { cle: "20", min: 20 },
+  { cle: "28", min: 28 },
+  { cle: "grand", min: 29 },
 ];
 
-export const metadata = { title: "SIBCOD – Catalogue", description: "Les affiches de Sibylle" };
-
 export default async function Accueil({ searchParams }) {
-  const { taille = "tous" } = await searchParams;
-  const filtre = FILTRES.find((f) => f.cle === taille) || FILTRES[0];
+  const sp = await searchParams;
+  const lang = sp.lang === "fr" ? "fr" : "en";
+  const t = TXT[lang];
+  const filtre = FILTRES.find((f) => f.cle === sp.taille) || FILTRES[0];
+  const href = (taille, l = lang) => {
+    const q = new URLSearchParams();
+    if (l === "fr") q.set("lang", "fr");
+    if (taille !== "tous") q.set("taille", taille);
+    const s = q.toString();
+    return s ? `/?${s}` : "/";
+  };
 
   const oeuvres = await lire(
     "fichiers_maitres",
     "select=id,titre_fr,titre_en,taille_max_pictorem_po,pictorem_url,url_vignette" +
-      "&statut=eq.Fichier%20ma%C3%AEtre&order=titre_fr"
+      "&statut=eq.Fichier%20ma%C3%AEtre&order=titre_en"
   );
   const visibles = oeuvres.filter((o) => (o.taille_max_pictorem_po || 0) >= filtre.min);
-  const cm = (po) => Math.round(po * 2.54);
 
   return (
-    <main style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 20px" }}>
-      <h1 style={{ letterSpacing: 4 }}>SIBCOD</h1>
+    <div className="wrap">
+      <header className="top">
+        <Link href={href(filtre.cle)} className="logo">SIBCOD</Link>
+        <div className="lang">
+          <Link href={href(filtre.cle, "en")} className={lang === "en" ? "on" : ""}>EN</Link>
+          <Link href={href(filtre.cle, "fr")} className={lang === "fr" ? "on" : ""}>FR</Link>
+        </div>
+      </header>
 
-      <nav style={{ display: "flex", flexWrap: "wrap", gap: 8, margin: "16px 0 24px" }}>
-        {FILTRES.map((f) => (
-          <Link
-            key={f.cle}
-            href={f.cle === "tous" ? "/" : `/?taille=${f.cle}`}
-            style={{
-              padding: "6px 14px",
-              border: "1px solid #222",
-              textDecoration: "none",
-              color: f.cle === filtre.cle ? "#fff" : "#222",
-              background: f.cle === filtre.cle ? "#222" : "transparent",
-              fontSize: 14,
-            }}
-          >
-            {f.label}
+      <section className="intro">
+        <h1>{t.title}</h1>
+        {t.intro.map((p, i) => <p key={i}>{p}</p>)}
+      </section>
+
+      <nav className="filters">
+        {FILTRES.map((f, i) => (
+          <Link key={f.cle} href={href(f.cle)} className={f.cle === filtre.cle ? "on" : ""}>
+            {lang === "en" && f.cle !== "tous" && f.cle !== "grand" ? `${f.min} in and up` : t.filters[i]}
           </Link>
         ))}
       </nav>
-      <p style={{ color: "#666", fontSize: 14 }}>{visibles.length} œuvres</p>
+      <p className="count">{t.works(visibles.length)}</p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 16 }}>
-        {visibles.map((o) => (
-          <div key={o.id} style={{ background: "#fff", border: "1px solid #e5e0d8" }}>
-            <div style={{ aspectRatio: "4 / 3", background: "#eee9e1" }}>
-              {o.url_vignette && (
-                <img
-                  src={o.url_vignette}
-                  alt={o.titre_fr}
-                  loading="lazy"
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                />
-              )}
-            </div>
-            <div style={{ padding: 14 }}>
-              <strong>{o.titre_fr}</strong>
-              <div style={{ fontSize: 13, color: "#666", margin: "6px 0 12px" }}>
-                Jusqu'à {cm(o.taille_max_pictorem_po)} cm
+      <div className="grid">
+        {visibles.map((o) => {
+          const titre = lang === "fr" ? o.titre_fr : o.titre_en;
+          return (
+            <article key={o.id} className="card">
+              <span className="img">
+                {o.url_vignette && <img src={o.url_vignette} alt={titre} loading="lazy" />}
+              </span>
+              <div className="meta">
+                <div>
+                  <div className="t">{titre}</div>
+                  <div className="s">{t.upTo(o.taille_max_pictorem_po)}</div>
+                </div>
+                {o.pictorem_url ? (
+                  <a className="buy" href={o.pictorem_url} target="_blank" rel="noopener noreferrer">{t.buy}</a>
+                ) : (
+                  <span className="soon">{t.soon}</span>
+                )}
               </div>
-              {o.pictorem_url ? (
-                <a
-                  href={o.pictorem_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ display: "block", textAlign: "center", padding: "8px 0", background: "#222", color: "#fff", textDecoration: "none", fontSize: 14 }}
-                >
-                  Acheter
-                </a>
-              ) : (
-                <span style={{ display: "block", textAlign: "center", padding: "8px 0", border: "1px solid #ccc", color: "#888", fontSize: 14 }}>
-                  Bientôt disponible
-                </span>
-              )}
-            </div>
-          </div>
-        ))}
+            </article>
+          );
+        })}
       </div>
-    </main>
+
+      <footer className="foot">{t.foot}</footer>
+    </div>
   );
 }

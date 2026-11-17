@@ -1,0 +1,29 @@
+:root { --ink:#1b1b1b; --muted:#77736c; --line:#e7e3dc; --bg:#fbfaf7; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,"Helvetica Neue",Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+a { color:inherit; }
+.wrap { max-width:1280px; margin:0 auto; padding:0 28px; }
+.top { display:flex; justify-content:space-between; align-items:center; padding:28px 0; }
+.logo { font-family:Georgia,"Times New Roman",serif; font-size:22px; letter-spacing:.42em; text-decoration:none; }
+.lang { font-size:13px; letter-spacing:.14em; }
+.lang a { text-decoration:none; color:var(--muted); padding:0 6px; }
+.lang a.on { color:var(--ink); border-bottom:1px solid var(--ink); }
+.intro { max-width:760px; margin:56px auto 72px; text-align:center; }
+.intro h1 { font-family:Georgia,"Times New Roman",serif; font-weight:400; font-size:clamp(28px,4vw,44px); line-height:1.2; margin:0 0 28px; }
+.intro p { font-size:16px; line-height:1.75; color:#444; margin:0 0 14px; }
+.filters { display:flex; flex-wrap:wrap; justify-content:center; gap:6px 26px; padding:18px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); font-size:13px; letter-spacing:.08em; text-transform:uppercase; }
+.filters a { text-decoration:none; color:var(--muted); padding-bottom:3px; }
+.filters a.on { color:var(--ink); border-bottom:1px solid var(--ink); }
+.count { text-align:center; color:var(--muted); font-size:13px; margin:18px 0 36px; }
+.grid { columns:4 260px; column-gap:28px; }
+.card { break-inside:avoid; margin:0 0 40px; }
+.card .img { background:#efece6; display:block; }
+.card img { width:100%; height:auto; display:block; }
+.card .meta { display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding-top:12px; }
+.card .t { font-family:Georgia,"Times New Roman",serif; font-size:16px; }
+.card .s { font-size:12px; color:var(--muted); margin-top:3px; }
+.buy { font-size:12px; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; border:1px solid var(--ink); padding:7px 14px; white-space:nowrap; }
+.buy:hover { background:var(--ink); color:#fff; }
+.soon { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+.foot { border-top:1px solid var(--line); margin-top:40px; padding:36px 0 60px; text-align:center; color:var(--muted); font-size:13px; line-height:1.7; }
+@media (max-width:600px){ .wrap{padding:0 16px} .grid{column-gap:14px; columns:2 140px} .card .meta{flex-direction:column; align-items:flex-start} }

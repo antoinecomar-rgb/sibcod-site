@@ -1,11 +1,14 @@
-export const metadata = { title: "SIBCOD", description: "Les affiches de Sibylle" };
+import "./globals.css";
+
+export const metadata = {
+  title: "SIBCOD – Art prints from Martinique",
+  description: "Original artworks by Sibcod, printed to order on canvas, metal, acrylic, wood or paper.",
+};
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="fr">
-      <body style={{ fontFamily: "Georgia, serif", margin: 0, background: "#faf8f5", color: "#222" }}>
-        {children}
-      </body>
+    <html lang="en">
+      <body>{children}</body>
     </html>
   );
 }
