@@ -198,7 +198,12 @@ a { color:inherit; }
 .mat .win img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .8s cubic-bezier(.2,.7,.2,1); }
 .mat:hover .win img { transform:scale(1.04); }
 .mat .lbl { position:absolute; left:16px; right:16px; bottom:12px; text-align:left; color:var(--ink); font-family:var(--serif); font-size:17px; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.mat .lbl em { font-family:var(--sans); font-style:normal; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-left:10px; }
+.mat .lbl em { font-family:var(--sans); font-style:normal; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-left:auto; flex:none; }
+.mat .mat-lien { position:absolute; inset:0; display:block; }
+.mat .lbl { display:flex; align-items:center; gap:10px; }
+.mat .lbl .t { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; text-decoration:none; color:inherit; }
+.mat .lbl .buy { flex:none; font-family:var(--sans); font-size:10px; line-height:1.3; letter-spacing:.12em; padding:4px 10px; color:var(--ink); background:transparent; }
+.mat .lbl .buy:hover { background:var(--ink); color:#fff; }
 .ph { position:relative; margin:0; min-width:0; overflow:hidden; background:var(--mat); }
 .ph img { width:100%; height:100%; object-fit:cover; object-position:50% 40%; display:block; }
 .ph.t3 { grid-column:span 2; grid-row:span 2; }
@@ -233,6 +238,7 @@ a { color:inherit; }
   .gal-wrap { padding:0 12px 48px; }
   .blk.row { grid-template-columns:repeat(2,minmax(0,1fr)); grid-auto-flow:row dense; }
   .mat .lbl { font-size:15px; left:12px; right:12px; bottom:8px; }
+  .mat .lbl { gap:6px; } .mat .lbl .buy { font-size:9px; letter-spacing:.08em; padding:3px 7px; }
   .ph.t3, .ph.t3.gauche, .ph.t3.droite { grid-column:1 / -1; grid-row:auto; aspect-ratio:4/5; }
   .ph.t6, .ph.t6.gauche, .ph.t6.droite { grid-column:1 / -1; grid-row:auto; aspect-ratio:1; }
   .ph.t4 { grid-column:1 / -1; aspect-ratio:8/5; }

@@ -103,6 +103,7 @@ export default async function Accueil({ searchParams }) {
       src: o.url_vignette,
       ratio: ratio(o),
       dispo: !!o.pictorem_url,
+      buyUrl: o.pictorem_url,
     };
   });
 
@@ -141,7 +142,7 @@ export default async function Accueil({ searchParams }) {
       </div>
 
       <div className="gal-wrap">
-        <GalerieComposee items={items} lang={lang} sequences={filtre.cle === "tous"} soon={t.soon} />
+        <GalerieComposee items={items} lang={lang} sequences={filtre.cle === "tous"} soon={t.soon} buy={t.buy} />
       </div>
 
       <div className="wrap">

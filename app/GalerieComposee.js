@@ -27,19 +27,25 @@ function fenetre(r, large) {
   return { left: ((1 - w) / 2) * 100, top: ((top + (ah - h) / 2) / H) * 100, width: w * 100, height: (h / H) * 100 };
 }
 
-function Carte({ o, large, soon }) {
+function Carte({ o, large, soon, buy }) {
   const f = fenetre(o.ratio, large);
   const pos = { left: `${f.left}%`, top: `${f.top}%`, width: `${f.width}%`, height: `${f.height}%` };
   return (
-    <Link href={o.href} className={`mat${large ? " w2" : ""}`}>
-      <span className="win" style={pos}>
-        {o.src && <img src={o.src} alt={o.titre} loading="lazy" />}
-      </span>
+    <div className={`mat${large ? " w2" : ""}`}>
+      <Link href={o.href} className="mat-lien" tabIndex={-1} aria-hidden="true">
+        <span className="win" style={pos}>
+          {o.src && <img src={o.src} alt={o.titre} loading="lazy" />}
+        </span>
+      </Link>
       <span className="lbl">
-        {o.titre}
-        {!o.dispo && <em>{soon}</em>}
+        <Link href={o.href} className="t">{o.titre}</Link>
+        {o.buyUrl ? (
+          <a className="buy" href={o.buyUrl} target="_blank" rel="noopener noreferrer">{buy}</a>
+        ) : (
+          <em>{soon}</em>
+        )}
       </span>
-    </Link>
+    </div>
   );
 }
 
@@ -57,14 +63,14 @@ function Photo({ src, cls, label, alt }) {
   );
 }
 
-export default function GalerieComposee({ items, lang, sequences, soon }) {
+export default function GalerieComposee({ items, lang, sequences, soon, buy }) {
   const L = LABEL[lang];
   const vus = new Set();
   const carte = (id, w) => {
     const o = items[id];
     if (!o) return null;
     vus.add(id);
-    return <Carte key={id} o={o} large={w === 2} soon={soon} />;
+    return <Carte key={id} o={o} large={w === 2} soon={soon} buy={buy} />;
   };
   const restants = () => Object.keys(items).filter((id) => !vus.has(id));
   const largeur = (id) => (items[id].ratio >= 1.2 ? 2 : 1);
