@@ -4,6 +4,7 @@ import { lire } from "../lib/supabase";
 import Galerie from "./Galerie";
 import Entete from "./Entete";
 import Pictorem from "./Pictorem";
+import BandeauGala from "./BandeauGala";
 import COUL from "../data/couleurs.json";
 import { alternates } from "../lib/seo";
 
@@ -151,6 +152,8 @@ export default async function Accueil({ searchParams }) {
         <h1>{t.title}</h1>
         {t.intro.map((p, i) => <p key={i}>{p}</p>)}
       </section>
+
+      <BandeauGala lang={lang} />
 
       <Pictorem lang={lang} />
 

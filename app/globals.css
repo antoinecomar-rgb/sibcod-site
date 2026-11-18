@@ -115,6 +115,15 @@ a { color:inherit; }
 .soc a.pict { font-size:12px; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; border:1px solid var(--ink); padding:5px 10px; opacity:1; }
 .soc a.pict:hover { background:var(--ink); color:#fff; }
 .top .menu { margin-left:28px; }
+/* bandeau « Vu dans Gala » */
+.gala { display:flex; align-items:center; justify-content:center; gap:28px; padding:22px 24px; margin:0 0 48px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.gala-logo { height:64px; width:auto; mix-blend-mode:multiply; flex:none; }
+.gala-text .kicker { font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+.gala-text h2 { font-family:Georgia,"Times New Roman",serif; font-weight:400; font-size:20px; line-height:1.3; margin:0 0 4px; }
+.gala-text p { font-size:14px; line-height:1.6; color:#555; margin:0; max-width:520px; }
+.gala-cta { font-size:12px; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; border-bottom:1px solid var(--ink); padding-bottom:3px; white-space:nowrap; flex:none; }
+.gala-cta:hover { opacity:.7; }
+@media (max-width:700px){ .gala { flex-direction:column; text-align:center; gap:14px; padding:22px 16px; } .gala-text p { margin:0 auto; } }
 /* bloc Pictorem mis en avant */
 .pictorem { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:48px; align-items:center; background:#f1ede5; padding:44px 48px; margin:0 0 48px; }
 .pictorem .kicker { font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
