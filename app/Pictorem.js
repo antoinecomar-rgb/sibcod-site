@@ -30,20 +30,17 @@ const T = {
 export default function Pictorem({ lang }) {
   const t = T[lang];
   return (
-    <section className="pictorem" aria-label="Pictorem">
-      <div className="pic-text">
-        <a href={GALERIE_PICTOREM} target="_blank" rel="noopener noreferrer" className="pic-logo"><img src="/pictorem-logo.png" alt="Pictorem" height="44" /></a>
-        <div className="kicker">{t.kicker}</div>
-        <h2>{t.title}</h2>
-        <p>{t.text}</p>
-        <a className="pic-cta" href={GALERIE_PICTOREM} target="_blank" rel="noopener noreferrer">{t.cta} <span aria-hidden="true">↗</span></a>
-        <div className="pic-note">{t.note}</div>
-      </div>
-      <ul className="pic-points">
+    <section className="pictorem pic2" aria-label="Pictorem">
+      <ul className="pic2-points">
         {t.points.map(([a, b]) => (
           <li key={a}><strong>{a}</strong><span>{b}</span></li>
         ))}
       </ul>
+      <div className="pic2-foot">
+        <p>{t.text}</p>
+        <a className="pic-cta" href={GALERIE_PICTOREM} target="_blank" rel="noopener noreferrer">{t.cta} <span aria-hidden="true">↗</span></a>
+        <div className="pic-note">{t.note}</div>
+      </div>
     </section>
   );
 }
