@@ -21,14 +21,13 @@ export default function BandeauGala({ lang }) {
   const t = T[lang];
   const href = lang === "fr" ? "/vu-dans?lang=fr" : "/vu-dans";
   return (
-    <section className="gala" aria-label={t.kicker}>
-      <img className="gala-logo" src="/presse/PARUDANS_GALA2_LD.jpg" alt={t.alt} width="84" height="64" loading="lazy" />
-      <div className="gala-text">
-        <div className="kicker">{t.kicker}</div>
-        <h2>{t.title}</h2>
-        <p>{t.text}</p>
+    <section className="gala2" aria-label={t.kicker}>
+      <div className="wrap gala2-in">
+        <span>{t.kicker}</span>
+        <em>Gala</em>
+        <span>{lang === "fr" ? "— Dossier Tendances 2026" : "— Trends 2026"}</span>
+        <Link className="gala2-cta" href={href}>{t.cta}</Link>
       </div>
-      <Link className="gala-cta" href={href}>{t.cta} <span aria-hidden="true">→</span></Link>
     </section>
   );
 }

@@ -22,10 +22,7 @@ export default function Entete({ lang, hrefLang, actif, children }) {
           <Link href={`/vu-dans${q}`} className={actif === "vu" ? "on" : ""}>{n.vu}</Link>
         </nav>
         <div className="soc">
-          <a href={GALERIE_PICTOREM} target="_blank" rel="noopener noreferrer" className="pict" title="Pictorem"><img src="/pictorem-logo.png" alt="Pictorem" height="30" /></a>
-          <a href="https://wa.me/596696655699" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp"><Icone nom="whatsapp" /></a>
           <a href="https://www.instagram.com/sibcod/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><Icone nom="instagram" /></a>
-          <a href="https://www.facebook.com/profile.php?id=61552197352365" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><Icone nom="facebook" /></a>
         </div>
         <div className="lang">
           <Link href={hrefLang("en")} className={lang === "en" ? "on" : ""}>EN</Link>

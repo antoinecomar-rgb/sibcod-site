@@ -1,7 +1,7 @@
 import Pied from "./Pied";
 import Link from "next/link";
 import { lire } from "../lib/supabase";
-import Galerie from "./Galerie";
+import GalerieComposee from "./GalerieComposee";
 import Entete from "./Entete";
 import Pictorem from "./Pictorem";
 import BandeauGala from "./BandeauGala";
@@ -10,6 +10,11 @@ import { alternates } from "../lib/seo";
 
 const TXT = {
   en: {
+    kicker: "Original art prints · Martinique",
+    hero: "The colours of Martinique, made for your walls.",
+    cta: "Explore the collection",
+    coll: "The collection",
+    collSub: (n) => `${n} works, printed to order`,
     title: "Visual creations born of an architect's eye, nourished by Martinique.",
     intro: [
       "Sibcod is a brand of visual creations, born of an architect's eye nourished by Martinique. Wall art, textiles and accessories: each piece extends this sensitive memory into forms made to live with at home.",
@@ -24,6 +29,11 @@ const TXT = {
     foot: "Prints made to order by Pictorem. © Sibcod",
   },
   fr: {
+    kicker: "Affiches d'art originales · Martinique",
+    hero: "Les couleurs de la Martinique, pour vos murs.",
+    cta: "Découvrir la collection",
+    coll: "La collection",
+    collSub: (n) => `${n} œuvres, imprimées à la commande`,
     title: "Des créations visuelles nées d'un regard d'architecte, nourri par la Martinique.",
     intro: [
       "Sibcod est une marque de créations visuelles, née d'un regard d'architecte nourri par la Martinique. Décoration murale, produits textiles et accessoires : chaque pièce prolonge cette mémoire sensible dans des formes à intégrer chez soi.",
@@ -84,91 +94,60 @@ export default async function Accueil({ searchParams }) {
     const m = String(o.proportion || "").match(/(\d+(?:\.\d+)?):(\d+(?:\.\d+)?)/);
     return m ? Number(m[1]) / Number(m[2]) : 1;
   };
-  // clé de similarité : titre sans numéro final (« Sea and Sky 2 » -> « sea and sky »)
-  const cle = (o) =>
-    (o.titre_en || "").toLowerCase().replace(/(\s+(\d+|i{1,3}|iv|v|vi{0,3}|[a-d]))+$/i, "").trim();
-  // ordre par proximité de couleur (distance Lab), en évitant les œuvres de la même série à moins de 8 places
-  const dist = (x, y) => {
-    const a = COUL[x.id]?.c || [50, 0, 0], b = COUL[y.id]?.c || [50, 0, 0];
-    return Math.hypot(a[0] - b[0], 1.5 * (a[1] - b[1]), 1.5 * (a[2] - b[2]));
-  };
-  const estPano = (o) => ratio(o) >= 1.9;
-  let graine = 7;
-  const alea = () => ((graine = (graine * 16807) % 2147483647) / 2147483647);
-  const panosL = visibles.filter(estPano);
-  const reste = visibles.filter((o) => !estPano(o));
-  const ordre = [];
-  if (reste.length) ordre.push(reste.splice(Math.floor(alea() * reste.length), 1)[0]);
-  while (reste.length) {
-    const dernier = ordre[ordre.length - 1];
-    const recents = ordre.slice(-8);
-    let meilleur = -1, md = Infinity;
-    reste.forEach((o, k) => {
-      if (recents.some((r) => cle(r) === cle(o))) return;
-      const d = dist(dernier, o);
-      if (d < md) { md = d; meilleur = k; }
-    });
-    ordre.push(reste.splice(meilleur < 0 ? 0 : meilleur, 1)[0]);
-  }
-  // panoramas répartis dans la page (vers 20 %, 50 % et 80 %), placés au meilleur voisinage de couleur
-  panosL.forEach((p, i) => {
-    const cible = Math.round(ordre.length * (0.2 + (0.6 * i) / Math.max(1, panosL.length - 1)));
-    let best = cible, bd = Infinity;
-    for (let k = Math.max(4, cible - 12); k <= Math.min(ordre.length, cible + 12); k++) {
-      const d = dist(p, ordre[Math.max(0, k - 1)]);
-      if (d < bd) { bd = d; best = k; }
-    }
-    ordre.splice(best, 0, p);
-  });
-  const items = ordre.map((o) => {
-    const r = ratio(o);
-    return {
+  const items = {};
+  visibles.forEach((o) => {
+    items[o.id] = {
       id: o.id,
       titre: lang === "fr" ? o.titre_fr : o.titre_en,
-      sous: t.upTo(o.taille_max_pictorem_po),
       href: detail(o.id),
       src: o.url_vignette,
-      buyUrl: o.pictorem_url,
-      ratio: r,
-      span: r >= 2.2 ? 3 : r >= 1.9 ? 2 : 1,
+      ratio: ratio(o),
+      dispo: !!o.pictorem_url,
     };
   });
 
   return (
-    <div className="wrap">
-      <Entete lang={lang} actif="oeuvres" hrefLang={(l) => href(filtre.cle, l)} />
+    <>
+      <div className="wrap headwrap">
+        <Entete lang={lang} actif="oeuvres" hrefLang={(l) => href(filtre.cle, l)} />
+      </div>
 
-      <section className="hero" aria-label="Sibcod in real interiors">
-        {[[1, 2, 3, 4], [5, 6, 7, 8]].map((set, k) => (
-          <div key={k} className={`heroset s${k}`}>
-            {set.map((n) => (
-              <img key={n} src={`/hero/hero-${n}.jpg`} alt="Sibcod artwork in an interior" loading={k === 0 ? "eager" : "lazy"} />
-            ))}
-          </div>
-        ))}
-      </section>
-
-      <section className="intro">
-        <h1>{t.title}</h1>
-        {t.intro.map((p, i) => <p key={i}>{p}</p>)}
+      <section className="hero2 wrap">
+        <div className="hero2-text">
+          <p className="kicker">{t.kicker}</p>
+          <h1>{t.hero}</h1>
+          <p className="lead">{t.intro[0]}</p>
+          <a className="btn" href="#oeuvres">{t.cta}</a>
+        </div>
+        <img className="hero2-img" src="/hero/hero-7.jpg" alt={lang === "fr" ? "Une œuvre Sibcod près d'une fenêtre" : "A Sibcod artwork by a window"} />
       </section>
 
       <BandeauGala lang={lang} />
 
-      <Pictorem lang={lang} />
+      <div className="wrap">
+        <div className="coll-head" id="oeuvres">
+          <div>
+            <h2>{t.coll}</h2>
+            <p>{t.collSub(visibles.length)}</p>
+          </div>
+          <nav className="filters">
+            {FILTRES.map((f, i) => (
+              <Link key={f.cle} href={href(f.cle) + "#oeuvres"} className={f.cle === filtre.cle ? "on" : ""}>
+                {lang === "en" && f.cle !== "tous" && f.cle !== "grand" ? `${f.min} in and up` : t.filters[i]}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
 
-      <nav className="filters" id="oeuvres">
-        {FILTRES.map((f, i) => (
-          <Link key={f.cle} href={href(f.cle)} className={f.cle === filtre.cle ? "on" : ""}>
-            {lang === "en" && f.cle !== "tous" && f.cle !== "grand" ? `${f.min} in and up` : t.filters[i]}
-          </Link>
-        ))}
-      </nav>
-      <p className="count">{t.works(visibles.length)}</p>
+      <div className="gal-wrap">
+        <GalerieComposee items={items} lang={lang} sequences={filtre.cle === "tous"} soon={t.soon} />
+      </div>
 
-      <Galerie items={items} buy={t.buy} soon={t.soon} />
-
-      <Pied lang={lang} />
-    </div>
+      <div className="wrap">
+        <Pictorem lang={lang} />
+        <Pied lang={lang} />
+      </div>
+    </>
   );
 }
