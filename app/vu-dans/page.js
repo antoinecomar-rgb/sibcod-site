@@ -1,12 +1,22 @@
 import Pied from "../Pied";
 import Entete from "../Entete";
+import { alternates } from "../../lib/seo";
 
 const T = {
   en: { title: "Seen in", p: "Sibcod featured in Gala's 2026 Trends file (29 January 2026)", foot: "Prints made to order by Pictorem. © Sibcod" },
   fr: { title: "Vu dans", p: "Sibcod parue dans le Dossier Tendances 2026, Gala (29 Janvier 2026)", foot: "Tirages réalisés à la commande par Pictorem. © Sibcod" },
 };
 
-export const metadata = { title: "Seen in – SIBCOD" };
+export async function generateMetadata({ searchParams }) {
+  const fr = (await searchParams).lang === "fr";
+  return {
+    title: fr ? "Vu dans – SIBCOD" : "Seen in – SIBCOD",
+    description: fr
+      ? "Sibcod parue dans le Dossier Tendances 2026 du magazine Gala (29 janvier 2026)."
+      : "Sibcod featured in the Trends 2026 file of Gala magazine (29 January 2026).",
+    alternates: alternates("/vu-dans", fr ? "fr" : "en"),
+  };
+}
 
 export default async function VuDans({ searchParams }) {
   const sp = await searchParams;

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { lire } from "../../../lib/supabase";
 import Entete from "../../Entete";
 import ScaleView from "./ScaleView";
+import { alternates } from "../../../lib/seo";
 
 const T = {
   en: {
@@ -39,7 +40,18 @@ export async function generateMetadata({ params, searchParams }) {
   const { id } = await params; const sp = await searchParams;
   const o = await charger(id);
   if (!o) return {};
-  return { title: `${sp.lang === "fr" ? o.titre_fr : o.titre_en} – SIBCOD` };
+  const fr = sp.lang === "fr";
+  const titre = fr ? o.titre_fr : o.titre_en;
+  const cm = Math.round((o.taille_max_pictorem_po || 0) * 2.54);
+  const description = fr
+    ? `« ${titre} », œuvre originale de Sibcod inspirée de la Martinique. Imprimée à la commande sur toile, métal, acrylique, bois ou papier, jusqu'à ${cm} cm.`
+    : `“${titre}”, an original artwork by Sibcod inspired by Martinique. Printed to order on canvas, metal, acrylic, wood or paper, up to ${o.taille_max_pictorem_po} in (${cm} cm).`;
+  return {
+    title: `${titre} – SIBCOD`,
+    description,
+    alternates: alternates(`/oeuvre/${id}`, fr ? "fr" : "en"),
+    openGraph: { title: `${titre} – SIBCOD`, description, images: o.url_vignette ? [o.url_vignette] : undefined },
+  };
 }
 
 export default async function Oeuvre({ params, searchParams }) {

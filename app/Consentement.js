@@ -28,10 +28,20 @@ function chargerAnalytics() {
     else if (h.endsWith("instagram.com")) canal = "instagram";
     else if (h.endsWith("facebook.com")) canal = "facebook";
     if (!canal) return;
+    // Emplacement du lien et œuvre visée (identifiant Pictorem lu dans l'adresse)
+    let emplacement = "autre";
+    if (a.classList.contains("buybig")) emplacement = "fiche";
+    else if (a.classList.contains("buy")) emplacement = "galerie";
+    else if (a.closest(".pictorem")) emplacement = "bandeau";
+    else if (a.closest(".top")) emplacement = "menu";
+    else if (a.closest(".foot")) emplacement = "pied";
+    const idPictorem = (a.pathname.match(/^\/(\d+)\//) || [])[1] || "";
     window.gtag("event", canal === "pictorem" ? "pictorem_click" : "contact_click", {
       canal,
       link_url: a.href,
       page_path: window.location.pathname,
+      emplacement,
+      oeuvre_pictorem: idPictorem,
     });
   });
 }
@@ -48,7 +58,9 @@ export default function Consentement() {
   const [fr, setFr] = useState(false);
 
   useEffect(() => {
-    setFr(new URLSearchParams(window.location.search).get("lang") === "fr");
+    const estFr = new URLSearchParams(window.location.search).get("lang") === "fr";
+    setFr(estFr);
+    document.documentElement.lang = estFr ? "fr" : "en";
     const choix = lire();
     if (choix === "oui") chargerAnalytics();
     else if (choix !== "non") setVisible(true);

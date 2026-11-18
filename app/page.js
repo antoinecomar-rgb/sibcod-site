@@ -5,6 +5,7 @@ import Galerie from "./Galerie";
 import Entete from "./Entete";
 import Pictorem from "./Pictorem";
 import COUL from "../data/couleurs.json";
+import { alternates } from "../lib/seo";
 
 const TXT = {
   en: {
@@ -44,6 +45,16 @@ const FILTRES = [
   { cle: "28", min: 28 },
   { cle: "grand", min: 29 },
 ];
+
+export async function generateMetadata({ searchParams }) {
+  const sp = await searchParams;
+  const fr = sp.lang === "fr";
+  const titre = fr ? "SIBCOD – Affiches d'art de Martinique" : "SIBCOD – Art prints from Martinique";
+  const description = fr
+    ? "Œuvres originales de Sibcod, inspirées de la Martinique, imprimées à la commande sur toile, métal, acrylique, bois ou papier."
+    : "Original artworks by Sibcod, inspired by Martinique, printed to order on canvas, metal, acrylic, wood or paper.";
+  return { title: titre, description, alternates: alternates("/", fr ? "fr" : "en"), openGraph: { title: titre, description, locale: fr ? "fr_FR" : "en_US", images: ["/hero/hero-1.jpg"] } };
+}
 
 export default async function Accueil({ searchParams }) {
   const sp = await searchParams;

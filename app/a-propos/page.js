@@ -1,5 +1,6 @@
 import Pied from "../Pied";
 import Entete from "../Entete";
+import { alternates } from "../../lib/seo";
 
 const T = {
   en: {
@@ -24,7 +25,16 @@ const T = {
   },
 };
 
-export const metadata = { title: "About – SIBCOD" };
+export async function generateMetadata({ searchParams }) {
+  const fr = (await searchParams).lang === "fr";
+  return {
+    title: fr ? "À propos – SIBCOD" : "About – SIBCOD",
+    description: fr
+      ? "Sibcod, la signature d'une architecte d'intérieur basée en Martinique : décoration murale et créations nourries par la couleur et la composition."
+      : "Sibcod, the signature of an interior architect based in Martinique: wall art and creations shaped by colour and composition.",
+    alternates: alternates("/a-propos", fr ? "fr" : "en"),
+  };
+}
 
 export default async function APropos({ searchParams }) {
   const sp = await searchParams;

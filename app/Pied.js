@@ -1,6 +1,6 @@
 const C = {
-  en: { t: "Custom project? Get in touch.", foot: "Prints made to order by Pictorem. © Sibcod" },
-  fr: { t: "Un projet sur mesure ? Contactez-nous.", foot: "Tirages réalisés à la commande par Pictorem. © Sibcod" },
+  en: { liv: "Shipping & prices", t: "Custom project? Get in touch.", foot: "Prints made to order by Pictorem. © Sibcod" },
+  fr: { liv: "Livraison et prix", t: "Un projet sur mesure ? Contactez-nous.", foot: "Tirages réalisés à la commande par Pictorem. © Sibcod" },
 };
 
 export default function Pied({ lang }) {
@@ -17,6 +17,7 @@ export default function Pied({ lang }) {
           <a href="mailto:sibcodesigns@gmail.com">E-mail</a>
         </nav>
       </div>
+      <div><a href={lang === "fr" ? "/livraison?lang=fr" : "/livraison"}>{c.liv}</a></div>
       <div>{c.foot}</div>
     </footer>
   );
