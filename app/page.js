@@ -88,6 +88,9 @@ const T = {
   },
 };
 
+// cadrage de chaque image du défilé en plein écran (position verticale du centre)
+const HERO = ["50% 45%", "50% 42%", "50% 45%", "50% 52%", "50% 45%", "50% 55%", "50% 45%"];
+
 export async function generateMetadata({ searchParams }) {
   const fr = (await searchParams).lang === "fr";
   const titre = fr ? "SIBCOD – Art mural, affiches et toiles d'art" : "SIBCOD – Wall art, art prints and canvases";
@@ -111,18 +114,19 @@ export default async function Accueil({ searchParams }) {
 
   return (
     <>
-      <div className="wrap"><Entete lang={lang} hrefLang={(l) => (l === "fr" ? "/?lang=fr" : "/")} /></div>
       <section className="n-hero">
-        <div className="n-hero-texte">
+        <div className="n-hero-img" aria-hidden="true">
+          {HERO.map((pos, i) => <img key={i} src={`/ambiance/hero-${i + 1}.jpg`} alt="" style={{ objectPosition: pos }} />)}
+        </div>
+        <div className="n-hero-voile" />
+        <div className="wrap n-hero-tete"><Entete lang={lang} clair hrefLang={(l) => (l === "fr" ? "/?lang=fr" : "/")} /></div>
+        <div className="wrap n-hero-texte">
           <h1>{t.h1[0]}<br />{t.h1[1]}</h1>
           <p>{t.sub}</p>
           <div className="n-btns">
-            <a className="n-btn" href={`/collection${Q}`}>{t.cta1}</a>
-            <a className="n-btn2" href={`/composer${Q}`}>{t.cta2}</a>
+            <a className="n-btn clair" href={`/collection${Q}`}>{t.cta1}</a>
+            <a className="n-btn2 clair" href={`/composer${Q}`}>{t.cta2}</a>
           </div>
-        </div>
-        <div className="n-hero-img" aria-hidden="true">
-          {[1, 2, 3, 4, 5, 6, 7].map((n) => <img key={n} src={`/ambiance/hero-${n}.jpg`} alt="" />)}
         </div>
       </section>
 
@@ -145,7 +149,7 @@ export default async function Accueil({ searchParams }) {
         <div className="wrap n-section">
           <div className="n-entete"><p className="n-k">{t.chK}</p><h2>{t.chT}</h2><p className="n-lead">{t.chS}</p></div>
           <div className="n-portes">
-            <a className="n-porte" href={`/collection${Q}`}>
+            <a className="n-porte" href={`/collection?mode=couleur${lang === "fr" ? "&lang=fr" : ""}`}>
               <span className="n-k">{t.portes[0][0]}</span><strong>{t.portes[0][1]}</strong>
               <span className="n-pastilles">{PALETTES.map((p) => <i key={p.id} style={{ background: p.c }} />)}</span>
               <span className="n-txt">{t.portes[0][2]}</span>
