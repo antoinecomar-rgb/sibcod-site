@@ -1,10 +1,11 @@
 const C = {
-  en: { liv: "Shipping & prices", t: "Custom project? Get in touch.", foot: "Prints made to order by Pictorem. © Sibcod" },
-  fr: { liv: "Livraison et prix", t: "Un projet sur mesure ? Contactez-nous.", foot: "Tirages réalisés à la commande par Pictorem. © Sibcod" },
+  en: { liv: "Shipping & prices", vu: "Seen in", t: "A custom project? Get in touch.", foot: "Prints made to order by Pictorem. © Sibcod" },
+  fr: { liv: "Livraison et prix", vu: "Vu dans", t: "Un projet sur mesure ? Contactez-nous.", foot: "Tirages réalisés à la commande par Pictorem. © Sibcod" },
 };
 
 export default function Pied({ lang }) {
   const c = C[lang];
+  const q = lang === "fr" ? "?lang=fr" : "";
   const ext = { target: "_blank", rel: "noopener noreferrer" };
   return (
     <footer className="foot">
@@ -17,7 +18,7 @@ export default function Pied({ lang }) {
           <a href="mailto:sibcodesigns@gmail.com">E-mail</a>
         </nav>
       </div>
-      <div><a href={lang === "fr" ? "/livraison?lang=fr" : "/livraison"}>{c.liv}</a></div>
+      <div><a href={`/livraison${q}`}>{c.liv}</a> · <a href={`/vu-dans${q}`}>{c.vu}</a></div>
       <div>{c.foot}</div>
     </footer>
   );

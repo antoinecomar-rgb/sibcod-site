@@ -1,154 +1,233 @@
 import Pied from "./Pied";
-import Link from "next/link";
-import { lire } from "../lib/supabase";
-import GalerieComposee from "./GalerieComposee";
 import Entete from "./Entete";
-import Pictorem from "./Pictorem";
-import BandeauGala from "./BandeauGala";
-import COUL from "../data/couleurs.json";
+import Nuancier from "./Nuancier";
+import { catalogue } from "../lib/catalogue";
+import { PALETTES, THEMES, TOUT, q } from "../lib/libelles";
 import { alternates } from "../lib/seo";
 
-const TXT = {
+const T = {
   en: {
-    kicker: "Original art prints · Martinique",
-    hero: "The colours of Martinique, made for your walls.",
-    cta: "Explore the collection",
-    coll: "The collection",
-    collSub: (n) => `${n} works, printed to order`,
-    title: "Visual creations born of an architect's eye, nourished by Martinique.",
-    intro: [
-      "Sibcod is a brand of visual creations, born of an architect's eye nourished by Martinique. Wall art, textiles and accessories: each piece extends this sensitive memory into forms made to live with at home.",
-      "After years of free creation and projects made to order for professionals and individuals, Sibcod now opens part of its universe to online ordering.",
-      "Each work is printed to order on canvas, metal, acrylic, wood or paper. Custom work is available on request.",
+    h1: ["A presence", "on your walls."],
+    sub: "Artworks made to inhabit a space: room to breathe, a harmony of colours, somewhere else. To contemplate when you choose to, to live with every day.",
+    cta1: "Discover the collection", cta2: "Compose a wall",
+    apK: "What an artwork brings to a room",
+    apT: "You only look at it intently if you decide to. The rest of the time, it is simply there: it inhabits the space.",
+    apports: [
+      ["Room to breathe", "Open a wall like a window, let the eye travel far.", "d99", "A seascape in the half-light near a window"],
+      ["A harmony", "Bring together the colours of a room, from fabric to wall.", "d90", "Four soft blue artworks on a pink wall"],
+      ["A presence", "Fill the emptiness of a space, or give it its identity.", "d66", "Three large artworks at the foot of a staircase"],
+      ["A journey", "Travel elsewhere without leaving the room.", "d33", "A seascape on a terracotta wall"],
+      ["A pause", "Refocus the mind, or on the contrary, lighten it.", "d56", "A leafy artwork in the light, through palm fronds"],
     ],
-    filters: ["All", "16 in and up", "20 in and up", "28 in and up", "Grand formats"],
-    works: (n) => `${n} works`,
-    upTo: (po) => `Up to ${po} in`,
-    buy: "Buy",
-    soon: "Coming soon",
-    foot: "Prints made to order by Pictorem. © Sibcod",
+    chK: "How to choose", chT: "Start from what matters to you",
+    chS: "A colour to match, an atmosphere to create, a wall to dress, a material: browse the collection in every direction.",
+    portes: [
+      ["By colour", "Match it to your room", "From a sofa, a rug, a painting: each palette gathers artworks that go together."],
+      ["By theme", "Choose an atmosphere", "A horizon to breathe, a jungle to escape, a botanical plate for softness."],
+      ["By format and wall", "Start from the space", "A large wall, a narrow hallway, a headboard: every space has its formats."],
+      ["By size and material", "Choose the support", "From a 30 cm frame to very large formats, on fine art paper, canvas, metal, wood or acrylic."],
+    ],
+    formats: ["Portrait", "Landscape", "Panorama", "Trio", "Column"],
+    supports: ["Fine art paper", "Canvas", "Metal", "Wood", "Acrylic"],
+    colK: "Collection", colT: "A collection designed like a colour chart",
+    colS: "Colours echo from one artwork to the next: every artwork in a palette goes with the others. Start from the colour of your room.",
+    tout: "All", voir: (n) => `See all ${n} artworks`,
+    taK: "Sizes and supports", taT: "The same artwork, from a small frame to a whole wall",
+    taS: "Each artwork comes in several sizes, on the support that suits the room: fine art paper to frame, stretched canvas ready to hang, metal or wood for more presence.",
+    taN: [["Small", "up to 30 cm"], ["Medium", "up to 40 cm"], ["Large", "up to 50 cm"], ["Very large", "70 cm and more"]],
+    muK: "Compose a wall", muT: "See them at home before you choose",
+    muS: "Your wall colour, a layout, a palette, a size: the artworks fall into place, at real scale.",
+    muB: "Compose my wall",
+    prK: "Custom projects", prT: "Give a place its identity",
+    prS: "Hotel, holiday rental, restaurant, offices, property development: a series of artworks matched to your walls, up to very large formats, chosen with an interior architect's eye.",
+    prB: "Talk about your project", prC: "A gift, a single artwork?", prL: "The collection",
+    sbK: "Sibcod", sbT: "An interior architect's eye on wall art",
+    sbS: "Sibcod was born from a profession: composing spaces, matching colours, revealing a wall. Each artwork is designed for the place it will take: the light of a room, the breathing space around a frame, the dialogue with its neighbours.",
+    sbM: "Its source: the light, the sea and the vegetation of Martinique.", sbL: "Discover Sibcod",
+    steps: [["Choose the artwork", "By colour, by theme, or by composing your wall."], ["Size and support", "From a small frame to very large formats, on paper, canvas, metal, wood or acrylic."], ["Printed for you", "Made to order by our partner workshop Pictorem, then delivered."]],
   },
   fr: {
-    kicker: "Affiches d'art originales · Martinique",
-    hero: "Les couleurs de la Martinique, pour vos murs.",
-    cta: "Découvrir la collection",
-    coll: "La collection",
-    collSub: (n) => `${n} œuvres, imprimées à la commande`,
-    title: "Des créations visuelles nées d'un regard d'architecte, nourri par la Martinique.",
-    intro: [
-      "Sibcod est une marque de créations visuelles, née d'un regard d'architecte nourri par la Martinique. Décoration murale, produits textiles et accessoires : chaque pièce prolonge cette mémoire sensible dans des formes à intégrer chez soi.",
-      "Après des années de création libre et de projets réalisés à la demande pour des professionnels et des particuliers, Sibcod ouvre aujourd'hui une partie de son univers à la commande en ligne.",
-      "Chaque œuvre est imprimée à la commande sur toile, métal, acrylique, bois ou papier. Des créations sur mesure sont possibles sur demande.",
+    h1: ["Une présence", "sur vos murs."],
+    sub: "Des œuvres pour habiter l'espace : une respiration, une harmonie de couleurs, un ailleurs. À contempler si on le choisit, à vivre avec tous les jours.",
+    cta1: "Découvrir la collection", cta2: "Composer un mur",
+    apK: "Ce qu'une œuvre apporte à une pièce",
+    apT: "On ne la regarde avec insistance que si on le décide. Le reste du temps, elle est là : elle habite l'espace.",
+    apports: [
+      ["Une respiration", "Ouvrir un mur comme une fenêtre, laisser le regard partir au loin.", "d99", "Œuvre marine dans la pénombre près d'une fenêtre"],
+      ["Une harmonie", "Accorder les couleurs d'une pièce, du tissu au mur.", "d90", "Quatre œuvres aux bleus doux sur un mur rose"],
+      ["Une présence", "Combler le vide d'un espace, ou lui donner son identité.", "d66", "Trois grands formats au pied d'un escalier"],
+      ["Un voyage", "Partir ailleurs, sans quitter la pièce.", "d33", "Œuvre marine sur un mur terracotta"],
+      ["Une pause", "Recentrer l'attention, ou au contraire alléger l'esprit.", "d56", "Œuvre végétale dans la lumière, à travers des palmes"],
     ],
-    filters: ["Toutes", "40 cm et +", "50 cm et +", "70 cm et +", "Grands formats"],
-    works: (n) => `${n} œuvres`,
-    upTo: (po) => `Jusqu'à ${Math.round(po * 2.54)} cm`,
-    buy: "Acheter",
-    soon: "Bientôt disponible",
-    foot: "Tirages réalisés à la commande par Pictorem. © Sibcod",
+    chK: "Comment choisir", chT: "Partez de ce qui compte pour vous",
+    chS: "Une couleur à accorder, une atmosphère à créer, un mur à habiller, une matière : la collection se parcourt dans tous les sens.",
+    portes: [
+      ["Par couleur", "Accordez-la à votre pièce", "D'un canapé, d'un tapis, d'une peinture : chaque palette réunit des œuvres qui s'accordent."],
+      ["Par thème", "Choisissez une atmosphère", "Un horizon pour respirer, une jungle pour s'évader, une planche botanique pour la douceur."],
+      ["Par format et par mur", "Partez de l'espace à habiller", "Un grand mur, un couloir étroit, une tête de lit : chaque espace a ses formats."],
+      ["Par taille et support", "Choisissez la matière", "Du petit cadre de 30 cm au très grand format, sur papier d'art, toile, métal, bois ou acrylique."],
+    ],
+    formats: ["Portrait", "Paysage", "Panorama", "Trio", "Colonne"],
+    supports: ["Papier d'art", "Toile tendue", "Métal", "Bois", "Acrylique"],
+    colK: "Collection", colT: "Une collection pensée comme un nuancier",
+    colS: "Les teintes reviennent d'une œuvre à l'autre : toutes celles d'une même palette s'accordent entre elles. Partez de la couleur de votre pièce.",
+    tout: "Toutes", voir: (n) => `Voir les ${n} œuvres`,
+    taK: "Tailles et supports", taT: "La même œuvre, du petit cadre au mur entier",
+    taS: "Chaque œuvre existe en plusieurs tailles, et sur le support qui convient à la pièce : papier d'art à encadrer, toile tendue prête à accrocher, métal ou bois pour plus de présence.",
+    taN: [["Petit", "jusqu'à 30 cm"], ["Moyen", "jusqu'à 40 cm"], ["Grand", "jusqu'à 50 cm"], ["Très grand", "70 cm et plus"]],
+    muK: "Composer un mur", muT: "Voyez-les chez vous avant de choisir",
+    muS: "La couleur de votre mur, une composition, une palette, une taille : les œuvres s'accordent d'elles-mêmes, à l'échelle réelle.",
+    muB: "Composer mon mur",
+    prK: "Projets sur mesure", prT: "Donner une identité à un lieu",
+    prS: "Hôtel, location saisonnière, restaurant, bureaux, programme immobilier : une série d'œuvres accordées à vos murs, jusqu'au très grand format, choisie avec un œil d'architecte d'intérieur.",
+    prB: "Parler de votre projet", prC: "Un cadeau, une seule œuvre ?", prL: "La collection",
+    sbK: "Sibcod", sbT: "Un regard d'architecte d'intérieur, posé sur l'art mural",
+    sbS: "Sibcod est né d'un métier : composer des espaces, accorder des couleurs, révéler un mur. Chaque œuvre est pensée pour la place qu'elle prendra : la lumière d'une pièce, la respiration autour d'un cadre, le dialogue avec ses voisines.",
+    sbM: "La lumière, la mer et la végétation de la Martinique en sont la source.", sbL: "Découvrir Sibcod",
+    steps: [["Choisissez l'œuvre", "Par couleur, par thème, ou en composant votre mur."], ["Taille et support", "Du petit cadre au très grand format, sur papier, toile, métal, bois ou acrylique."], ["Imprimée pour vous", "À la demande, par notre atelier partenaire Pictorem, puis livrée."]],
   },
 };
-// clé de filtre -> taille minimale (pouces)
-const FILTRES = [
-  { cle: "tous", min: 0 },
-  { cle: "16", min: 16 },
-  { cle: "20", min: 20 },
-  { cle: "28", min: 28 },
-  { cle: "grand", min: 29 },
-];
 
 export async function generateMetadata({ searchParams }) {
-  const sp = await searchParams;
-  const fr = sp.lang === "fr";
-  const titre = fr ? "SIBCOD – Affiches d'art de Martinique" : "SIBCOD – Art prints from Martinique";
+  const fr = (await searchParams).lang === "fr";
+  const titre = fr ? "SIBCOD – Art mural, affiches et toiles d'art" : "SIBCOD – Wall art, art prints and canvases";
   const description = fr
-    ? "Œuvres originales de Sibcod, inspirées de la Martinique, imprimées à la commande sur toile, métal, acrylique, bois ou papier."
-    : "Original artworks by Sibcod, inspired by Martinique, printed to order on canvas, metal, acrylic, wood or paper.";
-  return { title: titre, description, alternates: alternates("/", fr ? "fr" : "en"), openGraph: { title: titre, description, locale: fr ? "fr_FR" : "en_US", images: ["/hero/hero-1.jpg"] } };
+    ? "Des œuvres pensées comme un nuancier, à accorder par couleur, par thème et par format. Imprimées à la commande sur papier d'art, toile, métal, bois ou acrylique."
+    : "Artworks designed like a colour chart, to match by colour, theme and format. Printed to order on fine art paper, canvas, metal, wood or acrylic.";
+  return { title: titre, description, alternates: alternates("/", fr ? "fr" : "en"), openGraph: { title: titre, description, locale: fr ? "fr_FR" : "en_US", images: ["/ambiance/hero-1.jpg"] } };
 }
 
 export default async function Accueil({ searchParams }) {
   const sp = await searchParams;
   const lang = sp.lang === "fr" ? "fr" : "en";
-  const t = TXT[lang];
-  const filtre = FILTRES.find((f) => f.cle === sp.taille) || FILTRES[0];
-  const href = (taille, l = lang) => {
-    const q = new URLSearchParams();
-    if (l === "fr") q.set("lang", "fr");
-    if (taille !== "tous") q.set("taille", taille);
-    const s = q.toString();
-    return s ? `/?${s}` : "/";
-  };
-
-  const detail = (id) => `/oeuvre/${id}${lang === "fr" ? "?lang=fr" : ""}`;
-  const oeuvres = await lire(
-    "fichiers_maitres",
-    "select=id,titre_fr,titre_en,proportion,taille_max_pictorem_po,pictorem_url,url_vignette" +
-      "&statut=eq.Fichier%20ma%C3%AEtre&order=titre_en"
-  );
-  const visibles = oeuvres.filter((o) => (o.taille_max_pictorem_po || 0) >= filtre.min);
-
-  // ratio réel de l'image (largeur/hauteur), mesuré sur la vignette ; repli sur la proportion déclarée
-  const ratio = (o) => {
-    if (COUL[o.id]) return COUL[o.id].r;
-    const m = String(o.proportion || "").match(/(\d+(?:\.\d+)?):(\d+(?:\.\d+)?)/);
-    return m ? Number(m[1]) / Number(m[2]) : 1;
-  };
-  const items = {};
-  visibles.forEach((o) => {
-    items[o.id] = {
-      id: o.id,
-      titre: lang === "fr" ? o.titre_fr : o.titre_en,
-      href: detail(o.id),
-      src: o.url_vignette,
-      ratio: ratio(o),
-      dispo: !!o.pictorem_url,
-      buyUrl: o.pictorem_url,
-    };
-  });
+  const t = T[lang];
+  const Q = q(lang);
+  const { oeuvres } = await catalogue(lang);
+  const classees = oeuvres.filter((o) => o.palette.length);
+  const vign = Object.fromEntries(oeuvres.flatMap((o) => o.variantes.map((v) => [v.id, v.img])));
+  // ordre stable mais mélangé : alterne les thèmes pour l'aperçu
+  const melange = [...classees].sort((a, b) => (a.id.charCodeAt(3) % 7) - (b.id.charCodeAt(3) % 7) || a.id.localeCompare(b.id));
+  const mini = melange.map((o) => ({ id: o.id, titre: o.titre, img: o.img, palette: o.palette, href: `/oeuvre/${o.id}${Q}` }));
 
   return (
     <>
-      <div className="wrap headwrap">
-        <Entete lang={lang} actif="oeuvres" hrefLang={(l) => href(filtre.cle, l)} />
-      </div>
-
-      <section className="hero2 wrap">
-        <div className="hero2-text">
-          <p className="kicker">{t.kicker}</p>
-          <h1>{t.hero}</h1>
-          <p className="lead">{t.intro[0]}</p>
-          <a className="btn" href="#oeuvres">{t.cta}</a>
+      <div className="wrap"><Entete lang={lang} hrefLang={(l) => (l === "fr" ? "/?lang=fr" : "/")} /></div>
+      <section className="n-hero">
+        <div className="n-hero-texte">
+          <h1>{t.h1[0]}<br />{t.h1[1]}</h1>
+          <p>{t.sub}</p>
+          <div className="n-btns">
+            <a className="n-btn" href={`/collection${Q}`}>{t.cta1}</a>
+            <a className="n-btn2" href={`/composer${Q}`}>{t.cta2}</a>
+          </div>
         </div>
-        <img className="hero2-img" src="/hero/hero-7.jpg" alt={lang === "fr" ? "Une œuvre Sibcod près d'une fenêtre" : "A Sibcod artwork by a window"} />
+        <div className="n-hero-img" aria-hidden="true">
+          {[1, 2, 3, 4, 5, 6, 7].map((n) => <img key={n} src={`/ambiance/hero-${n}.jpg`} alt="" />)}
+        </div>
       </section>
 
-      <BandeauGala lang={lang} />
-
-      <div className="wrap">
-        <div className="coll-head" id="oeuvres">
-          <div>
-            <h2>{t.coll}</h2>
-            <p>{t.collSub(visibles.length)}</p>
-          </div>
-          <nav className="filters">
-            {FILTRES.map((f, i) => (
-              <Link key={f.cle} href={href(f.cle) + "#oeuvres"} className={f.cle === filtre.cle ? "on" : ""}>
-                {lang === "en" && f.cle !== "tous" && f.cle !== "grand" ? `${f.min} in and up` : t.filters[i]}
-              </Link>
-            ))}
-          </nav>
+      <section className="wrap n-apports">
+        <div className="n-centre">
+          <p className="n-k">{t.apK}</p>
+          <p className="n-citation">{t.apT}</p>
         </div>
-      </div>
+        <div className="n-apports-grille">
+          {t.apports.map(([ti, tx, im, alt], i) => (
+            <figure key={ti} style={{ marginTop: i % 2 ? 56 : 0 }}>
+              <img src={`/ambiance/${im}.jpg`} alt={alt} loading="lazy" />
+              <figcaption><strong>{ti}</strong><span>{tx}</span></figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
 
-      <div className="gal-wrap">
-        <GalerieComposee items={items} lang={lang} sequences={filtre.cle === "tous"} soon={t.soon} buy={t.buy} />
-      </div>
+      <section className="n-fond">
+        <div className="wrap n-section">
+          <div className="n-entete"><p className="n-k">{t.chK}</p><h2>{t.chT}</h2><p className="n-lead">{t.chS}</p></div>
+          <div className="n-portes">
+            <a className="n-porte" href={`/collection${Q}`}>
+              <span className="n-k">{t.portes[0][0]}</span><strong>{t.portes[0][1]}</strong>
+              <span className="n-pastilles">{PALETTES.map((p) => <i key={p.id} style={{ background: p.c }} />)}</span>
+              <span className="n-txt">{t.portes[0][2]}</span>
+            </a>
+            <a className="n-porte" href={`/collection?mode=theme${lang === "fr" ? "&lang=fr" : ""}`}>
+              <span className="n-k">{t.portes[1][0]}</span><strong>{t.portes[1][1]}</strong>
+              <span className="n-tags">{THEMES.map((x) => <i key={x.id}>{x[lang]}</i>)}</span>
+              <span className="n-txt">{t.portes[1][2]}</span>
+            </a>
+            <a className="n-porte" href={`/composer${Q}`}>
+              <span className="n-k">{t.portes[2][0]}</span><strong>{t.portes[2][1]}</strong>
+              <span className="n-formes">
+                <span><b style={{ width: 22, height: 30 }} /></span><span><b style={{ width: 36, height: 26 }} /></span><span><b style={{ width: 48, height: 18 }} /></span>
+                <span><b style={{ width: 13, height: 20 }} /><b style={{ width: 13, height: 20 }} /><b style={{ width: 13, height: 20 }} /></span>
+                <span className="col"><b style={{ width: 18, height: 12 }} /><b style={{ width: 18, height: 12 }} /><b style={{ width: 18, height: 12 }} /></span>
+              </span>
+              <span className="n-formes-l">{t.formats.map((f) => <i key={f}>{f}</i>)}</span>
+              <span className="n-txt">{t.portes[2][2]}</span>
+            </a>
+            <a className="n-porte" href="#tailles">
+              <span className="n-k">{t.portes[3][0]}</span><strong>{t.portes[3][1]}</strong>
+              <span className="n-tags">{t.supports.map((x) => <i key={x}>{x}</i>)}</span>
+              <span className="n-txt">{t.portes[3][2]}</span>
+            </a>
+          </div>
+        </div>
+      </section>
 
-      <div className="wrap">
-        <Pictorem lang={lang} />
-        <Pied lang={lang} />
-      </div>
+      <section className="wrap n-section">
+        <div className="n-entete large">
+          <div><p className="n-k">{t.colK}</p><h2>{t.colT}</h2><p className="n-lead">{t.colS}</p></div>
+        </div>
+        <Nuancier
+          palettes={PALETTES.map(({ id, c, fr, en, img, ech, tfr, ten }) => ({ id, c, fr, en, img, ech, tfr, ten }))}
+          oeuvres={mini} lang={lang} tout={t.tout} toutImg={TOUT.img} toutEch={TOUT.ech}
+          voirTout={{ href: `/collection${Q}`, txt: t.voir(oeuvres.length) }}
+        />
+      </section>
+
+      <section id="tailles" className="wrap n-section n-tailles">
+        <div><p className="n-k">{t.taK}</p><h2>{t.taT}</h2><p className="n-lead">{t.taS}</p></div>
+        <div className="n-echelle">
+          {t.taN.map(([n, d], i) => (
+            <figure key={n}>
+              <img src={vign.F302} alt="" style={{ height: [120, 160, 200, 280][i] }} />
+              <figcaption><strong>{n}</strong><span>{d}</span></figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <section className="n-mur-apercu">
+        <div className="wrap n-mur-apercu-in">
+          <div className="n-mur-texte"><p className="n-k">{t.muK}</p><h2>{t.muT}</h2><p className="n-lead">{t.muS}</p><a className="n-btn" href={`/composer${Q}`}>{t.muB}</a></div>
+          <div className="n-mur-scene" aria-hidden="true">
+            <div className="n-mur-oeuvres">
+              {["F298", "F299", "F302"].map((i) => <img key={i} src={vign[i]} alt="" />)}
+            </div>
+            <div className="n-canape"><i /><b /><span /></div>
+          </div>
+        </div>
+      </section>
+
+      <section className="n-projets">
+        <img src="/ambiance/d71.jpg" alt={lang === "fr" ? "Une personne face à une œuvre de branchages couvrant tout un mur" : "A person facing a branch artwork covering an entire wall"} />
+        <div className="n-projets-carte">
+          <p className="n-k">{t.prK}</p><h2>{t.prT}</h2><p>{t.prS}</p>
+          <a className="n-btn" href={`/projets${Q}`}>{t.prB}</a>
+          <span className="n-petit">{t.prC} <a href={`/collection${Q}`}>{t.prL}</a></span>
+        </div>
+      </section>
+
+      <section className="wrap n-section n-sibcod">
+        <img src="/ambiance/d88.jpg" alt={lang === "fr" ? "Chevalet en bois dans la lumière et l'ombre des feuilles" : "A wooden easel in the light and shadow of leaves"} />
+        <div><p className="n-k">{t.sbK}</p><h2>{t.sbT}</h2><p className="n-lead">{t.sbS}</p><p className="n-petit">{t.sbM}</p><a className="n-lien" href={`/sibcod${Q}`}>{t.sbL} →</a></div>
+      </section>
+
+      <section className="wrap n-etapes">
+        {t.steps.map(([a, b]) => <div key={a}><strong>{a}</strong><span>{b}</span></div>)}
+      </section>
+
+      <div className="wrap"><Pied lang={lang} /></div>
     </>
   );
 }
