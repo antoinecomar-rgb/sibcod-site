@@ -478,3 +478,7 @@ h2 { font-family:var(--serif); font-weight:400; }
 .n-flot-fin { flex-grow:1000; }
 @keyframes n-apparait { from{opacity:0} to{opacity:1} }
 @media (max-width:800px){ .n-flot{gap:8px} .n-flot-o{flex-basis:auto !important; min-width:40%} .n-flot-o span{opacity:1; font-size:14px} }
+
+/* onglet « Toute la galerie » : mis en avant par un liseré aux couleurs des quatre palettes */
+.n-modes a.n-arc { margin-left:14px !important; border:2px solid transparent; background:linear-gradient(var(--bg),var(--bg)) padding-box, linear-gradient(90deg,#7FC4CF,#8FA77E,#D8CBB5,#D9735E) border-box; }
+.n-modes a.n-arc.on { color:#fff; border-color:transparent; background:linear-gradient(90deg,#3F8C9A,#5E7F5C,#B39563,#C05A45) padding-box, linear-gradient(90deg,#3F8C9A,#5E7F5C,#B39563,#C05A45) border-box; }
