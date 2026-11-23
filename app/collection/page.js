@@ -33,13 +33,13 @@ export default async function Collection({ searchParams }) {
   const sp = await searchParams;
   const lang = sp.lang === "fr" ? "fr" : "en";
   const t = T[lang];
-  const mode = sp.mode === "theme" ? "theme" : sp.mode === "couleur" ? "couleur" : "tout";
+  const mode = sp.mode === "theme" ? "theme" : sp.mode === "tout" ? "tout" : "couleur";
   const fmt = FORMATS.some((f) => f.id === sp.format) ? sp.format : "tous";
   const { oeuvres } = await catalogue(lang);
 
   const lien = (m, f) => {
     const p = new URLSearchParams();
-    if (m !== "tout") p.set("mode", m);
+    if (m !== "couleur") p.set("mode", m);
     if (f !== "tous") p.set("format", f);
     if (lang === "fr") p.set("lang", "fr");
     const s = p.toString();
@@ -59,7 +59,7 @@ export default async function Collection({ searchParams }) {
   return (
     <div className="wrap">
       <Entete lang={lang} actif="collection" hrefLang={(l) => {
-        const p = new URLSearchParams(); if (mode !== "tout") p.set("mode", mode); if (fmt !== "tous") p.set("format", fmt); if (l === "fr") p.set("lang", "fr");
+        const p = new URLSearchParams(); if (mode !== "couleur") p.set("mode", mode); if (fmt !== "tous") p.set("format", fmt); if (l === "fr") p.set("lang", "fr");
         const s = p.toString(); return `/collection${s ? "?" + s : ""}`;
       }} />
       <section className="n-col-tete">
@@ -67,9 +67,9 @@ export default async function Collection({ searchParams }) {
         <h1>{t.h1}</h1>
         <p className="n-lead">{t.s}</p>
         <div className="n-modes">
-          <a href={lien("tout", fmt)} className={mode === "tout" ? "on" : ""}>{t.tout}</a>
           <a href={lien("couleur", fmt)} className={mode === "couleur" ? "on" : ""}>{t.couleur}</a>
           <a href={lien("theme", fmt)} className={mode === "theme" ? "on" : ""}>{t.theme}</a>
+          <a href={lien("tout", fmt)} className={mode === "tout" ? "n-arc on" : "n-arc"}>{t.tout}</a>
         </div>
       </section>
 
