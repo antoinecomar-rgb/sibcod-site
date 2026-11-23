@@ -274,23 +274,29 @@ h2 { font-family:var(--serif); font-weight:400; }
 .n-fond { background:#EFEAE1; }
 
 /* hero */
-.n-hero { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:stretch; min-height:min(860px,88vh); }
-.n-hero-img { position:relative; overflow:hidden; background:var(--mat); min-height:560px; }
-.n-hero-texte { display:flex; flex-direction:column; justify-content:center; padding:48px max(32px,calc((100vw - 1280px)/2 + 32px)); padding-right:56px; }
-.n-hero-texte h1 { font-family:var(--serif); font-weight:400; font-size:clamp(44px,5.6vw,78px); line-height:1.02; margin:0 0 22px; }
-.n-hero-texte p { max-width:520px; font-size:18px; line-height:1.75; color:#444; margin:0 0 10px; }
-@media (max-width:800px){ .n-hero{grid-template-columns:1fr} .n-hero-img{order:-1; min-height:0; aspect-ratio:3/4} .n-hero-texte{padding:32px} }
+.n-hero { position:relative; height:100vh; height:100svh; min-height:560px; overflow:hidden; color:#fff; display:flex; flex-direction:column; }
+.n-hero-img { position:absolute; inset:0; background:#2a2622; }
+.n-hero-voile { position:absolute; inset:0; z-index:1; background:linear-gradient(180deg,rgba(20,18,16,.45) 0%,rgba(20,18,16,0) 22%,rgba(20,18,16,0) 40%,rgba(20,18,16,.6) 100%),linear-gradient(90deg,rgba(20,18,16,.45) 0%,rgba(20,18,16,.15) 45%,rgba(20,18,16,0) 70%); }
+.n-hero-tete { position:relative; z-index:2; width:100%; box-sizing:border-box; }
+.n-hero-texte { position:relative; z-index:2; margin-top:auto; width:100%; box-sizing:border-box; padding-bottom:clamp(40px,8vh,88px); }
+.n-hero-texte h1 { font-family:var(--serif); font-weight:400; font-size:clamp(44px,6vw,86px); line-height:1.02; margin:0 0 20px; text-shadow:0 1px 18px rgba(0,0,0,.25); }
+.n-hero-texte p { max-width:560px; font-size:18px; line-height:1.7; color:rgba(255,255,255,.92); margin:0 0 26px; }
+.n-hero .n-btns { display:flex; flex-wrap:wrap; gap:12px; }
+@media (max-width:800px){ .n-hero-texte p{font-size:16px} }
 /* défilé d'ouverture : la première image s'affiche d'emblée, chaque suivante se pose
    par-dessus, et la dernière reste à l'écran */
-.n-hero-img img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; animation:n-pose 1.4s ease forwards; }
-.n-hero-img img:nth-child(1) { opacity:1; animation:none; }
-.n-hero-img img:nth-child(2) { animation-delay:3.5s; } .n-hero-img img:nth-child(3) { animation-delay:7s; }
-.n-hero-img img:nth-child(4) { animation-delay:10.5s; } .n-hero-img img:nth-child(5) { animation-delay:14s; }
-.n-hero-img img:nth-child(6) { animation-delay:17.5s; } .n-hero-img img:nth-child(7) { animation-delay:21s; }
+/* chaque image : fond flouté plein écran + image nette en hauteur (rognée de 3:4 à 4:5 au plus) */
+.n-slide { position:absolute; inset:0; opacity:0; animation:n-pose 1.4s ease forwards; }
+.n-slide:nth-child(1) { opacity:1; animation:none; }
+.n-slide:nth-child(2) { animation-delay:3.5s; } .n-slide:nth-child(3) { animation-delay:7s; }
+.n-slide:nth-child(4) { animation-delay:10.5s; } .n-slide:nth-child(5) { animation-delay:14s; }
+.n-slide:nth-child(6) { animation-delay:17.5s; } .n-slide:nth-child(7) { animation-delay:21s; }
+.n-slide img { position:absolute; display:block; }
+.n-slide-fond { inset:-40px; width:calc(100% + 80px); height:calc(100% + 80px); object-fit:cover; filter:blur(28px) brightness(.8) saturate(1.1); }
+.n-slide-net { top:0; bottom:0; right:max(32px,calc((100vw - 1440px)/2 + 32px)); height:100%; width:min(80vh,58vw); width:min(80svh,58vw); object-fit:cover; box-shadow:0 0 60px rgba(0,0,0,.25); }
+@media (max-width:800px){ .n-slide-net{ right:0; width:100%; } .n-slide-fond{display:none} }
 @keyframes n-pose { from{opacity:0;transform:scale(1.02)} to{opacity:1;transform:scale(1)} }
-@media (prefers-reduced-motion:reduce){ .n-hero-img img{animation:none} }
-.n-hero-voile { position:absolute; inset:0; background:linear-gradient(180deg,rgba(20,18,16,.45) 0%,rgba(20,18,16,0) 28%,rgba(20,18,16,0) 48%,rgba(20,18,16,.62) 100%); }
-.n-hero-tete { position:relative; z-index:2; }
+@media (prefers-reduced-motion:reduce){ .n-slide{animation:none; opacity:1} }
 .stick.clair { position:relative; background:transparent; }
 .stick.clair .logo, .stick.clair .menu a, .stick.clair .lang a, .stick.clair .soc a { color:#fff; }
 .stick.clair .menu a.on, .stick.clair .lang a.on { border-color:#fff; }
@@ -460,3 +466,19 @@ h2 { font-family:var(--serif); font-weight:400; }
 .n-photos-oeuvre figure { margin:0; flex:1 1 300px; max-width:520px; }
 .n-photos-oeuvre img { width:100%; aspect-ratio:4/5; object-fit:cover; display:block; }
 .n-photos-oeuvre figcaption { padding-top:8px; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+
+/* collection : toute la galerie en un seul déroulé, par association de couleurs */
+.n-flot-s { margin:0; max-width:560px; }
+.n-flot { display:flex; flex-wrap:wrap; gap:14px; margin:8px 0 96px; }
+.n-flot-o { position:relative; display:block; overflow:hidden; background:var(--mat); text-decoration:none; }
+.n-flot-o img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .6s ease; animation:n-apparait .9s ease both; }
+.n-flot-o:hover img { transform:scale(1.03); }
+.n-flot-o span { position:absolute; left:0; right:0; bottom:0; padding:22px 12px 10px; font-family:var(--serif); font-size:17px; color:#fff; background:linear-gradient(0deg,rgba(20,18,16,.6),rgba(20,18,16,0)); opacity:0; transition:opacity .3s; }
+.n-flot-o:hover span, .n-flot-o:focus-visible span { opacity:1; }
+.n-flot-fin { flex-grow:1000; }
+@keyframes n-apparait { from{opacity:0} to{opacity:1} }
+@media (max-width:800px){ .n-flot{gap:8px} .n-flot-o{flex-basis:auto !important; min-width:40%} .n-flot-o span{opacity:1; font-size:14px} }
+
+/* onglet « Toute la galerie » : mis en avant par un liseré aux couleurs des quatre palettes */
+.n-modes a.n-arc { margin-left:14px !important; border:2px solid transparent; background:linear-gradient(var(--bg),var(--bg)) padding-box, linear-gradient(90deg,#7FC4CF,#8FA77E,#D8CBB5,#D9735E) border-box; }
+.n-modes a.n-arc.on { color:var(--ink); font-weight:500; background:linear-gradient(var(--bg),var(--bg)) padding-box, linear-gradient(90deg,#7FC4CF,#8FA77E,#D8CBB5,#D9735E) border-box; }
