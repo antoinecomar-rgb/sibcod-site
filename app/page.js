@@ -94,7 +94,7 @@ export async function generateMetadata({ searchParams }) {
   const description = fr
     ? "Des œuvres pensées comme un nuancier, à accorder par couleur, par thème et par format. Imprimées à la commande sur papier d'art, toile, métal, bois ou acrylique."
     : "Artworks designed like a colour chart, to match by colour, theme and format. Printed to order on fine art paper, canvas, metal, wood or acrylic.";
-  return { title: titre, description, alternates: alternates("/", fr ? "fr" : "en"), openGraph: { title: titre, description, locale: fr ? "fr_FR" : "en_US", images: ["/ambiance/d77.jpg"] } };
+  return { title: titre, description, alternates: alternates("/", fr ? "fr" : "en"), openGraph: { title: titre, description, locale: fr ? "fr_FR" : "en_US", images: ["/ambiance/hero-1.jpg"] } };
 }
 
 export default async function Accueil({ searchParams }) {
@@ -111,21 +111,18 @@ export default async function Accueil({ searchParams }) {
 
   return (
     <>
+      <div className="wrap"><Entete lang={lang} hrefLang={(l) => (l === "fr" ? "/?lang=fr" : "/")} /></div>
       <section className="n-hero">
-        <div className="n-hero-img" aria-hidden="true">
-          <img src="/ambiance/d77.jpg" alt="" />
-          <img src="/ambiance/d86.jpg" alt="" />
-          <img src="/ambiance/d05.jpg" alt="" />
-        </div>
-        <div className="n-hero-voile" />
-        <div className="wrap n-hero-tete"><Entete lang={lang} clair hrefLang={(l) => (l === "fr" ? "/?lang=fr" : "/")} /></div>
-        <div className="wrap n-hero-texte">
+        <div className="n-hero-texte">
           <h1>{t.h1[0]}<br />{t.h1[1]}</h1>
           <p>{t.sub}</p>
           <div className="n-btns">
-            <a className="n-btn clair" href={`/collection${Q}`}>{t.cta1}</a>
-            <a className="n-btn2 clair" href={`/composer${Q}`}>{t.cta2}</a>
+            <a className="n-btn" href={`/collection${Q}`}>{t.cta1}</a>
+            <a className="n-btn2" href={`/composer${Q}`}>{t.cta2}</a>
           </div>
+        </div>
+        <div className="n-hero-img" aria-hidden="true">
+          {[1, 2, 3, 4, 5, 6, 7].map((n) => <img key={n} src={`/ambiance/hero-${n}.jpg`} alt="" />)}
         </div>
       </section>
 
