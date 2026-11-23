@@ -15,7 +15,7 @@ const T = {
     buy: "Buy", soon: "Coming soon", choose: "Choose size and support",
     scaleT: "See it at scale", scaleH: "Choose a size to see the artwork next to a 2.2 m sofa.",
     accord: "Goes well with", theme: "In the same theme", compose: "Compose a wall with this palette",
-    custom: "A custom size or a project?", write: "Write to us",
+    custom: "A custom size or a project?", write: "Write to us", chez: "At home", pres: "Up close",
   },
   fr: {
     back: "← Collection", by: "Œuvre originale de Sibcod",
@@ -24,7 +24,7 @@ const T = {
     buy: "Acheter", soon: "Bientôt disponible", choose: "Choisir la taille et le support",
     scaleT: "Voir à l'échelle", scaleH: "Choisissez une taille pour voir l'œuvre à côté d'un canapé de 2,2 m.",
     accord: "S'accorde avec", theme: "Dans le même thème", compose: "Composer un mur dans cette palette",
-    custom: "Une taille sur mesure, un projet ?", write: "Nous écrire",
+    custom: "Une taille sur mesure, un projet ?", write: "Nous écrire", chez: "Chez soi", pres: "De près",
   },
 };
 
@@ -104,6 +104,14 @@ export default async function Oeuvre({ params, searchParams }) {
           <p className="n-petit">{t.custom} <a href={`/projets${Q}`}>{t.write}</a></p>
         </div>
       </div>
+
+      {(o.photos || []).length > 0 && (
+        <section className="n-photos-oeuvre">
+          {o.photos.map((ph) => (
+            <figure key={ph.src}><img src={ph.src} alt={`${o.titre} – ${ph.type === "pres" ? t.pres : t.chez}`} loading="lazy" /><figcaption>{ph.type === "pres" ? t.pres : t.chez}</figcaption></figure>
+          ))}
+        </section>
+      )}
 
       {o.img && <ScaleView src={o.img} alt={o.titre} maxIn={o.maxPo} lang={lang} title={t.scaleT} hint={t.scaleH} />}
 
