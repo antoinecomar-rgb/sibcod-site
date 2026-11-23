@@ -54,9 +54,9 @@ export default async function Sibcod({ searchParams }) {
         </div>
       </section>
       <section className="n-projets-photos">
+        <img src="/ambiance/d54.jpg" alt="" loading="lazy" />
+        <img src="/ambiance/d46.jpg" alt="" loading="lazy" />
         <img src="/ambiance/d48.jpg" alt="" loading="lazy" />
-        <img src="/ambiance/d23.jpg" alt="" loading="lazy" />
-        <img src="/ambiance/d38.jpg" alt="" loading="lazy" />
       </section>
       <Pied lang={lang} />
     </div>
