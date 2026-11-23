@@ -3,18 +3,19 @@ import Entete from "../Entete";
 import { catalogue } from "../../lib/catalogue";
 import { PALETTES, THEMES, FORMATS, nom } from "../../lib/libelles";
 import { alternates } from "../../lib/seo";
+import DEROULE from "../../data/deroule.json";
 
 const T = {
   en: {
     k: (n) => `Collection · ${n} artworks`, h1: "A collection designed like a colour chart",
     s: "Start from the colour of your room, or from the atmosphere you are looking for. Every artwork in a family goes with the others.",
-    couleur: "By colour", theme: "By theme", format: "Format", tous: "All", autres: "Other artworks",
+    tout: "All artworks", toutS: "The whole collection in one flow: each artwork leads to the next through its colours.", couleur: "By colour", theme: "By theme", format: "Format", tous: "All", autres: "Other artworks",
     autresT: "Recently added artworks, not yet placed in a family.", n: (n) => `${n} artworks`, aucun: "No artwork in this format here.",
   },
   fr: {
     k: (n) => `Collection · ${n} œuvres`, h1: "Une collection pensée comme un nuancier",
     s: "Entrez par la couleur de votre pièce, ou par l'atmosphère que vous cherchez. Toutes les œuvres d'une même famille s'accordent entre elles.",
-    couleur: "Par couleur", theme: "Par thème", format: "Format", tous: "Tous", autres: "Autres œuvres",
+    tout: "Toute la galerie", toutS: "Toute la collection d'un seul tenant : chaque œuvre mène à la suivante par ses couleurs.", couleur: "Par couleur", theme: "Par thème", format: "Format", tous: "Tous", autres: "Autres œuvres",
     autresT: "Œuvres ajoutées récemment, pas encore classées.", n: (n) => `${n} œuvres`, aucun: "Aucune œuvre dans ce format ici.",
   },
 };
@@ -32,13 +33,13 @@ export default async function Collection({ searchParams }) {
   const sp = await searchParams;
   const lang = sp.lang === "fr" ? "fr" : "en";
   const t = T[lang];
-  const mode = sp.mode === "theme" ? "theme" : "couleur";
+  const mode = sp.mode === "theme" ? "theme" : sp.mode === "couleur" ? "couleur" : "tout";
   const fmt = FORMATS.some((f) => f.id === sp.format) ? sp.format : "tous";
   const { oeuvres } = await catalogue(lang);
 
   const lien = (m, f) => {
     const p = new URLSearchParams();
-    if (m === "theme") p.set("mode", "theme");
+    if (m !== "tout") p.set("mode", m);
     if (f !== "tous") p.set("format", f);
     if (lang === "fr") p.set("lang", "fr");
     const s = p.toString();
@@ -50,13 +51,15 @@ export default async function Collection({ searchParams }) {
     dot: mode === "couleur" ? f.c : null,
     liste: filtre(oeuvres.filter((o) => (mode === "couleur" ? o.palette[0] === f.id : o.theme === f.id))),
   }));
+  const rang = Object.fromEntries(DEROULE.map((id, i) => [id, i]));
+  const flot = filtre([...oeuvres].sort((a, b) => (rang[a.id] ?? 1e4) - (rang[b.id] ?? 1e4)));
   const autres = filtre(oeuvres.filter((o) => !o.palette.length));
   const Q = lang === "fr" ? "?lang=fr" : "";
 
   return (
     <div className="wrap">
       <Entete lang={lang} actif="collection" hrefLang={(l) => {
-        const p = new URLSearchParams(); if (mode === "theme") p.set("mode", "theme"); if (fmt !== "tous") p.set("format", fmt); if (l === "fr") p.set("lang", "fr");
+        const p = new URLSearchParams(); if (mode !== "tout") p.set("mode", mode); if (fmt !== "tous") p.set("format", fmt); if (l === "fr") p.set("lang", "fr");
         const s = p.toString(); return `/collection${s ? "?" + s : ""}`;
       }} />
       <section className="n-col-tete">
@@ -64,17 +67,18 @@ export default async function Collection({ searchParams }) {
         <h1>{t.h1}</h1>
         <p className="n-lead">{t.s}</p>
         <div className="n-modes">
+          <a href={lien("tout", fmt)} className={mode === "tout" ? "on" : ""}>{t.tout}</a>
           <a href={lien("couleur", fmt)} className={mode === "couleur" ? "on" : ""}>{t.couleur}</a>
           <a href={lien("theme", fmt)} className={mode === "theme" ? "on" : ""}>{t.theme}</a>
         </div>
       </section>
 
       <div className="n-barre">
-        <nav className="n-sauts" aria-label={lang === "fr" ? "Familles" : "Families"}>
+        {mode === "tout" ? <p className="n-petit n-flot-s">{t.toutS}</p> : <nav className="n-sauts" aria-label={lang === "fr" ? "Familles" : "Families"}>
           {familles.map((f) => (
             <a key={f.id} href={`#f-${f.id}`}>{f.dot && <i style={{ background: f.dot }} />}{f[lang]}</a>
           ))}
-        </nav>
+        </nav>}
         <nav className="n-formats" aria-label={t.format}>
           <span>{t.format}</span>
           {[{ id: "tous", fr: t.tous, en: t.tous }, ...FORMATS.filter((f) => f.id !== "carre")].map((f) => (
@@ -83,7 +87,19 @@ export default async function Collection({ searchParams }) {
         </nav>
       </div>
 
-      {familles.map((f) => (
+      {mode === "tout" && (
+        <section className="n-flot" aria-label={t.tout}>
+          {flot.length === 0 && <p className="n-petit">{t.aucun}</p>}
+          {flot.map((o) => (
+            <a key={o.id} className="n-flot-o" href={`/oeuvre/${o.id}${Q}`} style={{ flexGrow: o.ratio, flexBasis: `${Math.round(o.ratio * 230)}px`, aspectRatio: String(o.ratio) }}>
+              <img src={o.img} alt={o.titre} loading="lazy" />
+              <span>{o.titre}</span>
+            </a>
+          ))}
+          <i className="n-flot-fin" aria-hidden="true" />
+        </section>
+      )}
+      {mode !== "tout" && familles.map((f) => (
         <section key={f.id} id={`f-${f.id}`} className="n-famille">
           <div className="n-famille-tete">
             {f.ech ? (
@@ -99,7 +115,7 @@ export default async function Collection({ searchParams }) {
           </div>
         </section>
       ))}
-      {autres.length > 0 && (
+      {mode !== "tout" && autres.length > 0 && (
         <section className="n-famille">
           <div className="n-famille-tete"><h2>{t.autres}</h2><p>{t.autresT}</p></div>
           <div className="n-grille">{autres.map((o) => <Carte key={o.id} o={o} lang={lang} mode={mode} Q={Q} />)}</div>
