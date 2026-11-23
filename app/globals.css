@@ -481,4 +481,4 @@ h2 { font-family:var(--serif); font-weight:400; }
 
 /* onglet « Toute la galerie » : mis en avant par un liseré aux couleurs des quatre palettes */
 .n-modes a.n-arc { margin-left:14px !important; border:2px solid transparent; background:linear-gradient(var(--bg),var(--bg)) padding-box, linear-gradient(90deg,#7FC4CF,#8FA77E,#D8CBB5,#D9735E) border-box; }
-.n-modes a.n-arc.on { color:#fff; border-color:transparent; background:linear-gradient(90deg,#3F8C9A,#5E7F5C,#B39563,#C05A45) padding-box, linear-gradient(90deg,#3F8C9A,#5E7F5C,#B39563,#C05A45) border-box; }
+.n-modes a.n-arc.on { color:var(--ink); font-weight:500; background:linear-gradient(var(--bg),var(--bg)) padding-box, linear-gradient(90deg,#7FC4CF,#8FA77E,#D8CBB5,#D9735E) border-box; }
