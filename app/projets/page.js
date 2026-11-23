@@ -58,9 +58,9 @@ export default async function Projets({ searchParams }) {
           {t.pts.map(([a, b]) => <div key={a}><strong>{a}</strong><span>{b}</span></div>)}
         </section>
         <section className="n-projets-photos">
+          <img src="/ambiance/d93.jpg" alt="" loading="lazy" />
+          <img src="/ambiance/d52.jpg" alt="" loading="lazy" />
           <img src="/ambiance/d26.jpg" alt="" loading="lazy" />
-          <img src="/ambiance/d66.jpg" alt="" loading="lazy" />
-          <img src="/ambiance/d80.jpg" alt="" loading="lazy" />
         </section>
         <section className="n-col-tete centre">
           <p className="n-lead">{t.c}</p>
