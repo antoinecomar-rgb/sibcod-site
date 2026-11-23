@@ -89,7 +89,7 @@ const T = {
 };
 
 // cadrage de chaque image du défilé en plein écran (position verticale du centre)
-const HERO = ["50% 45%", "50% 42%", "50% 45%", "50% 52%", "50% 45%", "50% 55%", "50% 45%"];
+const HERO = ["50% 50%", "50% 50%", "50% 50%", "50% 50%", "50% 50%", "50% 55%", "50% 50%"];
 
 export async function generateMetadata({ searchParams }) {
   const fr = (await searchParams).lang === "fr";
@@ -116,7 +116,12 @@ export default async function Accueil({ searchParams }) {
     <>
       <section className="n-hero">
         <div className="n-hero-img" aria-hidden="true">
-          {HERO.map((pos, i) => <img key={i} src={`/ambiance/hero-${i + 1}.jpg`} alt="" style={{ objectPosition: pos }} />)}
+          {HERO.map((pos, i) => (
+            <div key={i} className="n-slide">
+              <img className="n-slide-fond" src={`/ambiance/hero-${i + 1}.jpg`} alt="" />
+              <img className="n-slide-net" src={`/ambiance/hero-${i + 1}.jpg`} alt="" style={{ objectPosition: pos }} />
+            </div>
+          ))}
         </div>
         <div className="n-hero-voile" />
         <div className="wrap n-hero-tete"><Entete lang={lang} clair hrefLang={(l) => (l === "fr" ? "/?lang=fr" : "/")} /></div>
