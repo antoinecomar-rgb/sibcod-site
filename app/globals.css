@@ -478,11 +478,11 @@ h2 { font-family:var(--serif); font-weight:400; }
 .n-flot-o { position:relative; display:block; overflow:hidden; background:var(--mat); text-decoration:none; }
 .n-flot-o img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .6s ease; animation:n-apparait .9s ease both; }
 .n-flot-o:hover img { transform:scale(1.03); }
-.n-flot-o span { position:absolute; left:0; right:0; bottom:0; padding:22px 12px 10px; font-family:var(--serif); font-size:17px; color:#fff; background:linear-gradient(0deg,rgba(20,18,16,.6),rgba(20,18,16,0)); opacity:0; transition:opacity .3s; }
-.n-flot-o:hover span, .n-flot-o:focus-visible span { opacity:1; }
+.n-flot-o > span:not(.n-poly) { position:absolute; left:0; right:0; bottom:0; padding:22px 12px 10px; font-family:var(--serif); font-size:17px; color:#fff; background:linear-gradient(0deg,rgba(20,18,16,.6),rgba(20,18,16,0)); opacity:0; transition:opacity .3s; }
+.n-flot-o:hover > span:not(.n-poly), .n-flot-o:focus-visible > span:not(.n-poly) { opacity:1; }
 .n-flot-fin { flex-grow:1000; }
 @keyframes n-apparait { from{opacity:0} to{opacity:1} }
-@media (max-width:800px){ .n-flot{gap:8px} .n-flot-o{flex-basis:auto !important; min-width:40%} .n-flot-o span{opacity:1; font-size:14px} }
+@media (max-width:800px){ .n-flot{gap:8px} .n-flot-o{flex-basis:auto !important; min-width:40%} .n-flot-o > span:not(.n-poly){opacity:1; font-size:14px} }
 
 /* onglet « Toute la galerie » : mis en avant par un liseré aux couleurs des quatre palettes */
 .n-modes a.n-arc { margin-right:14px !important; border:2px solid transparent; background:linear-gradient(var(--bg),var(--bg)) padding-box, linear-gradient(90deg,#7FC4CF,#8FA77E,#D8CBB5,#D9735E) border-box; }
@@ -509,3 +509,29 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 .n-teintes.petit button { width:24px; height:24px; }
 .n-teintes.petit .n-teinte-nom { margin-left:6px; color:var(--muted); }
 .room.sombre .dim { background:rgba(0,0,0,.45); color:#eee; }
+
+/* polyptyques : panneaux côte à côte */
+.n-poly { display:flex; width:100%; align-items:stretch; }
+.n-poly img { display:block; height:100%; object-fit:cover; flex:none; box-shadow:0 4px 12px rgba(0,0,0,.16); }
+.n-flot-o.poly { background:transparent; overflow:visible; margin:0 12px; }
+.n-flot-o.poly .n-poly { position:absolute; inset:0; height:100%; }
+.n-flot-o.poly .n-poly img { position:static; animation:n-apparait .9s ease both; }
+.n-mat .n-poly { width:88%; }
+
+/* fiche œuvre : versions cliquables pour la vue à l'échelle */
+.n-variante-voir { display:grid; grid-template-columns:56px minmax(0,1fr); gap:14px; align-items:center; padding:0; border:0; background:none; font:inherit; text-align:left; cursor:pointer; }
+.n-variante:has(.n-variante-voir) { grid-template-columns:minmax(0,1fr) auto; }
+.n-variante-voir img, .n-variante-voir span { cursor:pointer; }
+.n-variante-voir u { text-underline-offset:3px; color:var(--ink); }
+.n-variante:hover strong { text-decoration:underline; text-underline-offset:3px; }
+.n-scale-version { margin:-4px 0 12px; }
+
+/* composer : relance mise en avant, composition libre */
+.n-relancer { display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; margin:28px 0 14px; }
+.n-relancer .n-btn { display:inline-flex; align-items:center; gap:10px; font-size:14px; padding:16px 28px; }
+.n-relancer .n-btn span { font-size:20px; line-height:1; }
+.n-libre > div { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px; }
+.n-nombre { display:inline-flex; align-items:center; gap:12px; }
+.n-nombre b { font-weight:400; font-size:15px; min-width:84px; text-align:center; }
+.n-groupe .n-nombre button { width:44px; padding:0; justify-content:center; font-size:20px; }
+.n-libre-o { position:absolute; display:block; box-shadow:0 8px 18px rgba(0,0,0,.25); transition:all .35s ease; }
