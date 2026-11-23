@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 // Aperçu du nuancier : une palette choisie -> photo d'ambiance + œuvres accordées
-export default function Nuancier({ palettes, oeuvres, lang, tout, toutImg, voirTout }) {
+export default function Nuancier({ palettes, oeuvres, lang, tout, toutImg, toutEch, voirTout }) {
   const [p, setP] = useState("tout");
   const pal = palettes.find((x) => x.id === p);
   const liste = (p === "tout" ? oeuvres : oeuvres.filter((o) => o.palette.includes(p))).slice(0, 12);
@@ -19,9 +19,10 @@ export default function Nuancier({ palettes, oeuvres, lang, tout, toutImg, voirT
         ))}
       </div>
       <div className="n-nuancier-corps">
-        <figure className="n-mood" key={p}>
-          <img src={pal ? pal.img : toutImg} alt="" />
-          {pal && <figcaption>{lang === "fr" ? pal.tfr : pal.ten}</figcaption>}
+        <figure className="n-planche" key={p}>
+          <img className="n-planche-piece" src={pal ? pal.img : toutImg} alt="" />
+          {(pal ? pal.ech : toutEch).map((e) => <img key={e} className="n-planche-ech" src={e} alt="" />)}
+          {pal && <figcaption><i style={{ background: pal.c }} />{lang === "fr" ? pal.tfr : pal.ten}</figcaption>}
         </figure>
         <div className="n-mini">
           {liste.map((o) => (

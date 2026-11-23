@@ -2,7 +2,7 @@ import Pied from "./Pied";
 import Entete from "./Entete";
 import Nuancier from "./Nuancier";
 import { catalogue } from "../lib/catalogue";
-import { PALETTES, THEMES, q } from "../lib/libelles";
+import { PALETTES, THEMES, TOUT, q } from "../lib/libelles";
 import { alternates } from "../lib/seo";
 
 const T = {
@@ -179,8 +179,8 @@ export default async function Accueil({ searchParams }) {
           <div><p className="n-k">{t.colK}</p><h2>{t.colT}</h2><p className="n-lead">{t.colS}</p></div>
         </div>
         <Nuancier
-          palettes={PALETTES.map(({ id, c, fr, en, img, tfr, ten }) => ({ id, c, fr, en, img, tfr, ten }))}
-          oeuvres={mini} lang={lang} tout={t.tout} toutImg="/ambiance/d26.jpg"
+          palettes={PALETTES.map(({ id, c, fr, en, img, ech, tfr, ten }) => ({ id, c, fr, en, img, ech, tfr, ten }))}
+          oeuvres={mini} lang={lang} tout={t.tout} toutImg={TOUT.img} toutEch={TOUT.ech}
           voirTout={{ href: `/collection${Q}`, txt: t.voir(oeuvres.length) }}
         />
       </section>
