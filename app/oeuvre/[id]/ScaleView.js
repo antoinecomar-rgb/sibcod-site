@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { MURS, estSombre } from "../../../lib/murs";
 
 const PRESETS = [8, 12, 16, 20, 24, 28, 36, 48, 60, 72, 96];
 const WALL_W = 300, WALL_H = 250; // cm représentés par la scène
@@ -8,6 +9,8 @@ export default function ScaleView({ src, alt, maxIn, lang, title, hint }) {
   const sizes = [...PRESETS.filter((n) => n < maxIn), maxIn];
   const [size, setSize] = useState(sizes[Math.min(2, sizes.length - 1)]);
   const [ratio, setRatio] = useState(1.33);
+  const [mur, setMur] = useState("lin");
+  const murC = MURS.find((m) => m.id === mur);
   const cmOf = (po) => Math.round(po * 2.54);
   const long = size * 2.54;
   const w = ratio >= 1 ? long : long * ratio;
@@ -25,7 +28,13 @@ export default function ScaleView({ src, alt, maxIn, lang, title, hint }) {
           </button>
         ))}
       </div>
-      <div className="room">
+      <div className="n-teintes petit" role="group" aria-label={lang === "fr" ? "Couleur du mur" : "Wall colour"}>
+        {MURS.map((m) => (
+          <button key={m.id} type="button" title={m[lang]} aria-label={m[lang]} aria-pressed={mur === m.id} className={mur === m.id ? "on" : ""} style={{ background: m.c }} onClick={() => setMur(m.id)} />
+        ))}
+        <span className="n-teinte-nom">{murC[lang]}</span>
+      </div>
+      <div className={estSombre(murC.c) ? "room sombre" : "room"} style={{ background: murC.c }}>
         <div className="floor" />
         <div className="art" style={{ width: `${(w / WALL_W) * 100}%`, height: `${(h / WALL_H) * 100}%`, bottom: `${(6 + (bottomCm / WALL_H) * 94)}%` }}>
           <img src={src} alt={alt} onLoad={(e) => setRatio(e.currentTarget.naturalWidth / e.currentTarget.naturalHeight)} />
