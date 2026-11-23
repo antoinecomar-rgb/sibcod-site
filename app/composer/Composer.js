@@ -1,13 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
+import { MURS, estSombre } from "../../lib/murs";
 
-const MURS = [
-  { id: "blanc", c: "#F2EEE6", fr: "Blanc cassé", en: "Off-white" },
-  { id: "lin", c: "#E3D8C6", fr: "Lin", en: "Linen" },
-  { id: "sauge", c: "#B9C3AE", fr: "Sauge", en: "Sage" },
-  { id: "terracotta", c: "#C98D6E", fr: "Terracotta", en: "Terracotta" },
-  { id: "nuit", c: "#2E3A4A", fr: "Bleu nuit", en: "Midnight blue" },
-];
 const LAYS = [
   { id: "trio", n: 3, fr: "Trio", en: "Trio" },
   { id: "grille", n: 4, fr: "Grille de 4", en: "Grid of 4" },
@@ -45,7 +39,8 @@ export default function Composer({ oeuvres, palettes, lang, txt }) {
     return { w, h: w / o.ratio };
   };
   const pct = (cm) => `${(cm / MUR_L) * 100}%`;
-  const sombre = mur === "nuit";
+  const murC = MURS.find((m) => m.id === mur);
+  const sombre = estSombre(murC.c);
   const Groupe = ({ nom, items, val, set, rond }) => (
     <fieldset className="n-groupe">
       <legend>{nom}</legend>
@@ -62,13 +57,20 @@ export default function Composer({ oeuvres, palettes, lang, txt }) {
   return (
     <div className="n-composer">
       <div className="n-reglages">
-        <Groupe nom={txt.mur} items={MURS} val={mur} set={setMur} rond={(x) => x.c} />
+        <fieldset className="n-groupe">
+          <legend>{txt.mur} : <span className="n-teinte-nom">{murC[lang]}</span></legend>
+          <div className="n-teintes">
+            {MURS.map((m) => (
+              <button key={m.id} type="button" title={m[lang]} aria-label={m[lang]} aria-pressed={mur === m.id} className={mur === m.id ? "on" : ""} style={{ background: m.c }} onClick={() => setMur(m.id)} />
+            ))}
+          </div>
+        </fieldset>
         <Groupe nom={txt.compo} items={LAYS} val={lay} set={(v) => { setLay(v); setGraine(0); }} />
         <Groupe nom={txt.palette} items={palettes} val={pal} set={(v) => { setPal(v); setGraine(0); }} rond={(x) => x.c} />
         <Groupe nom={txt.taille} items={TAILLES} val={taille} set={setTaille} />
       </div>
 
-      <div className="n-scene" style={{ background: MURS.find((m) => m.id === mur).c, aspectRatio: `${MUR_L} / ${MUR_H}` }} role="img" aria-label={txt.aria + choix.map((o) => o.titre).join(", ")}>
+      <div className="n-scene" style={{ background: murC.c, aspectRatio: `${MUR_L} / ${MUR_H}` }} role="img" aria-label={txt.aria + choix.map((o) => o.titre).join(", ")}>
         <div className={`n-scene-oeuvres ${lay}`} style={{ bottom: `${((CANAPE_H + 22) / MUR_H) * 100}%`, gap: lay === "grille" ? `${(ECART / MUR_H) * 100}% ${pct(ECART)}` : pct(ECART) }}>
           {choix.map((o) => {
             const { w } = dims(o);
