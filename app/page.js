@@ -13,9 +13,9 @@ const T = {
     apK: "What an artwork brings to a room",
     apT: "You only look at it intently if you decide to. The rest of the time, it is simply there: it inhabits the space.",
     apports: [
-      ["An escape", "Open a wall like a window and travel elsewhere without leaving the room.", ["d99", "d64", "d33", "d77"]],
-      ["A harmony", "Bring together the colours of a room, from fabric to wall.", ["d90", "d07", "d36", "d47"]],
-      ["A presence", "Fill the emptiness of a space, or give it its identity.", ["d93", "d26", "d94", "d70"]],
+      ["An escape", "Open a wall like a window and travel elsewhere without leaving the room.", ["d99", "d56", "d33", "d64", "d77"]],
+      ["A harmony", "Bring together the colours of a room, from fabric to wall.", ["d90", "d86", "d07", "d36", "d47"]],
+      ["A presence", "Fill the emptiness of a space, or give it its identity.", ["d26", "d66", "d93", "d05", "d70"]],
     ],
     chK: "How to choose", chT: "Start from what matters to you",
     chS: "A colour to match, an atmosphere to create, a wall to dress, a material: browse the collection in every direction.",
@@ -51,9 +51,9 @@ const T = {
     apK: "Ce qu'une œuvre apporte à une pièce",
     apT: "On ne la regarde avec insistance que si on le décide. Le reste du temps, elle est là : elle habite l'espace.",
     apports: [
-      ["Une évasion", "Ouvrir un mur comme une fenêtre, partir ailleurs sans quitter la pièce.", ["d99", "d64", "d33", "d77"]],
-      ["Une harmonie", "Accorder les couleurs d'une pièce, du tissu au mur.", ["d90", "d07", "d36", "d47"]],
-      ["Une présence", "Combler le vide d'un espace, ou lui donner son identité.", ["d93", "d26", "d94", "d70"]],
+      ["Une évasion", "Ouvrir un mur comme une fenêtre, partir ailleurs sans quitter la pièce.", ["d99", "d56", "d33", "d64", "d77"]],
+      ["Une harmonie", "Accorder les couleurs d'une pièce, du tissu au mur.", ["d90", "d86", "d07", "d36", "d47"]],
+      ["Une présence", "Combler le vide d'un espace, ou lui donner son identité.", ["d26", "d66", "d93", "d05", "d70"]],
     ],
     chK: "Comment choisir", chT: "Partez de ce qui compte pour vous",
     chS: "Une couleur à accorder, une atmosphère à créer, un mur à habiller, une matière : la collection se parcourt dans tous les sens.",
@@ -131,17 +131,6 @@ export default async function Accueil({ searchParams }) {
         </div>
       </section>
 
-      <section className="wrap n-section">
-        <div className="n-entete large">
-          <div><p className="n-k">{t.colK}</p><h2>{t.colT}</h2><p className="n-lead">{t.colS}</p></div>
-        </div>
-        <Nuancier
-          palettes={PALETTES.map(({ id, c, fr, en, img, ech, tfr, ten }) => ({ id, c, fr, en, img, ech, tfr, ten }))}
-          oeuvres={mini} lang={lang} tout={t.tout} toutImg={TOUT.img} toutEch={TOUT.ech}
-          voirTout={{ href: `/collection${Q}`, txt: t.voir(oeuvres.length) }}
-        />
-      </section>
-
       <section className="wrap n-apports">
         <div className="n-centre">
           <p className="n-k">{t.apK}</p>
@@ -157,6 +146,17 @@ export default async function Accueil({ searchParams }) {
             </figure>
           ))}
         </div>
+      </section>
+
+      <section className="wrap n-section">
+        <div className="n-entete large">
+          <div><p className="n-k">{t.colK}</p><h2>{t.colT}</h2><p className="n-lead">{t.colS}</p></div>
+        </div>
+        <Nuancier
+          palettes={PALETTES.map(({ id, c, fr, en, img, ech, tfr, ten }) => ({ id, c, fr, en, img, ech, tfr, ten }))}
+          oeuvres={mini} lang={lang} tout={t.tout} toutImg={TOUT.img} toutEch={TOUT.ech}
+          voirTout={{ href: `/collection${Q}`, txt: t.voir(oeuvres.length) }}
+        />
       </section>
 
       <section className="n-fond">
