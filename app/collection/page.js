@@ -86,7 +86,9 @@ export default async function Collection({ searchParams }) {
       {familles.map((f) => (
         <section key={f.id} id={`f-${f.id}`} className="n-famille">
           <div className="n-famille-tete">
-            <img src={f.img} alt="" loading="lazy" />
+            {f.ech ? (
+              <div className="n-planche petite"><img className="n-planche-piece" src={f.img} alt="" loading="lazy" />{f.ech.map((e) => <img key={e} className="n-planche-ech" src={e} alt="" loading="lazy" />)}</div>
+            ) : <img src={f.img} alt="" loading="lazy" />}
             <h2>{f.dot && <i style={{ background: f.dot }} />}{f[lang]}</h2>
             <p>{lang === "fr" ? f.tfr : f.ten}</p>
             <span className="n-petit">{t.n(f.liste.length)}</span>
