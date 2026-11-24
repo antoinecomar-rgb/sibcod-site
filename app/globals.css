@@ -178,9 +178,9 @@ a { color:inherit; }
 .btn { align-self:flex-start; display:inline-block; background:var(--ink); color:var(--bg); text-decoration:none; font-size:13px; letter-spacing:.16em; text-transform:uppercase; padding:16px 30px; }
 .hero2 > * { min-width:0; }
 .hero2-img { width:100%; height:min(62vh,600px); object-fit:cover; display:block; }
-.gala2 { border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-.gala2-in { display:flex; justify-content:center; align-items:center; gap:16px; flex-wrap:wrap; padding-top:18px; padding-bottom:18px; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
-.gala2-in em { font-family:var(--serif); font-size:24px; letter-spacing:.02em; text-transform:none; color:var(--ink); }
+.gala2 { background:#E6DACA; border-top:1px solid #D8CBB5; border-bottom:1px solid #D8CBB5; }
+.gala2-in { display:flex; justify-content:center; align-items:center; gap:16px; flex-wrap:wrap; padding-top:22px; padding-bottom:22px; font-size:14.5px; letter-spacing:.14em; text-transform:uppercase; color:#5E554B; }
+.gala2-in em { font-family:var(--serif); font-size:28px; letter-spacing:.02em; text-transform:none; color:var(--ink); }
 .gala2-cta { margin-left:10px; color:var(--ink); text-decoration:none; border-bottom:1px solid var(--ink); padding-bottom:2px; }
 .coll-head { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; flex-wrap:wrap; padding:64px 0 28px; }
 .coll-head h2 { margin:0; font-family:var(--serif); font-weight:400; font-size:44px; line-height:1.1; }
@@ -246,7 +246,7 @@ a { color:inherit; }
   .athome { left:12px; bottom:12px; padding:10px 14px; } .athome span { font-size:20px; }
   .coll-head { padding:40px 0 20px; } .coll-head h2 { font-size:34px; }
   .coll-head .filters { justify-content:flex-start; }
-  .gala2-in { gap:8px; font-size:11px; } .gala2-in em { font-size:20px; }
+  .gala2-in { gap:8px; font-size:12.5px; } .gala2-in em { font-size:23px; }
 }
 
 .headwrap { position:sticky; top:0; z-index:30; background:var(--bg); }
@@ -583,3 +583,4 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
   .n-carte-poly .n-mat { aspect-ratio:auto; padding:14px 0; margin:0 -16px; }
   .n-carte-poly .n-poly { width:100%; padding:0 10px; box-sizing:border-box; }
 }
+
