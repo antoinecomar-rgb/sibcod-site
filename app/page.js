@@ -1,7 +1,7 @@
 import Pied from "./Pied";
 import Entete from "./Entete";
 import BandeauGala from "./BandeauGala";
-import Nuancier from "./Nuancier";
+import SELECTION from "../data/selection-accueil.json";
 import { catalogue } from "../lib/catalogue";
 import { PALETTES, THEMES, TOUT, q } from "../lib/libelles";
 import { alternates } from "../lib/seo";
@@ -29,7 +29,7 @@ const T = {
     formats: ["Portrait", "Landscape", "Panorama", "Trio", "Column"],
     supports: ["Fine art paper", "Canvas", "Metal", "Wood", "Acrylic"],
     colK: "Collection", colT: "A collection designed like a colour chart",
-    colS: "Colours echo from one artwork to the next: every artwork in a palette goes with the others. Start from the colour of your room.",
+    colS: "From lagoon blues to bougainvillea reds, colours shift gently from one artwork to the next. A selection to browse like a colour chart.",
     tout: "All", voir: (n) => `See all ${n} artworks`,
     taK: "Sizes and supports", taT: "The same artwork, from a small frame to a whole wall",
     taS: "Each artwork comes in several sizes, on the support that suits the room: fine art paper to frame, stretched canvas ready to hang, metal or wood for more presence.",
@@ -67,7 +67,7 @@ const T = {
     formats: ["Portrait", "Paysage", "Panorama", "Trio", "Colonne"],
     supports: ["Papier d'art", "Toile tendue", "Métal", "Bois", "Acrylique"],
     colK: "Collection", colT: "Une collection pensée comme un nuancier",
-    colS: "Les teintes reviennent d'une œuvre à l'autre : toutes celles d'une même palette s'accordent entre elles. Partez de la couleur de votre pièce.",
+    colS: "Des bleus du lagon aux rouges des bougainvilliers, les teintes glissent d'une œuvre à l'autre. Une sélection à parcourir comme un nuancier.",
     tout: "Toutes", voir: (n) => `Voir les ${n} œuvres`,
     taK: "Tailles et supports", taT: "La même œuvre, du petit cadre au mur entier",
     taS: "Chaque œuvre existe en plusieurs tailles, et sur le support qui convient à la pièce : papier d'art à encadrer, toile tendue prête à accrocher, métal ou bois pour plus de présence.",
@@ -86,7 +86,8 @@ const T = {
 };
 
 // cadrage de chaque image du défilé en plein écran (position verticale du centre)
-const HERO = ["50% 50%", "50% 50%", "50% 50%", "50% 50%", "50% 50%", "50% 55%", "50% 50%"];
+// [fichier, cadrage] dans l'ordre du défilé (boucle)
+const HERO = [[1, "50% 50%"], [6, "50% 55%"], [2, "50% 50%"], [3, "50% 50%"], [4, "50% 50%"], [5, "50% 50%"], [8, "50% 50%"], [7, "50% 50%"]];
 
 export async function generateMetadata({ searchParams }) {
   const fr = (await searchParams).lang === "fr";
@@ -106,23 +107,24 @@ export default async function Accueil({ searchParams }) {
   const classees = oeuvres.filter((o) => o.palette.length);
   const vign = Object.fromEntries(oeuvres.flatMap((o) => o.variantes.map((v) => [v.id, v.img])));
   // ordre stable mais mélangé : alterne les thèmes pour l'aperçu
-  const melange = [...classees].sort((a, b) => (a.id.charCodeAt(3) % 7) - (b.id.charCodeAt(3) % 7) || a.id.localeCompare(b.id));
-  const mini = melange.map((o) => ({ id: o.id, titre: o.titre, img: o.img, palette: o.palette, href: `/oeuvre/${o.id}${Q}` }));
+  const parId = Object.fromEntries(oeuvres.map((o) => [o.id, o]));
+  const selection = SELECTION.map((id) => parId[id]).filter(Boolean).map((o) => ({ id: o.id, titre: o.titre, ...o.variantes[0] }));
 
   return (
     <>
       <section className="n-hero">
         <div className="n-hero-img" aria-hidden="true">
-          {HERO.map((pos, i) => (
-            <div key={i} className="n-slide">
-              <img className="n-slide-fond" src={`/ambiance/hero-${i + 1}.jpg`} alt="" />
-              <img className="n-slide-net" src={`/ambiance/hero-${i + 1}.jpg`} alt="" style={{ objectPosition: pos }} />
+          {HERO.map(([f, pos], i) => (
+            <div key={f} className="n-slide" style={{ animationDelay: `${i * 4 - 1.2}s` }}>
+              <img className="n-slide-fond" src={`/ambiance/hero-${f}.jpg`} alt="" />
+              <img className="n-slide-net" src={`/ambiance/hero-${f}.jpg`} alt="" style={{ objectPosition: pos }} />
             </div>
           ))}
         </div>
         <div className="n-hero-voile" />
         <div className="wrap n-hero-tete"><Entete lang={lang} clair hrefLang={(l) => (l === "fr" ? "/?lang=fr" : "/")} /></div>
         <div className="wrap n-hero-texte">
+          <img className="n-hero-logo" src="/ambiance/logo-rond-blanc.png" alt="Sibcod" width="415" height="415" />
           <h1>{t.h1[0]}<br />{t.h1[1]}</h1>
           <p>{t.sub}</p>
           <div className="n-btns">
@@ -155,11 +157,16 @@ export default async function Accueil({ searchParams }) {
         <div className="n-entete large">
           <div><p className="n-k">{t.colK}</p><h2>{t.colT}</h2><p className="n-lead">{t.colS}</p></div>
         </div>
-        <Nuancier
-          palettes={PALETTES.map(({ id, c, fr, en, img, ech, tfr, ten }) => ({ id, c, fr, en, img, ech, tfr, ten }))}
-          oeuvres={mini} lang={lang} tout={t.tout} toutImg={TOUT.img} toutEch={TOUT.ech}
-          voirTout={{ href: `/collection${Q}`, txt: t.voir(oeuvres.length) }}
-        />
+        <div className="n-flot n-selection">
+          {selection.map((o) => (
+            <a key={o.id} className="n-flot-o" href={`/oeuvre/${o.id}${Q}`} style={{ flexGrow: o.ratio, flexBasis: `${Math.round(o.ratio * 170)}px`, aspectRatio: String(o.ratio) }}>
+              <img src={o.img} alt={o.titre} loading="lazy" />
+              <span>{o.titre}</span>
+            </a>
+          ))}
+          <i className="n-flot-fin" aria-hidden="true" />
+        </div>
+        <a className="n-lien" href={`/collection${Q}`}>{t.voir(oeuvres.length)} →</a>
       </section>
 
       <section className="n-fond">
