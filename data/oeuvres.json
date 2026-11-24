@@ -1125,12 +1125,7 @@
    "corail",
    "vegetal"
   ],
-  "format": "panorama",
-  "panneaux": [
-   "F259",
-   "F260",
-   "F261"
-  ]
+  "format": "panorama"
  },
  {
   "id": "F274",
@@ -1261,12 +1256,7 @@
    "vegetal",
    "corail"
   ],
-  "format": "panorama",
-  "panneaux": [
-   "F250",
-   "F251",
-   "F252"
-  ]
+  "format": "panorama"
  },
  {
   "id": "F305",
@@ -1426,12 +1416,7 @@
    "corail",
    "vegetal"
   ],
-  "format": "panorama",
-  "panneaux": [
-   "F247",
-   "F248",
-   "F249"
-  ]
+  "format": "panorama"
  },
  {
   "id": "F285",
@@ -1464,11 +1449,7 @@
    "lagon",
    "vegetal"
   ],
-  "format": "paysage",
-  "panneaux": [
-   "F177",
-   "F178"
-  ]
+  "format": "paysage"
  },
  {
   "id": "F027",
@@ -1515,12 +1496,7 @@
   "palette": [
    "lagon"
   ],
-  "format": "panorama",
-  "panneaux": [
-   "F253",
-   "F254",
-   "F255"
-  ]
+  "format": "panorama"
  },
  {
   "id": "F298",
@@ -2088,11 +2064,7 @@
   "palette": [
    "lagon"
   ],
-  "format": "portrait",
-  "panneaux": [
-   "F303",
-   "F304"
-  ]
+  "format": "portrait"
  },
  {
   "id": "F139",
@@ -2175,11 +2147,7 @@
    "lagon",
    "sable"
   ],
-  "format": "portrait",
-  "panneaux": [
-   "F300",
-   "F301"
-  ]
+  "format": "portrait"
  },
  {
   "id": "F283",
@@ -2199,12 +2167,7 @@
    "lagon",
    "vegetal"
   ],
-  "format": "panorama",
-  "panneaux": [
-   "F256",
-   "F257",
-   "F258"
-  ]
+  "format": "panorama"
  },
  {
   "id": "F124",
