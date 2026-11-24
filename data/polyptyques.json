@@ -140,27 +140,8 @@
   "titre_fr": "Plumbagos",
   "titre_en": "Plumbago",
   "panneaux": [
-   "F112",
-   "F111"
-  ]
- },
- {
-  "id": "voile",
-  "titre_fr": "Voile",
-  "titre_en": "Sailing",
-  "panneaux": [
-   "F036",
-   "F037"
-  ]
- },
- {
-  "id": "taches",
-  "titre_fr": "Taches colorées",
-  "titre_en": "Coloured Spots",
-  "panneaux": [
-   "F132",
-   "F133",
-   "F134"
+   "F111",
+   "F112"
   ]
  }
 ]
