@@ -582,6 +582,11 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 }
 
 
-/* sélection de l'accueil : œuvres en dégradé de couleurs */
-.n-selection { gap:10px; margin:28px 0 28px; }
-@media (max-width:800px){ .n-selection .n-flot-o{min-width:30%} .n-selection .n-flot-o > span{display:none} }
+/* sélection de l'accueil : grille régulière, les teintes glissent d'une œuvre à l'autre */
+.n-degrade { display:grid; grid-template-columns:repeat(6,1fr); gap:10px; margin:28px 0 8px; }
+.n-degrade a { position:relative; display:block; aspect-ratio:1; overflow:hidden; background:var(--mat); }
+.n-degrade img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .6s ease; }
+.n-degrade a:hover img { transform:scale(1.04); }
+.n-degrade span { position:absolute; left:0; right:0; bottom:0; padding:22px 10px 8px; font-family:var(--serif); font-size:15px; color:#fff; background:linear-gradient(0deg,rgba(20,18,16,.6),rgba(20,18,16,0)); opacity:0; transition:opacity .3s; }
+.n-degrade a:hover span, .n-degrade a:focus-visible span { opacity:1; }
+@media (max-width:800px){ .n-degrade{ grid-template-columns:repeat(3,1fr); gap:6px; } .n-degrade span{display:none} }

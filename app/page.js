@@ -157,14 +157,13 @@ export default async function Accueil({ searchParams }) {
         <div className="n-entete large">
           <div><p className="n-k">{t.colK}</p><h2>{t.colT}</h2><p className="n-lead">{t.colS}</p></div>
         </div>
-        <div className="n-flot n-selection">
+        <div className="n-degrade">
           {selection.map((o) => (
-            <a key={o.id} className="n-flot-o" href={`/oeuvre/${o.id}${Q}`} style={{ flexGrow: o.ratio, flexBasis: `${Math.round(o.ratio * 170)}px`, aspectRatio: String(o.ratio) }}>
+            <a key={o.id} href={`/oeuvre/${o.id}${Q}`}>
               <img src={o.img} alt={o.titre} loading="lazy" />
               <span>{o.titre}</span>
             </a>
           ))}
-          <i className="n-flot-fin" aria-hidden="true" />
         </div>
         <a className="n-lien" href={`/collection${Q}`}>{t.voir(oeuvres.length)} →</a>
       </section>
