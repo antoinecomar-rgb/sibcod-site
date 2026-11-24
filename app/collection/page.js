@@ -53,7 +53,7 @@ export default async function Collection({ searchParams }) {
     liste: filtre(oeuvres.filter((o) => (mode === "couleur" ? o.palette[0] === f.id : o.theme === f.id))),
   }));
   const rang = Object.fromEntries(DEROULE.map((id, i) => [id, i]));
-  const flot = filtre([...images].sort((a, b) => (rang[a.id] ?? 1e4) - (rang[b.id] ?? 1e4)));
+  const flot = filtre([...images].sort((a, b) => (rang[a.oeuvre] ?? 1e4) - (rang[b.oeuvre] ?? 1e4) || a.ordre - b.ordre));
   const autres = filtre(oeuvres.filter((o) => !o.palette.length));
   const Q = lang === "fr" ? "?lang=fr" : "";
 
