@@ -9,7 +9,7 @@ import { alternates } from "../lib/seo";
 const T = {
   en: {
     h1: ["Art", "to live with."],
-    sub: "Original artworks by Sibcod, from the softest to the most vivid. Printed to order in gallery quality, on fine art paper, canvas, metal, wood or acrylic.",
+    sub: "Original Sibcod creations, from the softest to the most vivid. Printed to order in gallery quality, on fine art paper, canvas, metal, wood or acrylic.",
     cta1: "Discover the collection", cta2: "Compose a wall",
     apK: "What an artwork brings to a room",
     apT: "You only look at it intently if you decide to. The rest of the time, it is simply there: it inhabits the space.",
@@ -47,7 +47,7 @@ const T = {
   },
   fr: {
     h1: ["Des œuvres", "à vivre."],
-    sub: "Les créations originales de Sibcod, du plus doux au plus vif. Imprimées à la demande en qualité galerie, sur papier d'art, toile, métal, bois ou acrylique.",
+    sub: "Créations originales Sibcod, du plus doux au plus vif. Imprimées à la demande en qualité galerie, sur papier d'art, toile, métal, bois ou acrylique.",
     cta1: "Découvrir la collection", cta2: "Composer un mur",
     apK: "Ce qu'une œuvre apporte à une pièce",
     apT: "On ne la regarde avec insistance que si on le décide. Le reste du temps, elle est là : elle habite l'espace.",
