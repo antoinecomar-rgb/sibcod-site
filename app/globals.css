@@ -591,3 +591,7 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 .n-degrade span { position:absolute; left:0; right:0; bottom:0; padding:22px 10px 8px; font-family:var(--serif); font-size:15px; color:#fff; background:linear-gradient(0deg,rgba(20,18,16,.6),rgba(20,18,16,0)); opacity:0; transition:opacity .3s; }
 .n-degrade a:hover span, .n-degrade a:focus-visible span { opacity:1; }
 @media (max-width:800px){ .n-degrade{ grid-template-columns:repeat(3,1fr); gap:6px; } .n-degrade span{display:none} }
+
+/* silhouette (canapé, chien, accessoires) devant les murs */
+.n-silhouette { position:absolute; height:auto; display:block; pointer-events:none; z-index:2; filter:drop-shadow(0 6px 10px rgba(0,0,0,.12)); }
+.n-canape-img { display:block; width:min(680px,100%); height:auto; margin-top:40px; filter:drop-shadow(0 6px 10px rgba(0,0,0,.12)); }

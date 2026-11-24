@@ -228,7 +228,7 @@ export default async function Accueil({ searchParams }) {
             <div className="n-mur-oeuvres">
               {["F298", "F299", "F302"].map((i) => <img key={i} src={vign[i]} alt="" />)}
             </div>
-            <div className="n-canape"><i /><b /><span /></div>
+            <img className="n-canape-img" src="/ambiance/silhouette.webp" alt="" />
           </div>
         </div>
       </section>
