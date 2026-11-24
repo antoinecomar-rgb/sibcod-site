@@ -39,7 +39,7 @@ export default async function Page({ searchParams }) {
   const t = T[lang];
   const Q = lang === "fr" ? "?lang=fr" : "";
   const { oeuvres } = await catalogue(lang);
-  const liste = oeuvres.filter((o) => o.palette.length).map((o) => ({
+  const liste = oeuvres.filter((o) => o.palette.length && !o.doublon).map((o) => ({
     id: o.id, titre: o.titre, img: o.img, palette: o.palette, format: o.format, ratio: o.ratio, href: `/oeuvre/${o.id}${Q}`,
   }));
   return (

@@ -59,7 +59,7 @@ export default function Composer({ oeuvres, palettes, lang, txt }) {
   const [mur, setMur] = useState("blanc");
   const [lay, setLay] = useState("trio");
   const [pal, setPal] = useState(palettes[0].id);
-  const [taille, setTaille] = useState("m");
+  const [taille, setTaille] = useState("g");
   const [graine, setGraine] = useState(0);
   const [nombre, setNombre] = useState(5);
   const [libT, setLibT] = useState(["p", "m", "g"]);
@@ -99,6 +99,9 @@ export default function Composer({ oeuvres, palettes, lang, txt }) {
     const ok = (o) => (lay === "grand" ? o.format === "paysage" || o.format === "panorama" : lay === "colonne" ? o.format !== "panorama" : o.format === "portrait");
     let c = oeuvres.filter((o) => o.palette[0] === pal && ok(o));
     if (c.length < L.n) c = c.concat(oeuvres.filter((o) => o.palette.includes(pal) && ok(o) && !c.includes(o)));
+    // jamais deux fois la même image (deux œuvres peuvent partager une vignette)
+    const vues = new Set();
+    c = c.filter((o) => (vues.has(o.img) || vues.has(o.titre) ? false : (vues.add(o.img), vues.add(o.titre), true)));
     if (!c.length) return [];
     const d = (graine * L.n) % c.length;
     return [...c.slice(d), ...c.slice(0, d)].slice(0, L.n);
