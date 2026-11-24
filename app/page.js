@@ -108,7 +108,15 @@ export default async function Accueil({ searchParams }) {
   const vign = Object.fromEntries(oeuvres.flatMap((o) => o.variantes.map((v) => [v.id, v.img])));
   // ordre stable mais mélangé : alterne les thèmes pour l'aperçu
   const parId = Object.fromEntries(oeuvres.map((o) => [o.id, o]));
-  const selection = SELECTION.map((id) => parId[id]).filter(Boolean).map((o) => ({ id: o.id, titre: o.titre, ...o.variantes[0] }));
+  // une entrée est une œuvre (sa version principale) ou un fichier précis (une version ou un panneau)
+  const selection = SELECTION.map((id) => {
+    if (parId[id]) return { ...parId[id].variantes[0], id: parId[id].id, titre: parId[id].titre };
+    for (const o of oeuvres) {
+      const v = o.variantes.find((x) => x.id === id || (x.membres || []).some((m) => m.id === id));
+      if (v) return { ...v, id: v.id, titre: v.titre || o.titre };
+    }
+    return null;
+  }).filter(Boolean);
 
   return (
     <>
