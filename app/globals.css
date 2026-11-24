@@ -573,3 +573,13 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
   .n-teintes button { width:26px; height:26px; min-height:0; padding:0; }
   .n-composer-pied strong { font-size:20px; }
 }
+
+/* téléphone : panoramas et polyptyques sur toute la largeur */
+@media (max-width:800px){
+  .n-flot-o.large { flex-basis:100% !important; min-width:100%; }
+  .n-grille .n-carte.large { grid-column:1 / -1; }
+  .n-grille .n-carte.large .n-mat { aspect-ratio:auto; padding:14px; }
+  .n-polys { grid-template-columns:1fr; gap:28px; }
+  .n-carte-poly .n-mat { aspect-ratio:auto; padding:14px 0; margin:0 -16px; }
+  .n-carte-poly .n-poly { width:100%; padding:0 10px; box-sizing:border-box; }
+}
