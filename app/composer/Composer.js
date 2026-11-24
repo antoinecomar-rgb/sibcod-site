@@ -163,7 +163,7 @@ export default function Composer({ oeuvres, palettes, lang, txt }) {
         <span className="n-petit">{txt.autreS}</span>
       </div>
 
-      <div className="n-scene" style={{ background: murC.c, aspectRatio: `${MUR_L} / ${MUR_H}` }} role="img" aria-label={txt.aria + choix.map((o) => o.titre).join(", ")}>
+      <div className="n-scene-cadre"><div className="n-scene" style={{ background: murC.c, aspectRatio: `${MUR_L} / ${MUR_H}` }} role="img" aria-label={txt.aria + choix.map((o) => o.titre).join(", ")}>
         {lay === "libre" && choix.map((o) => (
           <img key={o.id} className="n-libre-o" src={o.img} alt="" style={{ left: pct(o.x), bottom: `${(o.b / MUR_H) * 100}%`, width: pct(o.w) }} />
         ))}
@@ -178,7 +178,7 @@ export default function Composer({ oeuvres, palettes, lang, txt }) {
         )}
         <div className="n-scene-canape" style={{ width: pct(CANAPE_L), height: `${(CANAPE_H / MUR_H) * 100}%` }}><i /><b /><span /></div>
         <p className={sombre ? "n-echelle-note clair" : "n-echelle-note"}>{txt.echelle}</p>
-      </div>
+      </div></div>
 
       <div className="n-composer-pied">
         <div>
@@ -189,8 +189,7 @@ export default function Composer({ oeuvres, palettes, lang, txt }) {
           {!choix.length && <p>{txt.vide}</p>}
         </div>
         <div className="n-btns">
-          <button type="button" className="n-btn" onClick={() => setGraine((g) => g + 1)}><span aria-hidden="true">↻</span> {txt.autre}</button>
-          {choix[0] && <a className="n-btn" href={choix[0].href}>{txt.voir}</a>}
+          {choix[0] && <a className="n-btn2" href={choix[0].href}>{txt.voir}</a>}
         </div>
       </div>
     </div>
