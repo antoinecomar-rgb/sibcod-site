@@ -179,7 +179,7 @@ export default function Composer({ oeuvres, palettes, lang, txt }) {
         {lay === "grille" && (
           <style>{`.n-scene-oeuvres.grille{grid-template-columns:repeat(2, ${pct(dims(choix[0] || { ratio: 0.75 }).w)})}`}</style>
         )}
-        <div className="n-scene-canape" style={{ width: pct(CANAPE_L), height: `${(CANAPE_H / MUR_H) * 100}%` }}><i /><b /><span /></div>
+        <img className="n-silhouette" src="/ambiance/silhouette-2.webp" alt="" style={{ width: pct(258.3), left: pct(MUR_L / 2 - 136.2), bottom: `${(-2.6 / MUR_H) * 100}%` }} />
         <p className={sombre ? "n-echelle-note clair" : "n-echelle-note"}>{txt.echelle}</p>
       </div></div>
 

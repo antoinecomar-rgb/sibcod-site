@@ -54,12 +54,7 @@ export default function ScaleView({ init, lang, title, hint }) {
           <img src={src} alt={alt} />
         </div>
         {/* canapé : 220 cm de large, 85 cm de haut */}
-        <svg viewBox="0 0 220 85" aria-hidden="true">
-          <rect x="0" y="25" width="220" height="55" rx="10" fill="#b9ad9a" />
-          <rect x="10" y="0" width="200" height="50" rx="12" fill="#c9bdaa" />
-          <rect x="6" y="78" width="10" height="7" fill="#7b6f5e" />
-          <rect x="204" y="78" width="10" height="7" fill="#7b6f5e" />
-        </svg>
+        <img className="n-silhouette" src="/ambiance/silhouette-2.webp" alt="" aria-hidden="true" style={{ width: `${(258.3 / WALL_W) * 100}%`, left: `${((WALL_W / 2 - 136.2) / WALL_W) * 100}%`, bottom: `${6 - (2.6 / WALL_H) * 94}%` }} />
         <div className="dim" style={{ bottom: `${(6 + ((bottomCm + h) / WALL_H) * 94) + 1}%`, display: (bottomCm + h) / WALL_H > 0.93 ? "none" : "block" }}>{label}</div>
       </div>
     </section>
