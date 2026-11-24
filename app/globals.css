@@ -282,6 +282,7 @@ h2 { font-family:var(--serif); font-weight:400; }
 .n-hero-texte h1 { font-family:var(--serif); font-weight:400; font-size:clamp(34px,4.3vw,62px); line-height:1.05; margin:0 0 18px; text-shadow:0 1px 18px rgba(0,0,0,.25); }
 .n-hero-texte p { max-width:560px; font-size:18px; line-height:1.7; color:rgba(255,255,255,.92); margin:0 0 26px; }
 .n-hero .n-btns { display:flex; flex-wrap:wrap; gap:12px; }
+@media (min-width:801px){ .n-hero-texte h1{white-space:nowrap} }
 @media (max-width:800px){ .n-hero-texte p{font-size:16px} }
 /* défilé d'ouverture : la première image s'affiche d'emblée, chaque suivante se pose
    par-dessus, et la dernière reste à l'écran */

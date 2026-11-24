@@ -133,7 +133,7 @@ export default async function Accueil({ searchParams }) {
         <div className="wrap n-hero-tete"><Entete lang={lang} clair hrefLang={(l) => (l === "fr" ? "/?lang=fr" : "/")} /></div>
         <div className="wrap n-hero-texte">
           <img className="n-hero-logo" src="/ambiance/logo-rond-blanc.png" alt="Sibcod" width="415" height="415" />
-          <h1>{t.h1[0]}<br />{t.h1[1]}</h1>
+          <h1>{t.h1.join(" ")}</h1>
           <p>{t.sub}</p>
           <div className="n-btns">
             <a className="n-btn clair" href={`/collection${Q}`}>{t.cta1}</a>
