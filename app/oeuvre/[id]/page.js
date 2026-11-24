@@ -10,7 +10,7 @@ import { alternates } from "../../../lib/seo";
 
 const T = {
   en: {
-    back: "← Collection", by: "Original artwork by Sibcod",
+    back: "← Collection", by: "Original Sibcod creation",
     voirMur: "On the wall", variantesS: "Click a version to display it.", ensemble: (n, x) => `Part of ${n === 2 ? "a diptych" : n === 3 ? "a triptych" : "a series"}: ${x}`, variantes: "Available versions", supports: "Supports", supportsV: "Fine art paper, canvas, metal, wood, acrylic",
     made: "Made", madeV: "Printed to order and shipped by Pictorem (United States and Canada)",
     buy: "Buy", soon: "Coming soon", choose: "Choose size and support",
@@ -19,7 +19,7 @@ const T = {
     custom: "A custom size or a project?", write: "Write to us", chez: "At home", pres: "Up close",
   },
   fr: {
-    back: "← Collection", by: "Œuvre originale de Sibcod",
+    back: "← Collection", by: "Création originale Sibcod",
     voirMur: "Au mur", variantesS: "Cliquez sur une version pour l'afficher.", ensemble: (n, x) => `Fait partie ${n === 2 ? "d'un diptyque" : n === 3 ? "d'un triptyque" : "d'une série"} : ${x}`, variantes: "Versions disponibles", supports: "Supports", supportsV: "Papier d'art, toile, métal, bois, acrylique",
     made: "Fabrication", madeV: "Imprimée à la commande et expédiée par Pictorem (États-Unis et Canada)",
     buy: "Acheter", soon: "Bientôt disponible", choose: "Choisir la taille et le support",
@@ -45,8 +45,8 @@ export async function generateMetadata({ params, searchParams }) {
   const { o } = await trouver(id, fr ? "fr" : "en");
   if (!o) return {};
   const description = fr
-    ? `« ${o.titre} », œuvre originale de Sibcod. ${nom(THEMES, o.theme, "fr")}, ${nom(PALETTES, o.palette[0], "fr").toLowerCase()}. Imprimée à la commande sur papier d'art, toile, métal, bois ou acrylique.`
-    : `“${o.titre}”, an original artwork by Sibcod. ${nom(THEMES, o.theme, "en")}, ${nom(PALETTES, o.palette[0], "en").toLowerCase()}. Printed to order on fine art paper, canvas, metal, wood or acrylic.`;
+    ? `« ${o.titre} », création originale Sibcod. ${nom(THEMES, o.theme, "fr")}, ${nom(PALETTES, o.palette[0], "fr").toLowerCase()}. Imprimée à la commande sur papier d'art, toile, métal, bois ou acrylique.`
+    : `“${o.titre}”, an original Sibcod creation. ${nom(THEMES, o.theme, "en")}, ${nom(PALETTES, o.palette[0], "en").toLowerCase()}. Printed to order on fine art paper, canvas, metal, wood or acrylic.`;
   return {
     title: `${o.titre} – SIBCOD`, description,
     alternates: alternates(`/oeuvre/${o.id}`, fr ? "fr" : "en"),
