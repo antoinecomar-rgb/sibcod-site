@@ -8,8 +8,8 @@ import { alternates } from "../lib/seo";
 
 const T = {
   en: {
-    h1: ["A presence", "on your walls."],
-    sub: "Artworks made to inhabit a space: room to breathe, a harmony of colours, somewhere else. To contemplate when you choose to, to live with every day.",
+    h1: ["Art", "to live with."],
+    sub: "The subtle glow of the tropics, at home. Shaped by the colours and light of Martinique, Sibcod's work captures a radiant softness without ever falling into exotic cliché: a familiar elsewhere that naturally finds its place. Printed to order, gallery quality, as prints and canvases.",
     cta1: "Discover the collection", cta2: "Compose a wall",
     apK: "What an artwork brings to a room",
     apT: "You only look at it intently if you decide to. The rest of the time, it is simply there: it inhabits the space.",
@@ -46,8 +46,8 @@ const T = {
     steps: [["Choose the artwork", "By colour, by theme, or by composing your wall."], ["Size and support", "From a small frame to very large formats, on paper, canvas, metal, wood or acrylic."], ["Printed for you", "Made to order by our partner workshop Pictorem, then delivered."]],
   },
   fr: {
-    h1: ["Une présence", "sur vos murs."],
-    sub: "Des œuvres pour habiter l'espace : une respiration, une harmonie de couleurs, un ailleurs. À contempler si on le choisit, à vivre avec tous les jours.",
+    h1: ["Des œuvres", "à vivre."],
+    sub: "L'éclat subtil des tropiques, chez vous. Nourri par les couleurs et la lumière de la Martinique, le travail de Sibcod capture une douceur éclatante, sans jamais céder au cliché exotique : un ailleurs familier, qui trouve naturellement sa place. Édité à la demande en qualité galerie d'art, en affiches et en toiles.",
     cta1: "Découvrir la collection", cta2: "Composer un mur",
     apK: "Ce qu'une œuvre apporte à une pièce",
     apT: "On ne la regarde avec insistance que si on le décide. Le reste du temps, elle est là : elle habite l'espace.",
