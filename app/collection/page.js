@@ -1,7 +1,7 @@
 import Pied from "../Pied";
 import Entete from "../Entete";
 import { catalogue } from "../../lib/catalogue";
-import { PALETTES, THEMES, FORMATS, nom } from "../../lib/libelles";
+import { PALETTES, THEMES, FORMATS, nom, ratioPoly, typePoly, ECART_POLY } from "../../lib/libelles";
 import { alternates } from "../../lib/seo";
 import DEROULE from "../../data/deroule.json";
 
@@ -33,19 +33,19 @@ export default async function Collection({ searchParams }) {
   const sp = await searchParams;
   const lang = sp.lang === "fr" ? "fr" : "en";
   const t = T[lang];
-  const mode = sp.mode === "theme" ? "theme" : sp.mode === "tout" ? "tout" : "couleur";
+  const mode = sp.mode === "theme" ? "theme" : sp.mode === "couleur" ? "couleur" : "tout";
   const fmt = FORMATS.some((f) => f.id === sp.format) ? sp.format : "tous";
   const { oeuvres } = await catalogue(lang);
 
   const lien = (m, f) => {
     const p = new URLSearchParams();
-    if (m !== "couleur") p.set("mode", m);
+    if (m !== "tout") p.set("mode", m);
     if (f !== "tous") p.set("format", f);
     if (lang === "fr") p.set("lang", "fr");
     const s = p.toString();
     return `/collection${s ? "?" + s : ""}`;
   };
-  const filtre = (l) => (fmt === "tous" ? l : l.filter((o) => o.format === fmt || (fmt === "paysage" && o.format === "carre")));
+  const filtre = (l) => (fmt === "tous" ? l : fmt === "polyptyque" ? l.filter((o) => o.panneaux.length > 1) : l.filter((o) => o.format === fmt || (fmt === "paysage" && o.format === "carre")));
   const familles = (mode === "couleur" ? PALETTES : THEMES).map((f) => ({
     ...f,
     dot: mode === "couleur" ? f.c : null,
@@ -59,7 +59,7 @@ export default async function Collection({ searchParams }) {
   return (
     <div className="wrap">
       <Entete lang={lang} actif="collection" hrefLang={(l) => {
-        const p = new URLSearchParams(); if (mode !== "couleur") p.set("mode", mode); if (fmt !== "tous") p.set("format", fmt); if (l === "fr") p.set("lang", "fr");
+        const p = new URLSearchParams(); if (mode !== "tout") p.set("mode", mode); if (fmt !== "tous") p.set("format", fmt); if (l === "fr") p.set("lang", "fr");
         const s = p.toString(); return `/collection${s ? "?" + s : ""}`;
       }} />
       <section className="n-col-tete">
@@ -67,9 +67,10 @@ export default async function Collection({ searchParams }) {
         <h1>{t.h1}</h1>
         <p className="n-lead">{t.s}</p>
         <div className="n-modes">
+          <a href={lien("tout", fmt)} className={mode === "tout" ? "n-arc on" : "n-arc"}>{t.tout}</a>
           <a href={lien("couleur", fmt)} className={mode === "couleur" ? "on" : ""}>{t.couleur}</a>
           <a href={lien("theme", fmt)} className={mode === "theme" ? "on" : ""}>{t.theme}</a>
-          <a href={lien("tout", fmt)} className={mode === "tout" ? "n-arc on" : "n-arc"}>{t.tout}</a>
+
         </div>
       </section>
 
@@ -91,8 +92,8 @@ export default async function Collection({ searchParams }) {
         <section className="n-flot" aria-label={t.tout}>
           {flot.length === 0 && <p className="n-petit">{t.aucun}</p>}
           {flot.map((o) => (
-            <a key={o.id} className="n-flot-o" href={`/oeuvre/${o.id}${Q}`} style={{ flexGrow: o.ratio, flexBasis: `${Math.round(o.ratio * 230)}px`, aspectRatio: String(o.ratio) }}>
-              <img src={o.img} alt={o.titre} loading="lazy" />
+            <a key={o.id} className={o.panneaux.length > 1 ? "n-flot-o poly" : "n-flot-o"} href={`/oeuvre/${o.id}${Q}`} style={{ flexGrow: ratioPoly(o), flexBasis: `${Math.round(ratioPoly(o) * 230)}px`, aspectRatio: String(ratioPoly(o)) }}>
+              {o.panneaux.length > 1 ? <Poly o={o} /> : <img src={o.img} alt={o.titre} loading="lazy" />}
               <span>{o.titre}</span>
             </a>
           ))}
@@ -131,12 +132,22 @@ function Carte({ o, lang, mode, Q }) {
   const sous = mode === "couleur" ? nom(THEMES, o.theme, lang) : nom(PALETTES, o.palette[0], lang);
   return (
     <a className="n-carte" href={`/oeuvre/${o.id}${Q}`}>
-      <span className="n-mat"><img src={o.img} alt={o.titre} loading="lazy" /></span>
+      <span className="n-mat">{o.panneaux.length > 1 ? <Poly o={o} /> : <img src={o.img} alt={o.titre} loading="lazy" />}</span>
       <span className="n-carte-t">
         <span>{o.titre}</span>
         <span className="n-pts" aria-hidden="true">{o.palette.map((p) => <i key={p} style={{ background: c(p) }} />)}</span>
       </span>
-      <span className="n-petit">{[sous, nom(FORMATS, o.format, lang)].filter(Boolean).join(" · ")}</span>
+      <span className="n-petit">{[sous, o.panneaux.length > 1 ? typePoly(o.panneaux.length, lang) : nom(FORMATS, o.format, lang)].filter(Boolean).join(" · ")}</span>
     </a>
+  );
+}
+
+// panneaux d'un polyptyque, côte à côte, chacun à sa proportion
+function Poly({ o }) {
+  const total = ratioPoly(o);
+  return (
+    <span className="n-poly" style={{ aspectRatio: String(total), gap: `${(ECART_POLY / total) * 100}%` }}>
+      {o.panneaux.map((p) => <img key={p.id} src={p.img} alt={o.titre} loading="lazy" style={{ width: `${(p.ratio / total) * 100}%` }} />)}
+    </span>
   );
 }

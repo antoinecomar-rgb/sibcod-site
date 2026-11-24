@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Entete from "../../Entete";
 import ScaleView from "./ScaleView";
+import VoirAuMur from "./VoirAuMur";
 import { catalogue } from "../../../lib/catalogue";
 import { PALETTES, THEMES, FORMATS, nom, taille } from "../../../lib/libelles";
 import { alternates } from "../../../lib/seo";
@@ -10,7 +11,7 @@ import { alternates } from "../../../lib/seo";
 const T = {
   en: {
     back: "← Collection", by: "Original artwork by Sibcod",
-    variantes: "Available versions", supports: "Supports", supportsV: "Fine art paper, canvas, metal, wood, acrylic",
+    voirMur: "See it on the wall", variantes: "Available versions", supports: "Supports", supportsV: "Fine art paper, canvas, metal, wood, acrylic",
     made: "Made", madeV: "Printed to order and shipped by Pictorem (United States and Canada)",
     buy: "Buy", soon: "Coming soon", choose: "Choose size and support",
     scaleT: "See it at scale", scaleH: "Choose a size to see the artwork next to a 2.2 m sofa.",
@@ -19,7 +20,7 @@ const T = {
   },
   fr: {
     back: "← Collection", by: "Œuvre originale de Sibcod",
-    variantes: "Versions disponibles", supports: "Supports", supportsV: "Papier d'art, toile, métal, bois, acrylique",
+    voirMur: "Voir au mur", variantes: "Versions disponibles", supports: "Supports", supportsV: "Papier d'art, toile, métal, bois, acrylique",
     made: "Fabrication", madeV: "Imprimée à la commande et expédiée par Pictorem (États-Unis et Canada)",
     buy: "Acheter", soon: "Bientôt disponible", choose: "Choisir la taille et le support",
     scaleT: "Voir à l'échelle", scaleH: "Choisissez une taille pour voir l'œuvre à côté d'un canapé de 2,2 m.",
@@ -89,8 +90,10 @@ export default async function Oeuvre({ params, searchParams }) {
               <h2>{t.variantes}</h2>
               {[...o.variantes].reverse().map((v) => (
                 <div key={v.id} className="n-variante">
-                  <img src={v.img} alt="" loading="lazy" />
-                  <span><strong>{v.titre}</strong><em>{taille(v.maxPo, lang)}</em></span>
+                  <VoirAuMur v={{ id: v.id, img: v.img, ratio: v.ratio, maxPo: v.maxPo, titre: v.titre }} label={t.voirMur}>
+                    <img src={v.img} alt="" loading="lazy" />
+                    <span><strong>{v.titre}</strong><em>{taille(v.maxPo, lang)} · <u>{t.voirMur}</u></em></span>
+                  </VoirAuMur>
                   {v.url ? <a className="buybig n-var" href={v.url} target="_blank" rel="noopener noreferrer">{t.buy}</a> : <span className="soon">{t.soon}</span>}
                 </div>
               ))}
@@ -113,7 +116,7 @@ export default async function Oeuvre({ params, searchParams }) {
         </section>
       )}
 
-      {o.img && <ScaleView src={o.img} alt={o.titre} maxIn={o.maxPo} lang={lang} title={t.scaleT} hint={t.scaleH} />}
+      {o.img && <ScaleView init={{ id: o.id, img: o.img, ratio: o.ratio, maxPo: (o.variantes.find((v) => v.id === o.id) || o).maxPo, titre: o.titre }} lang={lang} title={t.scaleT} hint={t.scaleH} />}
 
       {accords.length > 0 && (
         <section className="n-accords">
