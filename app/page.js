@@ -1,5 +1,6 @@
 import Pied from "./Pied";
 import Entete from "./Entete";
+import BandeauGala from "./BandeauGala";
 import Nuancier from "./Nuancier";
 import { catalogue } from "../lib/catalogue";
 import { PALETTES, THEMES, TOUT, q } from "../lib/libelles";
@@ -130,6 +131,8 @@ export default async function Accueil({ searchParams }) {
           </div>
         </div>
       </section>
+
+      <BandeauGala lang={lang} />
 
       <section className="wrap n-apports">
         <div className="n-centre">

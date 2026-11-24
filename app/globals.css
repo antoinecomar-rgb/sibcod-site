@@ -446,7 +446,7 @@ h2 { font-family:var(--serif); font-weight:400; }
 .n-scene { position:relative; width:100%; overflow:hidden; transition:background .3s; }
 .n-scene-oeuvres { position:absolute; left:0; right:0; display:flex; justify-content:center; align-items:center; }
 .n-scene-oeuvres.colonne { flex-direction:column; }
-.n-scene-oeuvres.grille { display:grid; justify-content:center; }
+.n-scene-oeuvres.grille { display:grid; justify-content:center; place-items:center; }
 .n-scene-oeuvres img { display:block; box-shadow:0 8px 18px rgba(0,0,0,.25); transition:width .3s; }
 .n-scene-canape { position:absolute; bottom:0; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; }
 .n-scene-canape i { display:block; width:93%; height:42%; background:#8A7F72; border-radius:14px 14px 0 0; }
@@ -554,11 +554,13 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 @media (max-width:700px){ .n-polys{grid-template-columns:1fr} }
 
 /* composer sur téléphone : le mur d'abord, vu de plus près ; réglages compacts */
-.n-scene-cadre { width:100%; }
+.n-scene-cadre { width:100%; display:flex; justify-content:center; }
+/* sur ordinateur, le mur entier (canapé compris) tient dans l'écran */
+@media (min-width:701px){ .n-scene-cadre .n-scene { width:auto; height:min(74vh, calc((100vw - 64px) * 230 / 320)); max-width:100%; } }
 @media (max-width:700px){
   .n-composer { gap:16px; }
   .n-scene-cadre { order:-2; overflow:hidden; margin:0 -16px; width:calc(100% + 32px); }
-  .n-scene-cadre .n-scene { width:150%; margin-left:-25%; }
+  .n-scene-cadre .n-scene { width:150%; margin-left:-25%; flex:none; height:auto; }
   .n-scene-cadre .n-echelle-note { left:calc(100% / 6 + 10px); right:calc(100% / 6 + 10px); font-size:11px; }
   .n-relancer { order:-1; margin:0; gap:6px 12px; }
   .n-relancer .n-btn { padding:11px 18px; font-size:12px; }
