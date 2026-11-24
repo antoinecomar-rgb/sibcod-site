@@ -6,6 +6,7 @@ import ScaleView from "./ScaleView";
 import VoirAuMur from "./VoirAuMur";
 import { catalogue } from "../../../lib/catalogue";
 import { PALETTES, THEMES, FORMATS, nom, taille } from "../../../lib/libelles";
+import DESCRIPTIONS from "../../../data/descriptions.json";
 import { alternates } from "../../../lib/seo";
 
 const T = {
@@ -71,7 +72,9 @@ export default async function Oeuvre({ params, searchParams }) {
   const autres = oeuvres.filter((x) => x.id !== o.id && x.palette.length);
   const accords = pal ? pick(autres.filter((x) => x.palette[0] === pal.id && x.theme !== o.theme), o.id, 4) : [];
   const memeTheme = th ? pick(autres.filter((x) => x.theme === th.id && !accords.includes(x)), o.id + "t", 4) : [];
-  const desc = [th && (lang === "fr" ? th.tfr : th.ten), pal && (lang === "fr" ? pal.tfr : pal.ten)].filter(Boolean);
+  // description propre à l'œuvre, seulement si Sibylle l'a validée (data/descriptions.json)
+  const dv = DESCRIPTIONS[img.id] || DESCRIPTIONS[o.id];
+  const desc = dv && dv[lang] ? [dv[lang]] : [];
   const principale = img.url ? img : o.variantes.find((v) => v.url);
 
   return (
