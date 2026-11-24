@@ -9,7 +9,7 @@ import { alternates } from "../lib/seo";
 const T = {
   en: {
     h1: ["Art", "to live with."],
-    sub: "The subtle glow of the tropics, at home. Shaped by the colours and light of Martinique, Sibcod's work captures a radiant softness without ever falling into exotic cliché: a familiar elsewhere that naturally finds its place. Printed to order, gallery quality, as prints and canvases.",
+    sub: "Original artworks by Sibcod, from the softest to the most vivid. Printed to order in gallery quality, on fine art paper, canvas, metal, wood or acrylic.",
     cta1: "Discover the collection", cta2: "Compose a wall",
     apK: "What an artwork brings to a room",
     apT: "You only look at it intently if you decide to. The rest of the time, it is simply there: it inhabits the space.",
@@ -47,7 +47,7 @@ const T = {
   },
   fr: {
     h1: ["Des œuvres", "à vivre."],
-    sub: "L'éclat subtil des tropiques, chez vous. Nourri par les couleurs et la lumière de la Martinique, le travail de Sibcod capture une douceur éclatante, sans jamais céder au cliché exotique : un ailleurs familier, qui trouve naturellement sa place. Édité à la demande en qualité galerie d'art, en affiches et en toiles.",
+    sub: "Les créations originales de Sibcod, du plus doux au plus vif. Imprimées à la demande en qualité galerie, sur papier d'art, toile, métal, bois ou acrylique.",
     cta1: "Découvrir la collection", cta2: "Composer un mur",
     apK: "Ce qu'une œuvre apporte à une pièce",
     apT: "On ne la regarde avec insistance que si on le décide. Le reste du temps, elle est là : elle habite l'espace.",
