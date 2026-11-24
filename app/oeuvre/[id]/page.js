@@ -11,7 +11,7 @@ import { alternates } from "../../../lib/seo";
 const T = {
   en: {
     back: "← Collection", by: "Original artwork by Sibcod",
-    voirMur: "See it on the wall", variantes: "Available versions", supports: "Supports", supportsV: "Fine art paper, canvas, metal, wood, acrylic",
+    voirMur: "On the wall", variantesS: "Click a version to display it.", ensemble: (n, x) => `Part of ${n === 2 ? "a diptych" : n === 3 ? "a triptych" : "a series"}: ${x}`, variantes: "Available versions", supports: "Supports", supportsV: "Fine art paper, canvas, metal, wood, acrylic",
     made: "Made", madeV: "Printed to order and shipped by Pictorem (United States and Canada)",
     buy: "Buy", soon: "Coming soon", choose: "Choose size and support",
     scaleT: "See it at scale", scaleH: "Choose a size to see the artwork next to a 2.2 m sofa.",
@@ -20,7 +20,7 @@ const T = {
   },
   fr: {
     back: "← Collection", by: "Œuvre originale de Sibcod",
-    voirMur: "Voir au mur", variantes: "Versions disponibles", supports: "Supports", supportsV: "Papier d'art, toile, métal, bois, acrylique",
+    voirMur: "Au mur", variantesS: "Cliquez sur une version pour l'afficher.", ensemble: (n, x) => `Fait partie ${n === 2 ? "d'un diptyque" : n === 3 ? "d'un triptyque" : "d'une série"} : ${x}`, variantes: "Versions disponibles", supports: "Supports", supportsV: "Papier d'art, toile, métal, bois, acrylique",
     made: "Fabrication", madeV: "Imprimée à la commande et expédiée par Pictorem (États-Unis et Canada)",
     buy: "Acheter", soon: "Bientôt disponible", choose: "Choisir la taille et le support",
     scaleT: "Voir à l'échelle", scaleH: "Choisissez une taille pour voir l'œuvre à côté d'un canapé de 2,2 m.",
@@ -30,10 +30,13 @@ const T = {
 };
 
 async function trouver(id, lang) {
-  const { oeuvres, oeuvreDuFichier } = await catalogue(lang);
+  const { oeuvres, oeuvreDuFichier, imageDuFichier, polyptyques } = await catalogue(lang);
   const wid = oeuvreDuFichier[id];
   const o = oeuvres.find((x) => x.id === wid);
-  return { o, oeuvres };
+  // l'image demandée devient l'image principale de la page
+  const img = o ? imageDuFichier[id] || o.variantes[0] : null;
+  const polys = img ? polyptyques.filter((p) => p.panneaux.some((x) => x.id === img.id)) : [];
+  return { o, img, oeuvres, polys };
 }
 
 export async function generateMetadata({ params, searchParams }) {
@@ -58,28 +61,30 @@ export default async function Oeuvre({ params, searchParams }) {
   const { id } = await params; const sp = await searchParams;
   const lang = sp.lang === "fr" ? "fr" : "en";
   const t = T[lang];
-  const { o, oeuvres } = await trouver(id, lang);
+  const { o, img, oeuvres, polys } = await trouver(id, lang);
   if (!o) notFound();
+  const fmtImg = img.ratio < 0.9 ? "portrait" : img.ratio < 1.12 ? "carre" : img.ratio < 1.75 ? "paysage" : "panorama";
   const Q = lang === "fr" ? "?lang=fr" : "";
   const pal = PALETTES.find((p) => p.id === o.palette[0]);
   const th = THEMES.find((x) => x.id === o.theme);
-  const pano = o.ratio >= 1.9;
+  const pano = img.ratio >= 1.9;
   const autres = oeuvres.filter((x) => x.id !== o.id && x.palette.length);
   const accords = pal ? pick(autres.filter((x) => x.palette[0] === pal.id && x.theme !== o.theme), o.id, 4) : [];
   const memeTheme = th ? pick(autres.filter((x) => x.theme === th.id && !accords.includes(x)), o.id + "t", 4) : [];
   const desc = [th && (lang === "fr" ? th.tfr : th.ten), pal && (lang === "fr" ? pal.tfr : pal.ten)].filter(Boolean);
-  const principale = [...o.variantes].reverse().find((v) => v.url);
+  const principale = img.url ? img : o.variantes.find((v) => v.url);
 
   return (
     <div className="wrap">
-      <Entete lang={lang} actif="collection" hrefLang={(l) => (l === "fr" ? `/oeuvre/${o.id}?lang=fr` : `/oeuvre/${o.id}`)} />
+      <Entete lang={lang} actif="collection" hrefLang={(l) => (l === "fr" ? `/oeuvre/${img.id}?lang=fr` : `/oeuvre/${img.id}`)} />
       <Link href={`/collection${Q}`} className="back">{t.back}</Link>
 
       <div className={pano ? "detail pano" : "detail"}>
-        <div className="big">{o.img && <img src={o.img} alt={o.titre} />}</div>
+        <div className="big">{img.img && <img src={img.img} alt={img.titre} />}</div>
         <div>
-          <p className="n-k">{[th && th[lang], pal && pal[lang], nom(FORMATS, o.format, lang)].filter(Boolean).join(" · ")}</p>
+          <p className="n-k">{[th && th[lang], pal && pal[lang], nom(FORMATS, fmtImg, lang)].filter(Boolean).join(" · ")}</p>
           <h1>{o.titre}</h1>
+          {img.titre && img.titre !== o.titre && <p className="n-sous-titre">{img.titre}</p>}
           <div className="by">{t.by}</div>
           {desc.map((d) => <p key={d}>{d}</p>)}
           {principale
@@ -88,19 +93,35 @@ export default async function Oeuvre({ params, searchParams }) {
           {o.variantes.length > 1 && (
             <div className="n-variantes">
               <h2>{t.variantes}</h2>
-              {[...o.variantes].reverse().map((v) => (
-                <div key={v.id} className="n-variante">
-                  <VoirAuMur v={{ id: v.id, img: v.img, ratio: v.ratio, maxPo: v.maxPo, titre: v.titre }} label={t.voirMur}>
+              <p className="n-petit">{t.variantesS}</p>
+              {o.variantes.map((v) => (
+                <div key={v.id} className={v.id === img.id ? "n-variante on" : "n-variante"}>
+                  <Link href={`/oeuvre/${v.id}${Q}`} scroll={false} className="n-variante-lien" aria-current={v.id === img.id ? "true" : undefined}>
                     <img src={v.img} alt="" loading="lazy" />
-                    <span><strong>{v.titre}</strong><em>{taille(v.maxPo, lang)} · <u>{t.voirMur}</u></em></span>
-                  </VoirAuMur>
-                  {v.url ? <a className="buybig n-var" href={v.url} target="_blank" rel="noopener noreferrer">{t.buy}</a> : <span className="soon">{t.soon}</span>}
+                    <span><strong>{v.titre}</strong><em>{taille(v.maxPo, lang)}</em></span>
+                  </Link>
+                  <span className="n-variante-actions">
+                    <VoirAuMur v={{ id: v.id, img: v.img, ratio: v.ratio, maxPo: v.maxPo, titre: v.titre }} label={t.voirMur} />
+                    {v.url ? <a className="buybig n-var" href={v.url} target="_blank" rel="noopener noreferrer">{t.buy}</a> : <span className="soon">{t.soon}</span>}
+                  </span>
                 </div>
               ))}
             </div>
           )}
+          {polys.map((p) => (
+            <div key={p.id} className="n-ensemble">
+              <h2>{t.ensemble(p.panneaux.length, p.titre)}</h2>
+              <div className="n-ensemble-panneaux">
+                {p.panneaux.map((x) => (
+                  <Link key={x.id} href={`/oeuvre/${x.id}${Q}`} scroll={false} className={x.id === img.id ? "on" : ""} style={{ flexGrow: x.ratio }} title={x.titre}>
+                    <img src={x.img} alt={x.titre} loading="lazy" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
           <table className="facts"><tbody>
-            {o.variantes.length === 1 && <tr><th>{lang === "fr" ? "Tailles" : "Sizes"}</th><td>{taille(o.maxPo, lang)}</td></tr>}
+            {o.variantes.length === 1 && <tr><th>{lang === "fr" ? "Tailles" : "Sizes"}</th><td>{taille(img.maxPo, lang)}</td></tr>}
             <tr><th>{t.supports}</th><td>{t.supportsV}</td></tr>
             <tr><th>{t.made}</th><td>{t.madeV}</td></tr>
           </tbody></table>
@@ -116,7 +137,7 @@ export default async function Oeuvre({ params, searchParams }) {
         </section>
       )}
 
-      {o.img && <ScaleView init={{ id: o.id, img: o.img, ratio: o.ratio, maxPo: (o.variantes.find((v) => v.id === o.id) || o).maxPo, titre: o.titre }} lang={lang} title={t.scaleT} hint={t.scaleH} />}
+      {img.img && <ScaleView key={img.id} init={{ id: img.id, img: img.img, ratio: img.ratio, maxPo: img.maxPo, titre: img.titre }} lang={lang} title={t.scaleT} hint={t.scaleH} />}
 
       {accords.length > 0 && (
         <section className="n-accords">

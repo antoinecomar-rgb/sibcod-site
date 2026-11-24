@@ -1,0 +1,147 @@
+[
+ {
+  "id": "figuier",
+  "titre_fr": "Le grand figuier",
+  "titre_en": "The Great Fig Tree",
+  "panneaux": [
+   "F177",
+   "F178"
+  ]
+ },
+ {
+  "id": "vague-rouge",
+  "titre_fr": "Vague rouge",
+  "titre_en": "Red Wave",
+  "panneaux": [
+   "F303",
+   "F304"
+  ]
+ },
+ {
+  "id": "vers-la-pelee",
+  "titre_fr": "Vers la Pelée",
+  "titre_en": "Toward Mount Pelee",
+  "panneaux": [
+   "F300",
+   "F301"
+  ]
+ },
+ {
+  "id": "coeur-jungle",
+  "titre_fr": "Le cœur de la jungle",
+  "titre_en": "Heart of the Jungle",
+  "panneaux": [
+   "F247",
+   "F248",
+   "F249"
+  ]
+ },
+ {
+  "id": "mer-feuilles",
+  "titre_fr": "La mer derrière les feuilles",
+  "titre_en": "The Sea Behind the Leaves",
+  "panneaux": [
+   "F250",
+   "F251",
+   "F252"
+  ]
+ },
+ {
+  "id": "manzelle",
+  "titre_fr": "Manzelle en mer",
+  "titre_en": "Manzelle at Sea",
+  "panneaux": [
+   "F253",
+   "F254",
+   "F255"
+  ]
+ },
+ {
+  "id": "orage",
+  "titre_fr": "Voici venir l'orage",
+  "titre_en": "Here Comes the Storm",
+  "panneaux": [
+   "F256",
+   "F257",
+   "F258"
+  ]
+ },
+ {
+  "id": "jungle-pop",
+  "titre_fr": "Jungle Pop",
+  "titre_en": "Jungle Pop",
+  "panneaux": [
+   "F259",
+   "F260",
+   "F261"
+  ]
+ },
+ {
+  "id": "feuilles-lumiere",
+  "titre_fr": "Feuilles de lumière",
+  "titre_en": "Light Leaf",
+  "panneaux": [
+   "F091",
+   "F092",
+   "F093"
+  ]
+ },
+ {
+  "id": "jungle",
+  "titre_fr": "Jungle",
+  "titre_en": "Jungle",
+  "panneaux": [
+   "F082",
+   "F083",
+   "F084"
+  ]
+ },
+ {
+  "id": "ilet-jaune",
+  "titre_fr": "Îlet jaune",
+  "titre_en": "Yellow Islet",
+  "panneaux": [
+   "F079",
+   "F080"
+  ]
+ },
+ {
+  "id": "verres",
+  "titre_fr": "Verres",
+  "titre_en": "Glasses",
+  "panneaux": [
+   "F139",
+   "F140",
+   "F141",
+   "F142",
+   "F143"
+  ]
+ },
+ {
+  "id": "anse-voile",
+  "titre_fr": "Anse à la voile",
+  "titre_en": "Sail Cove",
+  "panneaux": [
+   "F001",
+   "F002"
+  ]
+ },
+ {
+  "id": "careme",
+  "titre_fr": "Carême",
+  "titre_en": "Dry Season",
+  "panneaux": [
+   "F296",
+   "F297"
+  ]
+ },
+ {
+  "id": "plumbagos",
+  "titre_fr": "Plumbagos",
+  "titre_en": "Plumbago",
+  "panneaux": [
+   "F111",
+   "F112"
+  ]
+ }
+]
