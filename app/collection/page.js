@@ -35,7 +35,9 @@ export default async function Collection({ searchParams }) {
   const t = T[lang];
   const mode = sp.mode === "theme" ? "theme" : sp.mode === "couleur" ? "couleur" : "tout";
   const fmt = FORMATS.some((f) => f.id === sp.format) ? sp.format : "tous";
-  const { oeuvres, images, polyptyques } = await catalogue(lang);
+  const { oeuvres: toutes, images, polyptyques } = await catalogue(lang);
+  // une œuvre enregistrée deux fois (même image sous deux titres) n'apparaît qu'une fois
+  const oeuvres = toutes.filter((o) => !o.doublon);
   const poly = fmt === "polyptyque";
 
   const lien = (m, f) => {
@@ -53,7 +55,9 @@ export default async function Collection({ searchParams }) {
     liste: filtre(oeuvres.filter((o) => (mode === "couleur" ? o.palette[0] === f.id : o.theme === f.id))),
   }));
   const rang = Object.fromEntries(DEROULE.map((id, i) => [id, i]));
-  const flot = filtre([...images].sort((a, b) => (rang[a.oeuvre] ?? 1e4) - (rang[b.oeuvre] ?? 1e4) || a.ordre - b.ordre));
+  // le filtre Panorama montre les panoramas eux-mêmes (dans la galerie, une œuvre en panneaux montre ses panneaux)
+  const panos = oeuvres.flatMap((o) => o.variantes.filter((v) => v.ratio >= 1.75).map((v) => ({ ...v, oeuvre: o.id, ordre: 0, format: "panorama" })));
+  const flot = filtre([...(fmt === "panorama" ? panos : images)].sort((a, b) => (rang[a.oeuvre] ?? 1e4) - (rang[b.oeuvre] ?? 1e4) || a.ordre - b.ordre));
   const autres = filtre(oeuvres.filter((o) => !o.palette.length));
   const Q = lang === "fr" ? "?lang=fr" : "";
 
@@ -104,7 +108,7 @@ export default async function Collection({ searchParams }) {
         <section className="n-flot" aria-label={t.tout}>
           {flot.length === 0 && <p className="n-petit">{t.aucun}</p>}
           {flot.map((o) => (
-            <a key={o.id} className="n-flot-o" href={`/oeuvre/${o.id}${Q}`} style={{ flexGrow: o.ratio, flexBasis: `${Math.round(o.ratio * 230)}px`, aspectRatio: String(o.ratio) }}>
+            <a key={o.id} className={o.ratio >= 1.7 ? "n-flot-o large" : "n-flot-o"} href={`/oeuvre/${o.id}${Q}`} style={{ flexGrow: o.ratio, flexBasis: `${Math.round(o.ratio * 230)}px`, aspectRatio: String(o.ratio) }}>
               <img src={o.img} alt={o.titre} loading="lazy" />
               <span>{o.titre}</span>
             </a>
@@ -143,7 +147,7 @@ function Carte({ o, lang, mode, Q }) {
   const c = (id) => PALETTES.find((p) => p.id === id)?.c;
   const sous = mode === "couleur" ? nom(THEMES, o.theme, lang) : nom(PALETTES, o.palette[0], lang);
   return (
-    <a className="n-carte" href={`/oeuvre/${o.id}${Q}`}>
+    <a className={o.ratio >= 1.7 ? "n-carte large" : "n-carte"} href={`/oeuvre/${o.id}${Q}`}>
       <span className="n-mat"><img src={o.img} alt={o.titre} loading="lazy" /></span>
       <span className="n-carte-t">
         <span>{o.titre}</span>
