@@ -113,7 +113,9 @@ export default async function Oeuvre({ params, searchParams }) {
                   </Link>
                   <span className="n-variante-actions">
                     <VoirAuMur v={{ id: v.id, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, fiches: v.fiches, titre: v.titre }} label={t.voirMur} />
-                    {v.url ? <a className="buybig n-var" href={v.url} target="_blank" rel="noopener noreferrer">{t.buy}</a> : <span className="soon">{t.soon}</span>}
+                    {(v.fiches || []).length > 1
+                      ? v.fiches.map((f) => <a key={f.url} className="buybig n-var" href={f.url} target="_blank" rel="noopener noreferrer">{t.buy} <small>{plageFiche(f, v.ratio, lang)}</small></a>)
+                      : v.url ? <a className="buybig n-var" href={v.url} target="_blank" rel="noopener noreferrer">{t.buy}</a> : <span className="soon">{t.soon}</span>}
                   </span>
                 </div>
               ))}
