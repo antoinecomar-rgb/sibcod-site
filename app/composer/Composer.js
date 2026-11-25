@@ -229,7 +229,7 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
       <div className="n-barre-choix">
         {items.map((x) => (
           <button key={x.id} type="button" aria-pressed={val === x.id} className={(val === x.id ? "on" : "") + (x.id === "moi" ? " n-moi" : "")} onClick={() => set(x.id)} title={x[lang]}>
-            {rond && x.c && <i style={{ background: rond(x) }} />}{x.id === "moi" && <span aria-hidden="true">＋</span>}{x[lang]}
+            {rond && x.c && <i style={{ background: rond(x) }} />}{x[lang]}
           </button>
         ))}
       </div>
@@ -343,8 +343,8 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
             <strong>{fr ? "Estimation" : "Estimate"} : {total != null ? enDollars(total, lang) : (fr ? "sur demande" : "on request")}</strong>
             <p className="n-petit">
               {fr
-                ? `${SUPPORTS.find((x) => x.id === support).fr}${encadre ? `, ${cadreC.fr.toLowerCase()}${support === "affiche" ? (pp ? `, passe-partout ${PASSE_PARTOUTS.find((x) => x.id === pp).fr}` : ", sans passe-partout") : ""}` : hab ? ", marge blanche" : ""}. Prix publics Pictorem en dollars US, hors taxes et promotions, livraison offerte aux États-Unis et au Canada. Le prix exact s'affiche chez Pictorem ; les prix des cadres sont estimés. Pictorem propose d'autres baguettes et 15 couleurs de passe-partout à la commande.`
-                : `${SUPPORTS.find((x) => x.id === support).en}${encadre ? `, ${cadreC.en.toLowerCase()}${support === "affiche" ? (pp ? `, ${PASSE_PARTOUTS.find((x) => x.id === pp).en} mat` : ", no mat") : ""}` : hab ? ", white border" : ""}. Pictorem public prices in US dollars, before taxes and promotions, free shipping in the USA and Canada. The exact price is shown on Pictorem; frame prices are estimates. Pictorem offers more mouldings and 15 mat colours when ordering.`}
+                ? `${SUPPORTS.find((x) => x.id === support).fr}${encadre ? `, ${cadreC.fr.toLowerCase()}${support === "affiche" ? (pp ? `, passe-partout ${PASSE_PARTOUTS.find((x) => x.id === pp).fr}` : ", sans passe-partout") : ""}` : hab ? ", marge blanche" : ""}. Prix publics de notre atelier d'impression, en dollars US, hors taxes et promotions, livraison offerte aux États-Unis et au Canada. Le prix exact s'affiche au moment de la commande ; les prix des cadres sont estimés. D'autres baguettes et 15 couleurs de passe-partout sont proposées à la commande.`
+                : `${SUPPORTS.find((x) => x.id === support).en}${encadre ? `, ${cadreC.en.toLowerCase()}${support === "affiche" ? (pp ? `, ${PASSE_PARTOUTS.find((x) => x.id === pp).en} mat` : ", no mat") : ""}` : hab ? ", white border" : ""}. Public prices from our print studio, in US dollars, before taxes and promotions, free shipping in the USA and Canada. The exact price is shown when ordering; frame prices are estimates. More mouldings and 15 mat colours are available when ordering.`}
             </p>
           </div>
         )}
