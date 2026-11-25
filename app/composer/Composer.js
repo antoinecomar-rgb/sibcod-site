@@ -3,7 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { MURS, estSombre } from "../../lib/murs";
 import { taillesPictorem, enCm, libelle } from "../../lib/tailles";
 import { lireMur, ecrireMur, MAX_MUR } from "../../lib/monmur";
-import { SUPPORTS, CADRES, BORDS, MARGE_CM, PASSE_PARTOUT_PO, BAGUETTE_CM, prix, enDollars } from "../../lib/prix";
+import { SUPPORTS, cadresDe, BORDS, PASSE_PARTOUTS, habillage, prix, enDollars } from "../../lib/prix";
+import RAL from "../../data/ral-classique.json";
 
 const LAYS = [
   { id: "trio", n: 3, fr: "Trio", en: "Trio" },
@@ -99,8 +100,15 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
   const [bord, setBord] = useState("coupe");
   // remplacements ciblés dans une sélection proposée : { rang: identifiant de l'œuvre choisie à la place }
   const [remplace, setRemplace] = useState({});
-  const encadre = support === "affiche" && cadre !== "sans";
-  const marge = support === "affiche" && !encadre && bord === "marge";
+  const [pp, setPp] = useState(2); // passe-partout de l'affiche encadrée, en pouces
+  const [murPerso, setMurPerso] = useState("#E6DFD3");
+  const [saisieMur, setSaisieMur] = useState("");
+  // un support qui n'a pas le cadre choisi repasse « sans cadre »
+  useEffect(() => { if (!cadresDe(support).some((c) => c.id === cadre)) setCadre("sans"); }, [support]);
+  const cadres = cadresDe(support);
+  const cadreC = cadres.find((c) => c.id === cadre) || cadres[0];
+  const hab = habillage(support, cadreC ? cadre : "sans", bord, pp);
+  const encadre = !!hab && hab.type !== "marge";
   // « Ma sélection » : [{ id, i }] (i = rang de la taille choisie), gardée dans le navigateur
   const [moi, setMoi] = useState([]);
   const [filtreP, setFiltreP] = useState("toutes");
@@ -139,8 +147,8 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
     // encadré : baguette + passe-partout autour de chaque image (de chaque panneau pour un polyptyque)
     const enPlace = (o, i) => {
       const x = enPlaceNu(o, i);
-      if (!encadre && !marge) return x;
-      const e = encadre ? BAGUETTE_CM + PASSE_PARTOUT_PO * 2.54 : MARGE_CM, n = o.panneaux ? o.panneaux.length : 1;
+      if (!hab) return x;
+      const e = hab.cadre + hab.interieur, n = o.panneaux ? o.panneaux.length : 1;
       const uw = enCm(x.taille.w) + 2 * e, uh = enCm(x.taille.h) + 2 * e;
       return { ...x, w: n * uw + ECART_PANNEAUX * (n - 1), h: uh, unite: { w: uw, h: uh } };
     };
@@ -191,12 +199,29 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
     });
     const rangees = lay === "colonne" ? items.map((x) => [x]) : lay === "grille" ? enRangees(items, 2) : lay === "grille6" ? enRangees(items, 3) : [items];
     return { ...placer(rangees), pool: serie };
-  }, [oeuvres, polys, pal, lay, graine, nombre, taille, moi, parId, encadre, marge, remplace]);
+  }, [oeuvres, polys, pal, lay, graine, nombre, taille, moi, parId, hab && hab.type, hab && hab.cadre, hab && hab.interieur, remplace]);
 
   const { pos, murL, murH, poly } = scene;
   const pctX = (cm) => `${(cm / murL) * 100}%`;
   const pctY = (cm) => `${(cm / murH) * 100}%`;
-  const murC = MURS.find((m) => m.id === mur);
+  const murC = mur === "perso" ? { id: "perso", c: murPerso, fr: saisieMur || "Couleur choisie", en: saisieMur || "Custom colour" } : MURS.find((m) => m.id === mur);
+  // couleur de mur libre : code RAL classique (« RAL 9010 », « 9010 ») ou code couleur (« #E6DFD3 »)
+  const appliquerSaisie = (v) => {
+    setSaisieMur(v);
+    const ral = (v.match(/^\s*(?:ral)?\s*(\d{4})\s*$/i) || [])[1];
+    const hex = (v.match(/^\s*#?([0-9a-f]{6})\s*$/i) || [])[1];
+    if (ral && RAL[ral]) { setMurPerso(RAL[ral][0]); setMur("perso"); }
+    else if (hex) { setMurPerso("#" + hex.toUpperCase()); setMur("perso"); }
+  };
+  const ralInconnu = /^\s*(?:ral)?\s*\d{4}\s*$/i.test(saisieMur) && !RAL[(saisieMur.match(/\d{4}/) || [])[0]];
+  const pipette = async () => {
+    try {
+      const r = await new window.EyeDropper().open();
+      setMurPerso(r.sRGBHex.toUpperCase()); setSaisieMur(r.sRGBHex.toUpperCase()); setMur("perso");
+    } catch {}
+  };
+  const [aPipette, setAPipette] = useState(false);
+  useEffect(() => setAPipette(typeof window !== "undefined" && "EyeDropper" in window), []);
   const sombre = estSombre(murC.c);
   const Chips = ({ label, items, val, set, rond, petit }) => (
     <div className={petit ? "n-barre-ligne petit" : "n-barre-ligne"} role="group" aria-label={label}>
@@ -223,18 +248,23 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
     }
   };
   const visibles = collection.filter((c) => (filtreP === "toutes" || c.palette.includes(filtreP)) && (filtreF === "tous" || c.format === filtreF));
-  const cadreC = CADRES.find((c) => c.id === cadre);
-  const prixDe = (o) => { const v = prix(o.taille, support, cadre); return v == null ? null : v * (o.panneaux ? o.panneaux.length : 1); };
+  const prixDe = (o) => { const v = prix(o.taille, support, cadre, pp); return v == null ? null : v * (o.panneaux ? o.panneaux.length : 1); };
   const prixListe = pos.map(prixDe);
   const total = prixListe.every((v) => v != null) && pos.length ? prixListe.reduce((t, v) => t + v, 0) : null;
   // une image, nue ou encadrée (baguette + passe-partout blanc)
-  const Image = ({ src, u }) => (encadre && u
-    ? <span className="n-cadre" style={{ background: cadreC.c, padding: `${(BAGUETTE_CM / u.w) * 100}%` }}>
-        <span className="n-pp" style={{ padding: `${((PASSE_PARTOUT_PO * 2.54) / (u.w - 2 * BAGUETTE_CM)) * 100}%` }}><img src={src} alt="" /></span>
+  // une image habillée : cadre (avec ou sans passe-partout), caisse américaine, ou marge blanche
+  const Image = ({ src, u }) => {
+    if (!hab || !u) return <img src={src} alt="" />;
+    if (hab.type === "marge") return <span className="n-marge" style={{ padding: `${(hab.interieur / u.w) * 100}%` }}><img src={src} alt="" /></span>;
+    const dedans = u.w - 2 * hab.cadre;
+    return (
+      <span className={hab.type === "caisse" ? "n-cadre n-caisse" : "n-cadre"} style={{ background: cadreC.c, padding: `${(hab.cadre / u.w) * 100}%` }}>
+        {hab.interieur > 0
+          ? <span className={hab.type === "caisse" ? "n-ombre" : "n-pp"} style={{ padding: `${(hab.interieur / dedans) * 100}%` }}><img src={src} alt="" /></span>
+          : <img src={src} alt="" />}
       </span>
-    : marge && u
-      ? <span className="n-marge" style={{ padding: `${(MARGE_CM / u.w) * 100}%` }}><img src={src} alt="" /></span>
-      : <img src={src} alt="" />);
+    );
+  };
 
   return (
     <div className="n-composer">
@@ -257,8 +287,9 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
       <div className="n-barre">
         <Chips label={txt.compo} items={LAYS} val={lay} set={(v) => { setLay(v); setGraine(0); }} />
         <Chips label={fr ? "Support" : "Medium"} items={SUPPORTS} val={support} set={setSupport} />
-        {support === "affiche" && <Chips label={fr ? "Cadre" : "Frame"} items={CADRES} val={cadre} set={setCadre} rond={(x) => x.c} petit />}
-        {support === "affiche" && !encadre && <Chips label={fr ? "Bord" : "Edge"} items={BORDS} val={bord} set={setBord} petit />}
+        {cadres.length > 0 && <Chips label={fr ? "Cadre" : "Frame"} items={cadres} val={cadre} set={setCadre} rond={(x) => x.c} petit />}
+        {support === "affiche" && cadre !== "sans" && <Chips label={fr ? "Passe-partout" : "Mat"} items={PASSE_PARTOUTS} val={pp} set={setPp} petit />}
+        {support === "affiche" && cadre === "sans" && <Chips label={fr ? "Bord" : "Edge"} items={BORDS} val={bord} set={setBord} petit />}
         {lay !== "moi" && lay !== "libre" && <Chips label={txt.taille} items={TAILLES} val={taille} set={setTaille} petit />}
         {lay === "libre" && (
           <div className="n-barre-ligne petit">
@@ -277,6 +308,13 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
             {MURS.map((m) => (
               <button key={m.id} type="button" title={m[lang]} aria-label={m[lang]} aria-pressed={mur === m.id} className={mur === m.id ? "on" : ""} style={{ background: m.c }} onClick={() => setMur(m.id)} />
             ))}
+            <label className={mur === "perso" ? "n-mur-perso on" : "n-mur-perso"} title={fr ? "Choisir une couleur" : "Pick a colour"} style={{ background: murPerso }}>
+              <input type="color" value={murPerso} onChange={(e) => { setMurPerso(e.target.value.toUpperCase()); setSaisieMur(e.target.value.toUpperCase()); setMur("perso"); }} aria-label={fr ? "Choisir une couleur de mur" : "Pick a wall colour"} />
+            </label>
+            {aPipette && <button type="button" className="n-pipette" onClick={pipette} title={fr ? "Pipette : prendre une couleur à l'écran" : "Eyedropper: pick a colour on screen"} aria-label={fr ? "Pipette" : "Eyedropper"}>⌖</button>}
+            <input className="n-ral" type="text" value={saisieMur} onChange={(e) => appliquerSaisie(e.target.value)} placeholder={fr ? "RAL 9010 ou #E6DFD3" : "RAL 9010 or #E6DFD3"} aria-label={fr ? "Code RAL ou code couleur du mur" : "RAL or colour code of the wall"} />
+            {mur === "perso" && RAL[(saisieMur.match(/\d{4}/) || [])[0]] && <span className="n-petit">{RAL[saisieMur.match(/\d{4}/)[0]][1]}</span>}
+            {ralInconnu && <span className="n-petit">{fr ? "Code RAL inconnu" : "Unknown RAL code"}</span>}
           </div>
         </div>
       </div>
@@ -305,8 +343,8 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
             <strong>{fr ? "Estimation" : "Estimate"} : {total != null ? enDollars(total, lang) : (fr ? "sur demande" : "on request")}</strong>
             <p className="n-petit">
               {fr
-                ? `${SUPPORTS.find((x) => x.id === support).fr}${encadre ? `, cadre ${cadreC.fr.toLowerCase()} et passe-partout blanc 5 cm` : marge ? ", marge blanche" : ""}. Prix publics Pictorem en dollars US, hors taxes et promotions, livraison offerte aux États-Unis et au Canada. Le prix exact s'affiche chez Pictorem. D'autres cadres et passe-partout sont possibles pour les affiches à la commande.`
-                : `${SUPPORTS.find((x) => x.id === support).en}${encadre ? `, ${cadreC.en.toLowerCase()} frame and 2 in white mat` : marge ? ", white border" : ""}. Pictorem public prices in US dollars, before taxes and promotions, free shipping in the USA and Canada. The exact price is shown on Pictorem. More frames and mats are available for posters when ordering.`}
+                ? `${SUPPORTS.find((x) => x.id === support).fr}${encadre ? `, ${cadreC.fr.toLowerCase()}${support === "affiche" ? (pp ? `, passe-partout ${PASSE_PARTOUTS.find((x) => x.id === pp).fr}` : ", sans passe-partout") : ""}` : hab ? ", marge blanche" : ""}. Prix publics Pictorem en dollars US, hors taxes et promotions, livraison offerte aux États-Unis et au Canada. Le prix exact s'affiche chez Pictorem ; les prix des cadres sont estimés. Pictorem propose d'autres baguettes et 15 couleurs de passe-partout à la commande.`
+                : `${SUPPORTS.find((x) => x.id === support).en}${encadre ? `, ${cadreC.en.toLowerCase()}${support === "affiche" ? (pp ? `, ${PASSE_PARTOUTS.find((x) => x.id === pp).en} mat` : ", no mat") : ""}` : hab ? ", white border" : ""}. Pictorem public prices in US dollars, before taxes and promotions, free shipping in the USA and Canada. The exact price is shown on Pictorem; frame prices are estimates. Pictorem offers more mouldings and 15 mat colours when ordering.`}
             </p>
           </div>
         )}
