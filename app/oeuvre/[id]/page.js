@@ -6,7 +6,7 @@ import ScaleView from "./ScaleView";
 import VoirAuMur from "./VoirAuMur";
 import { catalogue } from "../../../lib/catalogue";
 import { PALETTES, THEMES, FORMATS, nom } from "../../../lib/libelles";
-import { listeTailles } from "../../../lib/tailles";
+import { listeTailles, plageFiche } from "../../../lib/tailles";
 import AjouterMur from "./AjouterMur";
 import DESCRIPTIONS from "../../../data/descriptions.json";
 import { alternates } from "../../../lib/seo";
@@ -92,9 +92,15 @@ export default async function Oeuvre({ params, searchParams }) {
           {img.titre && img.titre !== o.titre && <p className="n-sous-titre">{img.titre}</p>}
           <div className="by">{t.by}</div>
           {desc.map((d) => <p key={d}>{d}</p>)}
-          {principale
-            ? <a className="buybig" href={principale.url} target="_blank" rel="noopener noreferrer">{t.choose}</a>
-            : <span className="soonbig">{t.soon}</span>}
+          {principale && (principale.fiches || []).length > 1
+            ? <div className="n-achats">
+                {principale.fiches.map((f) => (
+                  <a key={f.url} className="buybig" href={f.url} target="_blank" rel="noopener noreferrer">{t.choose} <small>{plageFiche(f, principale.ratio, lang)}</small></a>
+                ))}
+              </div>
+            : principale
+              ? <a className="buybig" href={principale.url} target="_blank" rel="noopener noreferrer">{t.choose}</a>
+              : <span className="soonbig">{t.soon}</span>}
           {o.variantes.length > 1 && (
             <div className="n-variantes">
               <h2>{t.variantes}</h2>
@@ -106,7 +112,7 @@ export default async function Oeuvre({ params, searchParams }) {
                     <span><strong>{v.titre}</strong><em>{listeTailles(v, lang)}</em></span>
                   </Link>
                   <span className="n-variante-actions">
-                    <VoirAuMur v={{ id: v.id, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, titre: v.titre }} label={t.voirMur} />
+                    <VoirAuMur v={{ id: v.id, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, fiches: v.fiches, titre: v.titre }} label={t.voirMur} />
                     {v.url ? <a className="buybig n-var" href={v.url} target="_blank" rel="noopener noreferrer">{t.buy}</a> : <span className="soon">{t.soon}</span>}
                   </span>
                 </div>
@@ -143,7 +149,7 @@ export default async function Oeuvre({ params, searchParams }) {
         </section>
       )}
 
-      {img.img && <ScaleView key={img.id} init={{ id: img.id, img: img.img, ratio: img.ratio, maxPo: img.maxPo, url: img.url, titre: img.titre }} lang={lang} title={t.scaleT} hint={t.scaleH} />}
+      {img.img && <ScaleView key={img.id} init={{ id: img.id, img: img.img, ratio: img.ratio, maxPo: img.maxPo, url: img.url, fiches: img.fiches, titre: img.titre }} lang={lang} title={t.scaleT} hint={t.scaleH} />}
 
       {accords.length > 0 && (
         <section className="n-accords">
