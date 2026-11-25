@@ -20,8 +20,9 @@ export default function ChoixTaille({ v, label, lang, petit }) {
         {taillesPictorem(v).map((x) => (
           <li key={cleTaille(x)}>
             <button type="button" onClick={() => choisir(x)} aria-pressed={choisie === cleTaille(x)}>
-              {libelle(x, lang)}<span aria-hidden="true">{choisie === cleTaille(x) ? "✓" : "+"}</span>
+              {libelle(x, lang)}<span className="n-choix-sel">{choisie === cleTaille(x) ? (fr ? "✓ Ajoutée" : "✓ Added") : (fr ? "+ Ma sélection" : "+ My selection")}</span>
             </button>
+            {x.url && <a className="n-choix-acheter" href={x.url} target="_blank" rel="noopener noreferrer">{fr ? "Acheter" : "Buy"}</a>}
           </li>
         ))}
       </ul>
