@@ -701,3 +701,14 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 .n-mur-perso input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
 .n-pipette { width:28px; height:28px; border-radius:50%; border:1px solid #CFC8BC; background:var(--bg); cursor:pointer; font-size:15px; line-height:1; padding:0; color:var(--ink); }
 .n-ral { width:150px; height:30px; padding:0 10px; border:1px solid #CFC8BC; border-radius:999px; background:#fff; font:13px var(--sans); color:var(--ink); }
+
+/* touche d'achat qui déplie les tailles */
+.n-choix-taille { display:inline-block; position:relative; }
+.n-choix-taille summary { list-style:none; cursor:pointer; }
+.n-choix-taille summary::-webkit-details-marker { display:none; }
+.n-choix-taille summary::after { content:"▾"; margin-left:10px; font-size:11px; }
+.n-choix-taille[open] summary::after { content:"▴"; }
+.n-choix-taille ul { list-style:none; margin:0; padding:6px 0; border:1px solid var(--ink); border-top:0; background:var(--bg); }
+.n-choix-taille li a { display:flex; justify-content:space-between; gap:18px; padding:8px 18px; text-decoration:none; color:var(--ink); font-size:15px; }
+.n-choix-taille li a:hover { background:rgba(0,0,0,.05); }
+.n-choix-taille.petit li a { font-size:13px; padding:6px 14px; }
