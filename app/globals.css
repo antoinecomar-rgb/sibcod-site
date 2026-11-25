@@ -750,3 +750,18 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
   .n-sel-fin { grid-column:1 / -1; flex-direction:row; flex-wrap:wrap; align-items:center; justify-content:space-between; }
   .n-lien-sel { margin-right:8px; font-size:11px; }
 }
+
+/* téléphone (25/11) : le mur entier, réglages sur plusieurs lignes, sections moins espacées */
+@media (max-width:700px){
+  .n-scene-cadre { margin:0; width:100%; overflow:visible; }
+  .n-scene-cadre .n-scene { width:100%; margin-left:0; }
+  .n-relance { width:32px; height:32px; font-size:16px; right:8px; top:8px; }
+  .n-changer { width:20px; height:20px; line-height:20px; font-size:11px; top:3px; right:3px; }
+  .n-piece figcaption { font-size:9px; }
+  .n-barre-ligne { flex-direction:column; align-items:flex-start; gap:6px; }
+  .n-barre-titre { width:auto; font-size:10px; }
+  .n-barre-choix { flex-wrap:wrap; overflow:visible; gap:6px; }
+  .n-barre-choix button { min-height:30px; padding:0 11px; font-size:12px; }
+  .n-section { padding-top:36px; padding-bottom:36px; }
+  .n-apports { padding:28px 16px 36px; }
+}
