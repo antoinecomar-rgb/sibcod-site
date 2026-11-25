@@ -686,3 +686,18 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 @media (hover:none){ .n-changer { opacity:.9; width:22px; height:22px; line-height:22px; font-size:12px; } }
 .n-marge { display:block; background:#FFFFFF; box-shadow:0 2px 6px rgba(0,0,0,.18); flex:1; min-width:0; }
 .n-marge img { display:block; width:100%; height:auto!important; box-shadow:none!important; }
+.n-achats { display:flex; flex-direction:column; gap:8px; align-items:flex-start; }
+.n-achats .buybig small { display:block; margin-top:4px; font-size:11px; letter-spacing:.06em; text-transform:none; opacity:.8; }
+.n-variante-actions { flex-wrap:wrap; } .n-variante-actions .buybig.n-var small { display:block; font-size:10px; letter-spacing:.04em; text-transform:none; opacity:.85; }
+/* caisse américaine : la toile flotte dans le cadre, avec une ombre entre les deux */
+.n-caisse { box-shadow:0 8px 18px rgba(0,0,0,.28); }
+.n-ombre { display:block; background:#1a1a1a; box-shadow:inset 0 0 3px rgba(0,0,0,.6); }
+.n-ombre img { display:block; width:100%; height:auto!important; box-shadow:2px 2px 3px rgba(0,0,0,.45)!important; }
+/* couleur de mur libre : nuancier, pipette, code RAL */
+.n-teintes.petit { align-items:center; }
+.n-mur-perso { position:relative; width:24px; height:24px; border-radius:50%; border:1px dashed rgba(0,0,0,.45); cursor:pointer; overflow:hidden; flex:none; }
+.n-mur-perso::after { content:"+"; position:absolute; inset:0; display:grid; place-items:center; font-size:14px; color:rgba(0,0,0,.55); mix-blend-mode:difference; color:#fff; }
+.n-mur-perso.on { box-shadow:0 0 0 2px var(--bg), 0 0 0 3px var(--ink); border-style:solid; }
+.n-mur-perso input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+.n-pipette { width:28px; height:28px; border-radius:50%; border:1px solid #CFC8BC; background:var(--bg); cursor:pointer; font-size:15px; line-height:1; padding:0; color:var(--ink); }
+.n-ral { width:150px; height:30px; padding:0 10px; border:1px solid #CFC8BC; border-radius:999px; background:#fff; font:13px var(--sans); color:var(--ink); }
