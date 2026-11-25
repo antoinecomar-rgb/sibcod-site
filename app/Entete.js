@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Icone from "./Icone";
+import LienSelection from "./LienSelection";
 
 export const GALERIE_PICTOREM = "https://www.pictorem.com/gallery/Sibcod";
 
@@ -26,6 +27,7 @@ export default function Entete({ lang, hrefLang, actif, children, clair }) {
           {lien("sibcod", "/sibcod")}
         </nav>
         <div className="soc">
+          <LienSelection lang={lang} actif={actif === "selection"} />
           <a href="https://www.instagram.com/sibcod/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><Icone nom="instagram" /></a>
         </div>
         <div className="lang">
