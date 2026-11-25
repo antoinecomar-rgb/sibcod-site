@@ -1,21 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
 import { MURS, estSombre } from "../../../lib/murs";
-
-const PRESETS = [8, 12, 16, 20, 24, 28, 36, 48, 60, 72, 96];
+import { taillesPictorem, enCm, libelle } from "../../../lib/tailles";
 const WALL_W = 300, WALL_H = 250; // cm représentés par la scène
 
 export default function ScaleView({ init, lang, title, hint }) {
   // version affichée : l'image principale de la page, ou celle choisie dans « Versions disponibles »
   const [cur, setCur] = useState(init);
-  const maxIn = cur.maxPo || 96;
-  const sizes = [...PRESETS.filter((n) => n < maxIn), maxIn];
-  const [size, setSize] = useState(sizes[Math.min(2, sizes.length - 1)]);
+  // tailles réellement proposées par Pictorem pour cette version ; la plus grande par défaut
+  const sizes = taillesPictorem(cur);
+  const [idx, setIdx] = useState(sizes.length - 1);
   useEffect(() => {
     const f = (e) => {
       const v = e.detail; setCur(v);
-      const s2 = [...PRESETS.filter((n) => n < (v.maxPo || 96)), v.maxPo || 96];
-      setSize((s) => (s2.includes(s) ? s : s2[Math.min(2, s2.length - 1)]));
+      setIdx(taillesPictorem(v).length - 1);
     };
     window.addEventListener("sib-variante", f);
     return () => window.removeEventListener("sib-variante", f);
@@ -24,21 +22,20 @@ export default function ScaleView({ init, lang, title, hint }) {
   const src = cur.img, alt = cur.titre;
   const [mur, setMur] = useState("lin");
   const murC = MURS.find((m) => m.id === mur);
-  const cmOf = (po) => Math.round(po * 2.54);
-  const long = size * 2.54;
-  const w = ratio >= 1 ? long : long * ratio;
-  const h = ratio >= 1 ? long / ratio : long;
-  const bottomCm = Math.max(0, Math.min(110, WALL_H - 15 - h)); // au-dessus du canapé, sans dépasser le plafond
-  const label = lang === "fr" ? `${Math.round(w)} × ${Math.round(h)} cm` : `${Math.round(w / 2.54)} × ${Math.round(h / 2.54)} in`;
+  const t = sizes[Math.min(idx, sizes.length - 1)];
+  const w = enCm(t.w), h = enCm(t.h);
+  // bas de l'œuvre à 22 cm au-dessus du dossier du canapé (85 cm), sans dépasser le plafond
+  const bottomCm = Math.max(0, Math.min(107, WALL_H - 15 - h));
+  const label = libelle(t, lang);
   return (
     <section className="scale" id="a-l-echelle">
       <h2>{title}</h2>
       <p className="n-petit n-scale-version">{cur.titre}</p>
       <p className="hint">{hint}</p>
       <div className="sizes">
-        {sizes.map((n) => (
-          <button key={n} className={n === size ? "on" : ""} onClick={() => setSize(n)}>
-            {lang === "fr" ? `${cmOf(n)} cm` : `${n} in`}
+        {sizes.map((x, i) => (
+          <button key={i} className={i === idx ? "on" : ""} onClick={() => setIdx(i)}>
+            {libelle(x, lang)}
           </button>
         ))}
       </div>

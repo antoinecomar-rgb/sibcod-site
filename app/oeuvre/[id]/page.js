@@ -5,7 +5,9 @@ import Entete from "../../Entete";
 import ScaleView from "./ScaleView";
 import VoirAuMur from "./VoirAuMur";
 import { catalogue } from "../../../lib/catalogue";
-import { PALETTES, THEMES, FORMATS, nom, taille } from "../../../lib/libelles";
+import { PALETTES, THEMES, FORMATS, nom } from "../../../lib/libelles";
+import { listeTailles, taillesPictorem, libelle } from "../../../lib/tailles";
+import AjouterMur from "./AjouterMur";
 import DESCRIPTIONS from "../../../data/descriptions.json";
 import { alternates } from "../../../lib/seo";
 
@@ -90,9 +92,11 @@ export default async function Oeuvre({ params, searchParams }) {
           {img.titre && img.titre !== o.titre && <p className="n-sous-titre">{img.titre}</p>}
           <div className="by">{t.by}</div>
           {desc.map((d) => <p key={d}>{d}</p>)}
-          {principale
-            ? <a className="buybig" href={principale.url} target="_blank" rel="noopener noreferrer">{t.choose}</a>
-            : <span className="soonbig">{t.soon}</span>}
+          {principale && (principale.fiches || []).length > 1
+            ? <ChoixTaille v={principale} label={t.choose} lang={lang} />
+            : principale
+              ? <a className="buybig" href={principale.url} target="_blank" rel="noopener noreferrer">{t.choose}</a>
+              : <span className="soonbig">{t.soon}</span>}
           {o.variantes.length > 1 && (
             <div className="n-variantes">
               <h2>{t.variantes}</h2>
@@ -101,11 +105,13 @@ export default async function Oeuvre({ params, searchParams }) {
                 <div key={v.id} className={v.id === img.id ? "n-variante on" : "n-variante"}>
                   <Link href={`/oeuvre/${v.id}${Q}`} scroll={false} className="n-variante-lien" aria-current={v.id === img.id ? "true" : undefined}>
                     <img src={v.img} alt="" loading="lazy" />
-                    <span><strong>{v.titre}</strong><em>{taille(v.maxPo, lang)}</em></span>
+                    <span><strong>{v.titre}</strong><em>{listeTailles(v, lang)}</em></span>
                   </Link>
                   <span className="n-variante-actions">
-                    <VoirAuMur v={{ id: v.id, img: v.img, ratio: v.ratio, maxPo: v.maxPo, titre: v.titre }} label={t.voirMur} />
-                    {v.url ? <a className="buybig n-var" href={v.url} target="_blank" rel="noopener noreferrer">{t.buy}</a> : <span className="soon">{t.soon}</span>}
+                    <VoirAuMur v={{ id: v.id, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, fiches: v.fiches, titre: v.titre }} label={t.voirMur} />
+                    {(v.fiches || []).length > 1
+                      ? <ChoixTaille v={v} label={t.buy} lang={lang} petit />
+                      : v.url ? <a className="buybig n-var" href={v.url} target="_blank" rel="noopener noreferrer">{t.buy}</a> : <span className="soon">{t.soon}</span>}
                   </span>
                 </div>
               ))}
@@ -124,10 +130,11 @@ export default async function Oeuvre({ params, searchParams }) {
             </div>
           ))}
           <table className="facts"><tbody>
-            {o.variantes.length === 1 && <tr><th>{lang === "fr" ? "Tailles" : "Sizes"}</th><td>{taille(img.maxPo, lang)}</td></tr>}
+            {o.variantes.length === 1 && <tr><th>{lang === "fr" ? "Tailles" : "Sizes"}</th><td>{listeTailles(img, lang)}</td></tr>}
             <tr><th>{t.supports}</th><td>{t.supportsV}</td></tr>
             <tr><th>{t.made}</th><td>{t.madeV}</td></tr>
           </tbody></table>
+          <AjouterMur id={img.id} lang={lang} Q={Q} />
           <p className="n-petit">{t.custom} <a href={`/projets${Q}`}>{t.write}</a></p>
         </div>
       </div>
@@ -140,7 +147,7 @@ export default async function Oeuvre({ params, searchParams }) {
         </section>
       )}
 
-      {img.img && <ScaleView key={img.id} init={{ id: img.id, img: img.img, ratio: img.ratio, maxPo: img.maxPo, titre: img.titre }} lang={lang} title={t.scaleT} hint={t.scaleH} />}
+      {img.img && <ScaleView key={img.id} init={{ id: img.id, img: img.img, ratio: img.ratio, maxPo: img.maxPo, url: img.url, fiches: img.fiches, titre: img.titre }} lang={lang} title={t.scaleT} hint={t.scaleH} />}
 
       {accords.length > 0 && (
         <section className="n-accords">
@@ -166,5 +173,19 @@ function Mini({ x, Q }) {
       <span className="n-mat"><img src={x.img} alt={x.titre} loading="lazy" /></span>
       <span className="n-carte-t"><span>{x.titre}</span></span>
     </a>
+  );
+}
+
+// une seule touche « Choisir la taille » ; elle déplie les tailles, chacune menant à la fiche qui la vend
+function ChoixTaille({ v, label, lang, petit }) {
+  return (
+    <details className={`n-choix-taille${petit ? " petit" : ""}`}>
+      <summary className={`buybig${petit ? " n-var" : ""}`}>{label}</summary>
+      <ul>
+        {taillesPictorem(v).map((x) => (
+          <li key={x.w + "x" + x.h}><a href={x.url} target="_blank" rel="noopener noreferrer">{libelle(x, lang)}<span aria-hidden="true">→</span></a></li>
+        ))}
+      </ul>
+    </details>
   );
 }

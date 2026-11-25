@@ -7,17 +7,17 @@ import { alternates } from "../../lib/seo";
 
 const T = {
   en: {
-    h1: "Compose a wall", s: "Choose your wall colour, a layout and a palette: the artworks fall into place, at real scale above a 2.2 m sofa.",
+    h1: "Compose a wall", s: "Your wall, your artworks: to scale, with an estimated price.",
     mur: "Your wall", compo: "Layout", palette: "Palette", taille: "Size",
-    echelle: "To scale: wall 3.2 m wide, sofa 2.2 m. Screen colours are indicative.",
+    echelle: "To scale: sofa 2.2 m wide. Sizes offered when ordering. Screen colours are indicative.",
     autre: "Another selection", autreS: "Same layout, same palette: new artworks at every click.", libre: "Free composition", oeuvres: "artworks", voir: "See the first artwork", vide: "No artwork for this combination yet.",
     aria: "Simulation above a sofa: ",
     note: "Each artwork is ordered separately, in the size and support of your choice.",
   },
   fr: {
-    h1: "Composer un mur", s: "Choisissez la couleur de votre mur, une composition et une palette : les œuvres s'accordent d'elles-mêmes, à l'échelle réelle au-dessus d'un canapé de 2,20 m.",
+    h1: "Composer un mur", s: "Votre mur, vos œuvres : à l'échelle, avec un prix estimé.",
     mur: "Votre mur", compo: "Composition", palette: "Palette", taille: "Taille",
-    echelle: "À l'échelle : mur de 3,20 m, canapé de 2,20 m. Les couleurs d'écran restent indicatives.",
+    echelle: "À l'échelle : canapé de 2,20 m. Tailles proposées à la commande. Les couleurs d'écran restent indicatives.",
     autre: "Une autre sélection", autreS: "Même composition, même palette : de nouvelles œuvres à chaque clic.", libre: "Composition libre", oeuvres: "œuvres", voir: "Voir la première œuvre", vide: "Pas encore d'œuvre pour cette combinaison.",
     aria: "Simulation au-dessus d’un canapé : ",
     note: "Chaque œuvre se commande séparément, dans la taille et le support de votre choix.",
@@ -38,19 +38,50 @@ export default async function Page({ searchParams }) {
   const lang = sp.lang === "fr" ? "fr" : "en";
   const t = T[lang];
   const Q = lang === "fr" ? "?lang=fr" : "";
-  const { oeuvres } = await catalogue(lang);
-  const liste = oeuvres.filter((o) => o.palette.length && !o.doublon).map((o) => ({
-    id: o.id, titre: o.titre, img: o.img, palette: o.palette, format: o.format, ratio: o.ratio, href: `/oeuvre/${o.id}${Q}`,
+  const { oeuvres, images, polyptyques, imageDuFichier } = await catalogue(lang);
+  // une ligne par œuvre : son image principale, avec la taille maximale et le lien Pictorem de cette image
+  const fiche = (v, o) => ({
+    id: v.id, titre: v.titre, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, fiches: v.fiches,
+    palette: o.palette, format: o.format === "panorama" || v.ratio >= 1.75 ? "panorama" : o.format, href: `/oeuvre/${v.id}${Q}`,
+  });
+  // chaque œuvre garde ses autres images (une même œuvre existe souvent en 3:4 et en 4:5) : une série peut ainsi être montrée dans une seule proportion
+  const liste = oeuvres.filter((o) => o.palette.length && o.img).map((o) => ({
+    ...fiche(o.variantes[0], o),
+    autres: o.variantes.slice(1).filter((v) => v.img && v.ratio < 1.75).map((v) => fiche(v, o)),
   }));
+  // collection à parcourir pour « Ma sélection » : chaque image distincte une fois
+  const parId = Object.fromEntries(oeuvres.map((o) => [o.id, o]));
+  const collection = images.filter((v) => v.img).map((v) => {
+    const o = parId[v.oeuvre];
+    return { ...fiche(v, o), format: v.ratio >= 1.75 ? "panorama" : v.ratio < 0.9 ? "portrait" : v.ratio < 1.12 ? "carre" : "paysage" };
+  });
+  // les panoramas (absents de la liste des images, qui montre leurs panneaux séparés)
+  oeuvres.forEach((o) => o.variantes.forEach((v) => {
+    if (v.img && v.ratio >= 1.75 && !collection.some((c) => c.id === v.id)) collection.push({ ...fiche(v, o), format: "panorama" });
+  }));
+  // pour reprendre une sélection faite depuis une fiche (identifiant d'image quelconque)
+  const alias = {};
+  Object.keys(imageDuFichier).forEach((f) => {
+    const v = imageDuFichier[f];
+    if (v && !collection.some((c) => c.id === f)) alias[f] = v.id;
+  });
+  const polys = polyptyques.map((p) => ({
+    id: p.id, titre: p.titre, palette: p.palette,
+    panneaux: p.panneaux.map((v) => ({ id: v.id, titre: v.titre, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, fiches: v.fiches, href: `/oeuvre/${v.id}${Q}` })),
+  }));
+  // diptyques et triptyques complets, choisis d'un seul geste dans « Ma sélection »
+  polys.forEach((p) => {
+    const a = p.panneaux[0];
+    collection.push({ id: `poly-${p.id}`, titre: p.titre, img: a.img, ratio: a.ratio, maxPo: a.maxPo, url: a.url, fiches: a.fiches, href: a.href, palette: p.palette, format: "polyptyque", panneaux: p.panneaux });
+  });
   return (
     <div className="wrap">
       <Entete lang={lang} actif="mur" hrefLang={(l) => (l === "fr" ? "/composer?lang=fr" : "/composer")} />
-      <section className="n-col-tete">
+      <section className="n-composer-tete">
         <h1>{t.h1}</h1>
-        <p className="n-lead">{t.s}</p>
+        <p>{t.s}</p>
       </section>
-      <Composer oeuvres={liste} lang={lang} txt={t} palettes={PALETTES.map(({ id, c, fr, en }) => ({ id, c, fr, en }))} />
-      <p className="n-petit" style={{ marginTop: 16 }}>{t.note}</p>
+      <Composer oeuvres={liste} collection={collection} alias={alias} polys={polys} mode={sp.mode === "moi" ? "moi" : null} lang={lang} txt={t} palettes={PALETTES.map(({ id, c, fr, en }) => ({ id, c, fr, en }))} />
       <Pied lang={lang} />
     </div>
   );
