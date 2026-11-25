@@ -219,6 +219,11 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
   }, [oeuvres, polys, pal, lay, graine, nombre, taille, moi, parId, hab && hab.type, hab && hab.cadre, hab && hab.interieur, remplace]);
 
   const { pos, murL, murH, poly } = scene;
+  // téléphone : on cadre le mur sur les œuvres pour qu'elles restent grandes (le canapé peut être coupé sur les côtés)
+  const gauche = pos.length ? Math.min(...pos.map((o) => o.x)) : 0;
+  const droite = pos.length ? Math.max(...pos.map((o) => o.x + o.w)) : murL;
+  const ecartCentre = Math.max(Math.abs(gauche - murL / 2), Math.abs(droite - murL / 2));
+  const zoomTel = Math.min(2.2, Math.max(1, murL / (2 * ecartCentre + 40)));
   const pctX = (cm) => `${(cm / murL) * 100}%`;
   const pctY = (cm) => `${(cm / murH) * 100}%`;
   const murC = mur === "perso" ? { id: "perso", c: murPerso, fr: saisieMur || "Couleur choisie", en: saisieMur || "Custom colour" } : MURS.find((m) => m.id === mur);
@@ -300,7 +305,7 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
 
   return (
     <div className="n-composer">
-      <div className="n-scene-cadre"><div className={`n-scene s-${support}`} style={{ background: murC.c, aspectRatio: `${murL} / ${murH}` }} role="img" aria-label={txt.aria + pos.map((o) => `${o.titre} (${etiquette(o, lang)})`).join(", ")}>
+      <div className="n-scene-cadre" style={{ "--zoom": zoomTel }}><div className={`n-scene s-${support}`} style={{ background: murC.c, aspectRatio: `${murL} / ${murH}` }} role="img" aria-label={txt.aria + pos.map((o) => `${o.titre} (${etiquette(o, lang)})`).join(", ")}>
         {pos.map((o, k) => (
           <figure key={o.id + k} className={`n-piece s-${support}${encadre ? " s-cadre" : ""}`} style={{ left: pctX(o.x), bottom: pctY(o.b), width: pctX(o.w), height: o.unite ? "auto" : pctY(o.h) }}>
             {o.panneaux
@@ -313,7 +318,8 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
         <img className="n-silhouette" src="/ambiance/silhouette-2.webp" alt="" style={{ width: pctX(258.3), left: pctX(murL / 2 - 136.2), bottom: pctY(-2.6) }} />
         {lay !== "moi" && <button type="button" className="n-relance" onClick={() => setGraine((g) => g + 1)} title={txt.autre} aria-label={txt.autre}>↻</button>}
         {lay === "moi" && !pos.length && <p className="n-scene-vide">{fr ? "Choisissez vos œuvres dans la collection, ci-dessous." : "Pick your artworks from the collection, below."}</p>}
-      </div></div>
+      </div>
+      </div>
       <p className="n-echelle-sous">{txt.echelle}</p>
 
       <div className="n-barre">
