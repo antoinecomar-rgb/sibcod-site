@@ -144,6 +144,21 @@ export default async function Accueil({ searchParams }) {
 
       <BandeauGala lang={lang} />
 
+      <section className="wrap n-section">
+        <div className="n-entete large">
+          <div><p className="n-k">{t.colK}</p><h2>{t.colT}</h2><p className="n-lead">{t.colS}</p></div>
+        </div>
+        <div className="n-degrade">
+          {selection.map((o) => (
+            <a key={o.id} href={`/oeuvre/${o.id}${Q}`}>
+              <img src={o.img} alt={o.titre} loading="lazy" />
+              <span>{o.titre}</span>
+            </a>
+          ))}
+        </div>
+        <a className="n-lien" href={`/collection${Q}`}>{t.voir(oeuvres.length)} →</a>
+      </section>
+
       <section className="wrap n-apports">
         <div className="n-centre">
           <p className="n-k">{t.apK}</p>
@@ -159,21 +174,6 @@ export default async function Accueil({ searchParams }) {
             </figure>
           ))}
         </div>
-      </section>
-
-      <section className="wrap n-section">
-        <div className="n-entete large">
-          <div><p className="n-k">{t.colK}</p><h2>{t.colT}</h2><p className="n-lead">{t.colS}</p></div>
-        </div>
-        <div className="n-degrade">
-          {selection.map((o) => (
-            <a key={o.id} href={`/oeuvre/${o.id}${Q}`}>
-              <img src={o.img} alt={o.titre} loading="lazy" />
-              <span>{o.titre}</span>
-            </a>
-          ))}
-        </div>
-        <a className="n-lien" href={`/collection${Q}`}>{t.voir(oeuvres.length)} →</a>
       </section>
 
       <section className="n-fond">
