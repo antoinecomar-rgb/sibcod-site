@@ -595,3 +595,27 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 /* silhouette (canapé, chien, accessoires) devant les murs */
 .n-silhouette { position:absolute; height:auto; display:block; pointer-events:none; z-index:2; filter:drop-shadow(0 6px 10px rgba(0,0,0,.12)); }
 .n-canape-img { display:block; width:min(680px,100%); height:auto; margin-top:40px; filter:drop-shadow(0 6px 10px rgba(0,0,0,.12)); }
+
+/* Composer : œuvres à taille réelle, dimensions, « Ma sélection » */
+.n-piece { position:absolute; margin:0; transition:all .35s ease; }
+.n-piece img { display:block; width:100%; height:100%; object-fit:cover; box-shadow:0 6px 14px rgba(0,0,0,.25); }
+.n-piece figcaption { position:absolute; left:50%; top:100%; transform:translateX(-50%); margin-top:3px; white-space:nowrap; font-size:clamp(9px,.85vw,12px); line-height:1.2; color:rgba(0,0,0,.6); }
+.n-piece figcaption.clair { color:rgba(255,255,255,.75); }
+.n-scene-vide { position:absolute; left:0; right:0; top:28%; text-align:center; margin:0; font-size:15px; color:var(--muted); }
+.n-legende { flex-direction:column; gap:10px!important; }
+.n-legende li { display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; }
+.n-legende li > span { color:var(--muted); }
+.n-legende-tailles { display:inline-flex; flex-wrap:wrap; gap:6px; }
+.n-legende-tailles button { min-height:32px; padding:0 10px; border:1px solid #CFC8BC; border-radius:999px; background:var(--bg); font:12px var(--sans); color:var(--ink); cursor:pointer; }
+.n-legende-tailles button.on { border-color:var(--ink); box-shadow:inset 0 0 0 1px var(--ink); background:#fff; }
+.n-legende-tailles .n-retirer { width:32px; padding:0; font-size:16px; }
+.n-acheter { font-size:13px; text-decoration:underline; }
+.n-choix { display:flex; flex-direction:column; gap:14px; border-top:1px solid #E3DDD2; padding-top:24px; }
+.n-choix h2 { margin:0; font-family:var(--serif); font-weight:400; font-size:26px; }
+.n-choix-grille { display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:10px; }
+.n-choix-grille button { display:flex; flex-direction:column; gap:6px; padding:6px; border:1px solid transparent; border-radius:6px; background:none; cursor:pointer; text-align:left; font:12px var(--sans); color:var(--ink); }
+.n-choix-grille button img { width:100%; aspect-ratio:1; object-fit:cover; display:block; }
+.n-choix-grille button span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.n-choix-grille button.on { border-color:var(--ink); background:#fff; box-shadow:inset 0 0 0 1px var(--ink); }
+.n-choix-grille button:disabled { opacity:.4; cursor:default; }
+.n-ajout-mur { display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; margin:18px 0 8px; }
