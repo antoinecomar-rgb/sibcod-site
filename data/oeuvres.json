@@ -464,12 +464,24 @@
  {
   "id": "F264",
   "fichiers": [
-   "F131",
-   "F209",
    "F264"
   ],
   "titre_fr": "Cannes en ciel",
   "titre_en": "Sugarcane Sky",
+  "theme": "paysages",
+  "palette": [
+   "lagon"
+  ],
+  "format": "paysage"
+ },
+ {
+  "id": "F209",
+  "fichiers": [
+   "F131",
+   "F209"
+  ],
+  "titre_fr": "Canne à sucre",
+  "titre_en": "Sugarcane",
   "theme": "paysages",
   "palette": [
    "lagon"
