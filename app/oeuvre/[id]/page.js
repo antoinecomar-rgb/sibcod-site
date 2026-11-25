@@ -6,7 +6,7 @@ import ScaleView from "./ScaleView";
 import VoirAuMur from "./VoirAuMur";
 import { catalogue } from "../../../lib/catalogue";
 import { PALETTES, THEMES, FORMATS, nom } from "../../../lib/libelles";
-import { listeTailles, plageFiche } from "../../../lib/tailles";
+import { listeTailles, taillesPictorem, libelle } from "../../../lib/tailles";
 import AjouterMur from "./AjouterMur";
 import DESCRIPTIONS from "../../../data/descriptions.json";
 import { alternates } from "../../../lib/seo";
@@ -93,11 +93,7 @@ export default async function Oeuvre({ params, searchParams }) {
           <div className="by">{t.by}</div>
           {desc.map((d) => <p key={d}>{d}</p>)}
           {principale && (principale.fiches || []).length > 1
-            ? <div className="n-achats">
-                {principale.fiches.map((f) => (
-                  <a key={f.url} className="buybig" href={f.url} target="_blank" rel="noopener noreferrer">{t.choose} <small>{plageFiche(f, principale.ratio, lang)}</small></a>
-                ))}
-              </div>
+            ? <ChoixTaille v={principale} label={t.choose} lang={lang} />
             : principale
               ? <a className="buybig" href={principale.url} target="_blank" rel="noopener noreferrer">{t.choose}</a>
               : <span className="soonbig">{t.soon}</span>}
@@ -114,7 +110,7 @@ export default async function Oeuvre({ params, searchParams }) {
                   <span className="n-variante-actions">
                     <VoirAuMur v={{ id: v.id, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, fiches: v.fiches, titre: v.titre }} label={t.voirMur} />
                     {(v.fiches || []).length > 1
-                      ? v.fiches.map((f) => <a key={f.url} className="buybig n-var" href={f.url} target="_blank" rel="noopener noreferrer">{t.buy} <small>{plageFiche(f, v.ratio, lang)}</small></a>)
+                      ? <ChoixTaille v={v} label={t.buy} lang={lang} petit />
                       : v.url ? <a className="buybig n-var" href={v.url} target="_blank" rel="noopener noreferrer">{t.buy}</a> : <span className="soon">{t.soon}</span>}
                   </span>
                 </div>
@@ -177,5 +173,19 @@ function Mini({ x, Q }) {
       <span className="n-mat"><img src={x.img} alt={x.titre} loading="lazy" /></span>
       <span className="n-carte-t"><span>{x.titre}</span></span>
     </a>
+  );
+}
+
+// une seule touche « Choisir la taille » ; elle déplie les tailles, chacune menant à la fiche qui la vend
+function ChoixTaille({ v, label, lang, petit }) {
+  return (
+    <details className={`n-choix-taille${petit ? " petit" : ""}`}>
+      <summary className={`buybig${petit ? " n-var" : ""}`}>{label}</summary>
+      <ul>
+        {taillesPictorem(v).map((x) => (
+          <li key={x.w + "x" + x.h}><a href={x.url} target="_blank" rel="noopener noreferrer">{libelle(x, lang)}<span aria-hidden="true">→</span></a></li>
+        ))}
+      </ul>
+    </details>
   );
 }
