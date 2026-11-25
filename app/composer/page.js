@@ -51,6 +51,10 @@ export default async function Page({ searchParams }) {
     const o = parId[v.oeuvre];
     return { ...fiche(v, o), format: v.ratio >= 1.75 ? "panorama" : v.ratio < 0.9 ? "portrait" : v.ratio < 1.12 ? "carre" : "paysage" };
   });
+  // les panoramas (absents de la liste des images, qui montre leurs panneaux séparés)
+  oeuvres.forEach((o) => o.variantes.forEach((v) => {
+    if (v.img && v.ratio >= 1.75 && !collection.some((c) => c.id === v.id)) collection.push({ ...fiche(v, o), format: "panorama" });
+  }));
   // pour reprendre une sélection faite depuis une fiche (identifiant d'image quelconque)
   const alias = {};
   Object.keys(imageDuFichier).forEach((f) => {
@@ -61,6 +65,11 @@ export default async function Page({ searchParams }) {
     id: p.id, titre: p.titre, palette: p.palette,
     panneaux: p.panneaux.map((v) => ({ id: v.id, titre: v.titre, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, href: `/oeuvre/${v.id}${Q}` })),
   }));
+  // diptyques et triptyques complets, choisis d'un seul geste dans « Ma sélection »
+  polys.forEach((p) => {
+    const a = p.panneaux[0];
+    collection.push({ id: `poly-${p.id}`, titre: p.titre, img: a.img, ratio: a.ratio, maxPo: a.maxPo, url: a.url, href: a.href, palette: p.palette, format: "polyptyque", panneaux: p.panneaux });
+  });
   return (
     <div className="wrap">
       <Entete lang={lang} actif="mur" hrefLang={(l) => (l === "fr" ? "/composer?lang=fr" : "/composer")} />

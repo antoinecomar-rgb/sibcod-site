@@ -27,6 +27,7 @@ const FORMATS_F = [
   { id: "paysage", fr: "Paysage", en: "Landscape" },
   { id: "carre", fr: "Carré", en: "Square" },
   { id: "panorama", fr: "Panorama", en: "Panorama" },
+  { id: "polyptyque", fr: "Diptyque, triptyque", en: "Diptych, triptych" },
 ];
 const MUR_MIN_L = 320, MUR_MIN_H = 230, CANAPE_H = 85, BAS = CANAPE_H + 22; // cm
 const ECART = 8; // cm entre deux œuvres
@@ -36,10 +37,17 @@ const choisirTaille = (o, t) => {
   const i = t === "p" ? 0 : t === "g" ? l.length - 1 : Math.floor((l.length - 1) / 2);
   return { l, i };
 };
+const ECART_PANNEAUX = 4; // cm entre les panneaux d'un diptyque ou d'un triptyque
 const enPlace = (o, i) => {
   const l = taillesPictorem(o), x = l[Math.max(0, Math.min(i, l.length - 1))];
+  // un polyptyque choisi d'un bloc : ses panneaux côte à côte, chacun à la même taille
+  if (o.panneaux) {
+    const n = o.panneaux.length;
+    return { ...o, taille: x, w: n * enCm(x.w) + ECART_PANNEAUX * (n - 1), h: enCm(x.h) };
+  }
   return { ...o, taille: x, w: enCm(x.w), h: enCm(x.h) };
 };
+const etiquette = (o, lang) => (o.panneaux ? `${o.panneaux.length} × ${libelle(o.taille, lang)}` : libelle(o.taille, lang));
 
 // rangées d'œuvres (en cm, taille réelle) → positions sur le mur ; chaque rangée est centrée
 function placer(rangees, ecart = ECART) {
@@ -216,11 +224,13 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
         </div>
       )}
 
-      <div className="n-scene-cadre"><div className="n-scene" style={{ background: murC.c, aspectRatio: `${murL} / ${murH}` }} role="img" aria-label={txt.aria + pos.map((o) => `${o.titre} (${libelle(o.taille, lang)})`).join(", ")}>
+      <div className="n-scene-cadre"><div className="n-scene" style={{ background: murC.c, aspectRatio: `${murL} / ${murH}` }} role="img" aria-label={txt.aria + pos.map((o) => `${o.titre} (${etiquette(o, lang)})`).join(", ")}>
         {pos.map((o, k) => (
           <figure key={o.id + k} className="n-piece" style={{ left: pctX(o.x), bottom: pctY(o.b), width: pctX(o.w), height: pctY(o.h) }}>
-            <img src={o.img} alt="" />
-            <figcaption className={sombre ? "clair" : ""}>{libelle(o.taille, lang)}</figcaption>
+            {o.panneaux
+              ? <div className="n-piece-panneaux" style={{ gap: `${(ECART_PANNEAUX / o.w) * 100}%` }}>{o.panneaux.map((p) => <img key={p.id} src={p.img} alt="" />)}</div>
+              : <img src={o.img} alt="" />}
+            <figcaption className={sombre ? "clair" : ""}>{etiquette(o, lang)}</figcaption>
           </figure>
         ))}
         <img className="n-silhouette" src="/ambiance/silhouette-2.webp" alt="" style={{ width: pctX(258.3), left: pctX(murL / 2 - 136.2), bottom: pctY(-2.6) }} />
@@ -234,7 +244,7 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
           <ul className="n-legende">
             {pos.map((o, k) => (
               <li key={o.id + k}>
-                <a href={o.href}>{o.titre}</a> <span>{libelle(o.taille, lang)}</span>
+                <a href={o.href}>{o.titre}</a> <span>{etiquette(o, lang)}</span>
                 {lay === "moi" && (
                   <span className="n-legende-tailles">
                     {taillesPictorem(o).map((x, i) => {
@@ -271,7 +281,9 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
               const on = moi.some((x) => x.id === c.id);
               return (
                 <button key={c.id} type="button" className={on ? "on" : ""} aria-pressed={on} title={c.titre} onClick={() => basculerMoi(c.id)} disabled={!on && moi.length >= MAX_MUR}>
-                  <img src={c.img} alt="" loading="lazy" />
+                  {c.panneaux
+                    ? <span className="n-choix-poly">{c.panneaux.map((p) => <img key={p.id} src={p.img} alt="" loading="lazy" />)}</span>
+                    : <img src={c.img} alt="" loading="lazy" />}
                   <span>{c.titre}</span>
                 </button>
               );
