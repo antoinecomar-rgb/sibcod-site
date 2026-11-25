@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { MURS, estSombre } from "../../lib/murs";
 import { taillesPictorem, enCm, libelle } from "../../lib/tailles";
 import { lireMur, ecrireMur, MAX_MUR } from "../../lib/monmur";
-import { SUPPORTS, CADRES, PASSE_PARTOUT_PO, BAGUETTE_CM, prix, enDollars } from "../../lib/prix";
+import { SUPPORTS, CADRES, BORDS, MARGE_CM, PASSE_PARTOUT_PO, BAGUETTE_CM, prix, enDollars } from "../../lib/prix";
 
 const LAYS = [
   { id: "trio", n: 3, fr: "Trio", en: "Trio" },
@@ -95,7 +95,12 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
   const [graine, setGraine] = useState(0);
   const [nombre, setNombre] = useState(5);
   const [support, setSupport] = useState("toile");
-  const [cadre, setCadre] = useState("noir");
+  const [cadre, setCadre] = useState("sans");
+  const [bord, setBord] = useState("coupe");
+  // remplacements ciblés dans une sélection proposée : { rang: identifiant de l'œuvre choisie à la place }
+  const [remplace, setRemplace] = useState({});
+  const encadre = support === "affiche" && cadre !== "sans";
+  const marge = support === "affiche" && !encadre && bord === "marge";
   // « Ma sélection » : [{ id, i }] (i = rang de la taille choisie), gardée dans le navigateur
   const [moi, setMoi] = useState([]);
   const [filtreP, setFiltreP] = useState("toutes");
@@ -125,12 +130,17 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
     return [...c.slice(d), ...c.slice(0, d)].slice(0, n);
   };
 
+  // une sélection proposée change (composition, palette, taille, nouveau tirage) : les remplacements ciblés repartent de zéro
+  useEffect(() => setRemplace({}), [lay, pal, graine, taille, nombre]);
+  const parIdO = useMemo(() => Object.fromEntries(oeuvres.map((o) => [o.id, o])), [oeuvres]);
+  const remplacer = (c) => c.map((o, k) => (remplace[k] && parIdO[remplace[k]]) || o);
+
   const scene = useMemo(() => {
     // encadré : baguette + passe-partout autour de chaque image (de chaque panneau pour un polyptyque)
     const enPlace = (o, i) => {
       const x = enPlaceNu(o, i);
-      if (support !== "cadre") return x;
-      const e = BAGUETTE_CM + PASSE_PARTOUT_PO * 2.54, n = o.panneaux ? o.panneaux.length : 1;
+      if (!encadre && !marge) return x;
+      const e = encadre ? BAGUETTE_CM + PASSE_PARTOUT_PO * 2.54 : MARGE_CM, n = o.panneaux ? o.panneaux.length : 1;
       const uw = enCm(x.taille.w) + 2 * e, uh = enCm(x.taille.h) + 2 * e;
       return { ...x, w: n * uw + ECART_PANNEAUX * (n - 1), h: uh, unite: { w: uw, h: uh } };
     };
@@ -149,10 +159,11 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
       return { ...placer([items], 4), poly: p };
     }
     if (lay === "libre") {
-      const c = tourner(avecPal((o) => o.format !== "panorama"), nombre);
+      const pool = avecPal((o) => o.format !== "panorama");
+      const c = remplacer(tourner(pool, nombre));
       // des tailles variées : chaque œuvre reçoit à tour de rôle sa plus petite, sa moyenne ou sa plus grande taille
-      const items = c.map((o, k) => { const { i } = choisirTaille(o, ["g", "m", "p"][(k + graine) % 3]); return enPlace(o, i); });
-      return placer(enRangees(items));
+      const items = c.map((o, k) => { const { i } = choisirTaille(o, ["g", "m", "p"][(k + graine) % 3]); return { ...enPlace(o, i), rang: k }; });
+      return { ...placer(enRangees(items)), pool };
     }
     const filtre = {
       trio: (o) => o.format === "portrait",
@@ -170,16 +181,17 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
     const ref = premiere ? choisirTaille(premiere, taille) : null;
     const cibleL = ref ? long(ref.l[ref.i]) : 0;
     const memes = pool.filter((o) => taillesPictorem(o).some((x) => long(x) === cibleL));
-    const c = tourner(memes.length >= L.n ? memes : pool, L.n);
-    const items = c.map((o) => {
+    const serie = memes.length >= L.n ? memes : pool;
+    const c = remplacer(tourner(serie, L.n));
+    const items = c.map((o, r) => {
       const l = taillesPictorem(o);
       let j = 0;
       l.forEach((x, k) => { if (Math.abs(long(x) - cibleL) < Math.abs(long(l[j]) - cibleL)) j = k; });
-      return enPlace(o, j);
+      return { ...enPlace(o, j), rang: r };
     });
     const rangees = lay === "colonne" ? items.map((x) => [x]) : lay === "grille" ? enRangees(items, 2) : lay === "grille6" ? enRangees(items, 3) : [items];
-    return placer(rangees);
-  }, [oeuvres, polys, pal, lay, graine, nombre, taille, moi, parId, support]);
+    return { ...placer(rangees), pool: serie };
+  }, [oeuvres, polys, pal, lay, graine, nombre, taille, moi, parId, encadre, marge, remplace]);
 
   const { pos, murL, murH, poly } = scene;
   const pctX = (cm) => `${(cm / murL) * 100}%`;
@@ -191,34 +203,49 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
       <span className="n-barre-titre">{label}</span>
       <div className="n-barre-choix">
         {items.map((x) => (
-          <button key={x.id} type="button" aria-pressed={val === x.id} className={val === x.id ? "on" : ""} onClick={() => set(x.id)} title={x[lang]}>
-            {rond && <i style={{ background: rond(x) }} />}{x[lang]}
+          <button key={x.id} type="button" aria-pressed={val === x.id} className={(val === x.id ? "on" : "") + (x.id === "moi" ? " n-moi" : "")} onClick={() => set(x.id)} title={x[lang]}>
+            {rond && x.c && <i style={{ background: rond(x) }} />}{x.id === "moi" && <span aria-hidden="true">＋</span>}{x[lang]}
           </button>
         ))}
       </div>
     </div>
   );
+  // « changer celle-ci » : l'œuvre suivante de la même série, absente du mur
+  const changer = (rang) => {
+    const pool = scene.pool || [];
+    const montres = new Set(pos.map((o) => o.id));
+    const actuelle = pos.find((o) => o.rang === rang);
+    if (!pool.length || !actuelle) return;
+    const d = Math.max(0, pool.findIndex((o) => o.id === actuelle.id));
+    for (let k = 1; k <= pool.length; k++) {
+      const o = pool[(d + k) % pool.length];
+      if (!montres.has(o.id) && o.img !== actuelle.img) { setRemplace((r) => ({ ...r, [rang]: o.id })); return; }
+    }
+  };
   const visibles = collection.filter((c) => (filtreP === "toutes" || c.palette.includes(filtreP)) && (filtreF === "tous" || c.format === filtreF));
   const cadreC = CADRES.find((c) => c.id === cadre);
   const prixDe = (o) => { const v = prix(o.taille, support, cadre); return v == null ? null : v * (o.panneaux ? o.panneaux.length : 1); };
   const prixListe = pos.map(prixDe);
   const total = prixListe.every((v) => v != null) && pos.length ? prixListe.reduce((t, v) => t + v, 0) : null;
   // une image, nue ou encadrée (baguette + passe-partout blanc)
-  const Image = ({ src, u }) => (support === "cadre" && u
+  const Image = ({ src, u }) => (encadre && u
     ? <span className="n-cadre" style={{ background: cadreC.c, padding: `${(BAGUETTE_CM / u.w) * 100}%` }}>
         <span className="n-pp" style={{ padding: `${((PASSE_PARTOUT_PO * 2.54) / (u.w - 2 * BAGUETTE_CM)) * 100}%` }}><img src={src} alt="" /></span>
       </span>
-    : <img src={src} alt="" />);
+    : marge && u
+      ? <span className="n-marge" style={{ padding: `${(MARGE_CM / u.w) * 100}%` }}><img src={src} alt="" /></span>
+      : <img src={src} alt="" />);
 
   return (
     <div className="n-composer">
       <div className="n-scene-cadre"><div className={`n-scene s-${support}`} style={{ background: murC.c, aspectRatio: `${murL} / ${murH}` }} role="img" aria-label={txt.aria + pos.map((o) => `${o.titre} (${etiquette(o, lang)})`).join(", ")}>
         {pos.map((o, k) => (
-          <figure key={o.id + k} className={`n-piece s-${support}`} style={{ left: pctX(o.x), bottom: pctY(o.b), width: pctX(o.w), height: support === "cadre" ? "auto" : pctY(o.h) }}>
+          <figure key={o.id + k} className={`n-piece s-${support}${encadre ? " s-cadre" : ""}`} style={{ left: pctX(o.x), bottom: pctY(o.b), width: pctX(o.w), height: o.unite ? "auto" : pctY(o.h) }}>
             {o.panneaux
               ? <div className="n-piece-panneaux" style={{ gap: `${(ECART_PANNEAUX / o.w) * 100}%` }}>{o.panneaux.map((p) => <Image key={p.id} src={p.img} u={o.unite} />)}</div>
               : <Image src={o.img} u={o.unite} />}
             <figcaption className={sombre ? "clair" : ""}>{etiquette(o, lang)}</figcaption>
+            {o.rang != null && <button type="button" className="n-changer" onClick={() => changer(o.rang)} title={fr ? "Changer celle-ci" : "Swap this one"} aria-label={fr ? `Changer ${o.titre}` : `Swap ${o.titre}`}>↻</button>}
           </figure>
         ))}
         <img className="n-silhouette" src="/ambiance/silhouette-2.webp" alt="" style={{ width: pctX(258.3), left: pctX(murL / 2 - 136.2), bottom: pctY(-2.6) }} />
@@ -230,7 +257,8 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
       <div className="n-barre">
         <Chips label={txt.compo} items={LAYS} val={lay} set={(v) => { setLay(v); setGraine(0); }} />
         <Chips label={fr ? "Support" : "Medium"} items={SUPPORTS} val={support} set={setSupport} />
-        {support === "cadre" && <Chips label={fr ? "Cadre" : "Frame"} items={CADRES} val={cadre} set={setCadre} rond={(x) => x.c} petit />}
+        {support === "affiche" && <Chips label={fr ? "Cadre" : "Frame"} items={CADRES} val={cadre} set={setCadre} rond={(x) => x.c} petit />}
+        {support === "affiche" && !encadre && <Chips label={fr ? "Bord" : "Edge"} items={BORDS} val={bord} set={setBord} petit />}
         {lay !== "moi" && lay !== "libre" && <Chips label={txt.taille} items={TAILLES} val={taille} set={setTaille} petit />}
         {lay === "libre" && (
           <div className="n-barre-ligne petit">
@@ -277,8 +305,8 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
             <strong>{fr ? "Estimation" : "Estimate"} : {total != null ? enDollars(total, lang) : (fr ? "sur demande" : "on request")}</strong>
             <p className="n-petit">
               {fr
-                ? `${SUPPORTS.find((x) => x.id === support).fr}${support === "cadre" ? `, cadre ${cadreC.fr.toLowerCase()} et passe-partout blanc 5 cm` : ""}. Prix publics Pictorem en dollars US, hors taxes et promotions, livraison offerte aux États-Unis et au Canada. Le prix exact s'affiche chez Pictorem. Autres options possibles à la commande : cadres, couleurs et largeurs de passe-partout, caisses américaines pour les toiles.`
-                : `${SUPPORTS.find((x) => x.id === support).en}${support === "cadre" ? `, ${cadreC.en.toLowerCase()} frame and 2 in white mat` : ""}. Pictorem public prices in US dollars, before taxes and promotions, free shipping in the USA and Canada. The exact price is shown on Pictorem. More options when ordering: frames, mat colours and widths, floater frames for canvas.`}
+                ? `${SUPPORTS.find((x) => x.id === support).fr}${encadre ? `, cadre ${cadreC.fr.toLowerCase()} et passe-partout blanc 5 cm` : marge ? ", marge blanche" : ""}. Prix publics Pictorem en dollars US, hors taxes et promotions, livraison offerte aux États-Unis et au Canada. Le prix exact s'affiche chez Pictorem. D'autres cadres et passe-partout sont possibles pour les affiches à la commande.`
+                : `${SUPPORTS.find((x) => x.id === support).en}${encadre ? `, ${cadreC.en.toLowerCase()} frame and 2 in white mat` : marge ? ", white border" : ""}. Pictorem public prices in US dollars, before taxes and promotions, free shipping in the USA and Canada. The exact price is shown on Pictorem. More frames and mats are available for posters when ordering.`}
             </p>
           </div>
         )}
