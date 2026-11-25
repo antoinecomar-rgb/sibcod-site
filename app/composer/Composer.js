@@ -295,7 +295,7 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
                   <button type="button" className="n-retirer" aria-label={fr ? `Retirer ${o.titre}` : `Remove ${o.titre}`} onClick={() => basculerMoi(o.id)}>×</button>
                 </span>
               )}
-              {o.url && <a className="n-acheter" href={o.url} target="_blank" rel="noopener noreferrer">{fr ? "Acheter" : "Buy"}</a>}
+              {(o.taille?.url || o.url) && <a className="n-acheter" href={o.taille?.url || o.url} target="_blank" rel="noopener noreferrer">{fr ? "Acheter" : "Buy"}</a>}
             </li>
           ))}
         </ul>

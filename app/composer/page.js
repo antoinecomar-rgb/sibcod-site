@@ -41,7 +41,7 @@ export default async function Page({ searchParams }) {
   const { oeuvres, images, polyptyques, imageDuFichier } = await catalogue(lang);
   // une ligne par œuvre : son image principale, avec la taille maximale et le lien Pictorem de cette image
   const fiche = (v, o) => ({
-    id: v.id, titre: v.titre, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url,
+    id: v.id, titre: v.titre, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, fiches: v.fiches,
     palette: o.palette, format: o.format === "panorama" || v.ratio >= 1.75 ? "panorama" : o.format, href: `/oeuvre/${v.id}${Q}`,
   });
   const liste = oeuvres.filter((o) => o.palette.length && o.img).map((o) => fiche(o.variantes[0], o));
@@ -63,12 +63,12 @@ export default async function Page({ searchParams }) {
   });
   const polys = polyptyques.map((p) => ({
     id: p.id, titre: p.titre, palette: p.palette,
-    panneaux: p.panneaux.map((v) => ({ id: v.id, titre: v.titre, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, href: `/oeuvre/${v.id}${Q}` })),
+    panneaux: p.panneaux.map((v) => ({ id: v.id, titre: v.titre, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, fiches: v.fiches, href: `/oeuvre/${v.id}${Q}` })),
   }));
   // diptyques et triptyques complets, choisis d'un seul geste dans « Ma sélection »
   polys.forEach((p) => {
     const a = p.panneaux[0];
-    collection.push({ id: `poly-${p.id}`, titre: p.titre, img: a.img, ratio: a.ratio, maxPo: a.maxPo, url: a.url, href: a.href, palette: p.palette, format: "polyptyque", panneaux: p.panneaux });
+    collection.push({ id: `poly-${p.id}`, titre: p.titre, img: a.img, ratio: a.ratio, maxPo: a.maxPo, url: a.url, fiches: a.fiches, href: a.href, palette: p.palette, format: "polyptyque", panneaux: p.panneaux });
   });
   return (
     <div className="wrap">
