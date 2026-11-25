@@ -753,9 +753,9 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 
 /* téléphone (25/11) : le mur entier, réglages sur plusieurs lignes, sections moins espacées */
 @media (max-width:700px){
-  .n-scene-cadre { margin:0; width:100%; overflow:visible; }
-  .n-scene-cadre .n-scene { width:100%; margin-left:0; }
-  .n-relance { width:32px; height:32px; font-size:16px; right:8px; top:8px; }
+  .n-scene-cadre { margin:0; width:100%; overflow:hidden; justify-content:center; }
+  .n-scene-cadre .n-scene { width:calc(var(--zoom, 1) * 100%); margin-left:0; flex:none; }
+  .n-relance { width:32px; height:32px; font-size:16px; right:calc((var(--zoom, 1) - 1) / (2 * var(--zoom, 1)) * 100% + 8px); top:8px; }
   .n-changer { width:20px; height:20px; line-height:20px; font-size:11px; top:3px; right:3px; }
   .n-piece figcaption { font-size:9px; }
   .n-barre-ligne { flex-direction:column; align-items:flex-start; gap:6px; }
@@ -769,3 +769,4 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 .n-choix-taille li button { flex:1; }
 .n-choix-acheter { flex:none; padding:8px 18px 8px 6px; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); }
 .n-choix-sel { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:rgba(0,0,0,.6); }
+.n-scene-cadre { position:relative; }
