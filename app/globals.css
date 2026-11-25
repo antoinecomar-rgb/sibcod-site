@@ -712,3 +712,61 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 .n-choix-taille li a { display:flex; justify-content:space-between; gap:18px; padding:8px 18px; text-decoration:none; color:var(--ink); font-size:15px; }
 .n-choix-taille li a:hover { background:rgba(0,0,0,.05); }
 .n-choix-taille.petit li a { font-size:13px; padding:6px 14px; }
+
+/* touche des tailles : chaque taille entre dans « Ma sélection » */
+.n-choix-taille li button { display:flex; width:100%; justify-content:space-between; gap:18px; padding:8px 18px; background:none; border:0; cursor:pointer; color:var(--ink); font:inherit; font-size:15px; text-align:left; }
+.n-choix-taille li button:hover, .n-choix-taille li button[aria-pressed="true"] { background:rgba(0,0,0,.05); }
+.n-choix-taille.petit li button { font-size:13px; padding:6px 14px; }
+.n-choix-ok { margin:8px 0 0; font-size:14px; }
+.n-choix-ok a { color:var(--ink); }
+.n-total-actions { display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px; margin-top:12px; }
+.n-total-actions button.buybig { border:0; cursor:pointer; font-family:inherit; }
+.n-lien-sel { font-size:12px; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; color:inherit; margin-right:14px; white-space:nowrap; }
+.n-lien-sel.on, .n-lien-sel:hover { text-decoration:underline; }
+
+/* page « Ma sélection » */
+.n-sel-etapes { max-width:760px; margin:0 auto 28px; padding-left:22px; font-size:15px; line-height:1.6; color:rgba(0,0,0,.7); }
+.n-sel-lignes { list-style:none; margin:0; padding:0; }
+.n-sel-lignes > li { display:grid; grid-template-columns:140px 1fr auto; gap:22px; align-items:start; padding:22px 0; border-top:1px solid rgba(0,0,0,.1); }
+.n-sel-lignes > li.fait { opacity:.55; }
+.n-sel-img img { width:140px; height:auto; display:block; box-shadow:0 4px 12px rgba(0,0,0,.18); }
+.n-sel-corps h2 { font-size:22px; margin:0 0 10px; font-weight:400; }
+.n-sel-corps h2 a { color:inherit; text-decoration:none; }
+.n-sel-reglages { display:flex; flex-wrap:wrap; gap:10px 16px; }
+.n-sel-reglages label { display:flex; flex-direction:column; gap:4px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:rgba(0,0,0,.6); }
+.n-sel-reglages select { font:inherit; font-size:15px; text-transform:none; letter-spacing:0; color:var(--ink); padding:6px 8px; border:1px solid rgba(0,0,0,.25); background:var(--bg); }
+.n-sel-atelier { margin:12px 0 0; font-size:14px; color:rgba(0,0,0,.65); }
+.n-sel-atelier b { color:var(--ink); font-weight:500; }
+.n-sel-fin { display:flex; flex-direction:column; align-items:flex-end; gap:10px; min-width:160px; }
+.n-sel-prix { font-size:22px; font-weight:400; }
+.n-sel-fin .buybig { padding:10px 22px; font-size:12px; }
+.n-sel-fait { font-size:13px; display:flex; gap:6px; align-items:center; }
+.n-sel-fin .n-retirer { background:none; border:0; text-decoration:underline; cursor:pointer; font:inherit; font-size:13px; color:rgba(0,0,0,.55); }
+.n-sel .n-total { margin-top:10px; border-top:1px solid rgba(0,0,0,.1); padding-top:18px; }
+.n-sel-vide { text-align:center; padding:40px 0; }
+@media (max-width:720px) {
+  .n-sel-lignes > li { grid-template-columns:90px 1fr; }
+  .n-sel-img img { width:90px; }
+  .n-sel-fin { grid-column:1 / -1; flex-direction:row; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+  .n-lien-sel { margin-right:8px; font-size:11px; }
+}
+
+/* téléphone (25/11) : le mur entier, réglages sur plusieurs lignes, sections moins espacées */
+@media (max-width:700px){
+  .n-scene-cadre { margin:0; width:100%; overflow:hidden; justify-content:center; }
+  .n-scene-cadre .n-scene { width:calc(var(--zoom, 1) * 100%); margin-left:0; flex:none; }
+  .n-relance { width:32px; height:32px; font-size:16px; right:calc((var(--zoom, 1) - 1) / (2 * var(--zoom, 1)) * 100% + 8px); top:8px; }
+  .n-changer { width:20px; height:20px; line-height:20px; font-size:11px; top:3px; right:3px; }
+  .n-piece figcaption { font-size:9px; }
+  .n-barre-ligne { flex-direction:column; align-items:flex-start; gap:6px; }
+  .n-barre-titre { width:auto; font-size:10px; }
+  .n-barre-choix { flex-wrap:wrap; overflow:visible; gap:6px; }
+  .n-barre-choix button { min-height:30px; padding:0 11px; font-size:12px; }
+  .n-section { padding-top:36px; padding-bottom:36px; }
+  .n-apports { padding:28px 16px 36px; }
+}
+.n-choix-taille li { display:flex; align-items:center; }
+.n-choix-taille li button { flex:1; }
+.n-choix-acheter { flex:none; padding:8px 18px 8px 6px; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); }
+.n-choix-sel { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:rgba(0,0,0,.6); }
+.n-scene-cadre { position:relative; }

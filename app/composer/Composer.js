@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { MURS, estSombre } from "../../lib/murs";
 import { taillesPictorem, enCm, libelle } from "../../lib/tailles";
-import { lireMur, ecrireMur, MAX_MUR } from "../../lib/monmur";
+import { lireSel, ecrireSel, MAX_MUR, cleTaille } from "../../lib/monmur";
 import { SUPPORTS, cadresDe, BORDS, PASSE_PARTOUTS, habillage, prix, enDollars } from "../../lib/prix";
 import RAL from "../../data/ral-classique.json";
 
@@ -114,11 +114,21 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
   const [filtreP, setFiltreP] = useState("toutes");
   const [filtreF, setFiltreF] = useState("tous");
   const parId = useMemo(() => Object.fromEntries(collection.map((c) => [c.id, c])), [collection]);
+  // la sélection garde, pour chaque œuvre, sa taille et ses réglages (support, cadre…) : la page « Ma sélection » les reprend
   useEffect(() => {
-    const ids = lireMur().map((id) => (parId[id] ? id : alias[id])).filter((id) => parId[id]);
-    setMoi([...new Set(ids)].map((id) => ({ id, i: taillesPictorem(parId[id]).length - 1 })));
+    const vus = new Set();
+    const l = lireSel().map((x) => ({ ...x, id: parId[x.id] ? x.id : alias[x.id] })).filter((x) => parId[x.id] && !vus.has(x.id) && vus.add(x.id));
+    setMoi(l.map((x) => {
+      const ts = taillesPictorem(parId[x.id]);
+      const i = ts.findIndex((t) => cleTaille(t) === x.t);
+      return { id: x.id, i: i >= 0 ? i : ts.length - 1 };
+    }));
   }, [parId, alias]);
-  const majMoi = (l) => { setMoi(l); ecrireMur(l.map((x) => x.id)); };
+  const majMoi = (l) => {
+    setMoi(l);
+    const avant = Object.fromEntries(lireSel().map((x) => [x.id, x]));
+    ecrireSel(l.map((x) => ({ s: support, c: cadre, p: pp, b: bord, ...(avant[x.id] || {}), id: x.id, t: cleTaille(taillesPictorem(parId[x.id])[x.i]) })));
+  };
   const basculerMoi = (id) => {
     if (moi.some((x) => x.id === id)) majMoi(moi.filter((x) => x.id !== id));
     else if (moi.length < MAX_MUR) majMoi([...moi, { id, i: taillesPictorem(parId[id]).length - 1 }]);
@@ -202,13 +212,18 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
         if (!best || score < best.score) best = { v, k, score };
       }));
       const v = best ? best.v : o;
-      return { ...enPlace({ ...o, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, fiches: v.fiches, href: v.href }, best ? best.k : 0), rang: r };
+      return { ...enPlace({ ...o, vid: v.id, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, fiches: v.fiches, href: v.href }, best ? best.k : 0), rang: r };
     });
     const rangees = lay === "colonne" ? items.map((x) => [x]) : lay === "grille" ? enRangees(items, 2) : lay === "grille6" ? enRangees(items, 3) : [items];
     return { ...placer(rangees), pool: serie };
   }, [oeuvres, polys, pal, lay, graine, nombre, taille, moi, parId, hab && hab.type, hab && hab.cadre, hab && hab.interieur, remplace]);
 
   const { pos, murL, murH, poly } = scene;
+  // téléphone : on cadre le mur sur les œuvres pour qu'elles restent grandes (le canapé peut être coupé sur les côtés)
+  const gauche = pos.length ? Math.min(...pos.map((o) => o.x)) : 0;
+  const droite = pos.length ? Math.max(...pos.map((o) => o.x + o.w)) : murL;
+  const ecartCentre = Math.max(Math.abs(gauche - murL / 2), Math.abs(droite - murL / 2));
+  const zoomTel = Math.min(2.2, Math.max(1, murL / (2 * ecartCentre + 40)));
   const pctX = (cm) => `${(cm / murL) * 100}%`;
   const pctY = (cm) => `${(cm / murH) * 100}%`;
   const murC = mur === "perso" ? { id: "perso", c: murPerso, fr: saisieMur || "Couleur choisie", en: saisieMur || "Custom colour" } : MURS.find((m) => m.id === mur);
@@ -254,6 +269,21 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
       if (!montres.has(o.id) && o.img !== actuelle.img) { setRemplace((r) => ({ ...r, [rang]: o.id })); return; }
     }
   };
+  // « Ajouter cette composition à ma sélection » : chaque œuvre du mur, avec sa taille et les réglages choisis
+  const [ajoute, setAjoute] = useState(false);
+  useEffect(() => setAjoute(false), [lay, pal, graine, taille, nombre, remplace, support, cadre, pp, bord]);
+  const ajouterCompo = () => {
+    const l = lireSel();
+    pos.forEach((o) => {
+      const id = o.vid || o.id;
+      const item = { id, t: cleTaille(o.taille), s: support, c: cadre, p: pp, b: bord, fait: false };
+      const i = l.findIndex((x) => x.id === id);
+      if (i >= 0) l[i] = item; else if (l.length < MAX_MUR) l.push(item);
+    });
+    ecrireSel(l);
+    setAjoute(true);
+    setMoi(l.filter((x) => parId[x.id]).map((x) => { const ts = taillesPictorem(parId[x.id]); const i = ts.findIndex((t) => cleTaille(t) === x.t); return { id: x.id, i: i >= 0 ? i : ts.length - 1 }; }));
+  };
   const visibles = collection.filter((c) => (filtreP === "toutes" || c.palette.includes(filtreP)) && (filtreF === "tous" || c.format === filtreF));
   const prixDe = (o) => { const v = prix(o.taille, support, cadre, pp); return v == null ? null : v * (o.panneaux ? o.panneaux.length : 1); };
   const prixListe = pos.map(prixDe);
@@ -275,7 +305,7 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
 
   return (
     <div className="n-composer">
-      <div className="n-scene-cadre"><div className={`n-scene s-${support}`} style={{ background: murC.c, aspectRatio: `${murL} / ${murH}` }} role="img" aria-label={txt.aria + pos.map((o) => `${o.titre} (${etiquette(o, lang)})`).join(", ")}>
+      <div className="n-scene-cadre" style={{ "--zoom": zoomTel }}><div className={`n-scene s-${support}`} style={{ background: murC.c, aspectRatio: `${murL} / ${murH}` }} role="img" aria-label={txt.aria + pos.map((o) => `${o.titre} (${etiquette(o, lang)})`).join(", ")}>
         {pos.map((o, k) => (
           <figure key={o.id + k} className={`n-piece s-${support}${encadre ? " s-cadre" : ""}`} style={{ left: pctX(o.x), bottom: pctY(o.b), width: pctX(o.w), height: o.unite ? "auto" : pctY(o.h) }}>
             {o.panneaux
@@ -288,7 +318,8 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
         <img className="n-silhouette" src="/ambiance/silhouette-2.webp" alt="" style={{ width: pctX(258.3), left: pctX(murL / 2 - 136.2), bottom: pctY(-2.6) }} />
         {lay !== "moi" && <button type="button" className="n-relance" onClick={() => setGraine((g) => g + 1)} title={txt.autre} aria-label={txt.autre}>↻</button>}
         {lay === "moi" && !pos.length && <p className="n-scene-vide">{fr ? "Choisissez vos œuvres dans la collection, ci-dessous." : "Pick your artworks from the collection, below."}</p>}
-      </div></div>
+      </div>
+      </div>
       <p className="n-echelle-sous">{txt.echelle}</p>
 
       <div className="n-barre">
@@ -353,6 +384,12 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
                 ? `${SUPPORTS.find((x) => x.id === support).fr}${encadre ? `, ${cadreC.fr.toLowerCase()}${support === "affiche" ? (pp ? `, passe-partout ${PASSE_PARTOUTS.find((x) => x.id === pp).fr}` : ", sans passe-partout") : ""}` : hab ? ", marge blanche" : ""}. Prix publics de notre atelier d'impression, en dollars US, hors taxes et promotions, livraison offerte aux États-Unis et au Canada. Le prix exact s'affiche au moment de la commande ; les prix des cadres sont estimés. D'autres baguettes et 15 couleurs de passe-partout sont proposées à la commande.`
                 : `${SUPPORTS.find((x) => x.id === support).en}${encadre ? `, ${cadreC.en.toLowerCase()}${support === "affiche" ? (pp ? `, ${PASSE_PARTOUTS.find((x) => x.id === pp).en} mat` : ", no mat") : ""}` : hab ? ", white border" : ""}. Public prices from our print studio, in US dollars, before taxes and promotions, free shipping in the USA and Canada. The exact price is shown when ordering; frame prices are estimates. More mouldings and 15 mat colours are available when ordering.`}
             </p>
+            <div className="n-total-actions">
+              {lay !== "moi" && (
+                <button type="button" className="buybig" onClick={ajouterCompo}>{ajoute ? (fr ? "✓ Ajoutée à ma sélection" : "✓ Added to my selection") : (fr ? "Ajouter cette composition à ma sélection" : "Add this composition to my selection")}</button>
+              )}
+              <a className={lay === "moi" ? "buybig" : "n-lien"} href={`/selection${lang === "fr" ? "?lang=fr" : ""}`}>{fr ? "Récapitulatif et commande →" : "Summary and order →"}</a>
+            </div>
           </div>
         )}
       </div>
