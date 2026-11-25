@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { MURS, estSombre } from "../../lib/murs";
 import { taillesPictorem, enCm, libelle } from "../../lib/tailles";
 import { lireMur, ecrireMur, MAX_MUR } from "../../lib/monmur";
+import { SUPPORTS, CADRES, PASSE_PARTOUT_PO, BAGUETTE_CM, prix, enDollars } from "../../lib/prix";
 
 const LAYS = [
   { id: "trio", n: 3, fr: "Trio", en: "Trio" },
@@ -38,7 +39,7 @@ const choisirTaille = (o, t) => {
   return { l, i };
 };
 const ECART_PANNEAUX = 4; // cm entre les panneaux d'un diptyque ou d'un triptyque
-const enPlace = (o, i) => {
+const enPlaceNu = (o, i) => {
   const l = taillesPictorem(o), x = l[Math.max(0, Math.min(i, l.length - 1))];
   // un polyptyque choisi d'un bloc : ses panneaux côte à côte, chacun à la même taille
   if (o.panneaux) {
@@ -93,6 +94,8 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
   const [taille, setTaille] = useState("g");
   const [graine, setGraine] = useState(0);
   const [nombre, setNombre] = useState(5);
+  const [support, setSupport] = useState("toile");
+  const [cadre, setCadre] = useState("noir");
   // « Ma sélection » : [{ id, i }] (i = rang de la taille choisie), gardée dans le navigateur
   const [moi, setMoi] = useState([]);
   const [filtreP, setFiltreP] = useState("toutes");
@@ -123,6 +126,14 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
   };
 
   const scene = useMemo(() => {
+    // encadré : baguette + passe-partout autour de chaque image (de chaque panneau pour un polyptyque)
+    const enPlace = (o, i) => {
+      const x = enPlaceNu(o, i);
+      if (support !== "cadre") return x;
+      const e = BAGUETTE_CM + PASSE_PARTOUT_PO * 2.54, n = o.panneaux ? o.panneaux.length : 1;
+      const uw = enCm(x.taille.w) + 2 * e, uh = enCm(x.taille.h) + 2 * e;
+      return { ...x, w: n * uw + ECART_PANNEAUX * (n - 1), h: uh, unite: { w: uw, h: uh } };
+    };
     const dim = (o) => { const { i } = choisirTaille(o, taille); return enPlace(o, i); };
     if (lay === "moi") {
       const items = moi.map(({ id, i }) => enPlace(parId[id], i));
@@ -168,114 +179,125 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
     });
     const rangees = lay === "colonne" ? items.map((x) => [x]) : lay === "grille" ? enRangees(items, 2) : lay === "grille6" ? enRangees(items, 3) : [items];
     return placer(rangees);
-  }, [oeuvres, polys, pal, lay, graine, nombre, taille, moi, parId]);
+  }, [oeuvres, polys, pal, lay, graine, nombre, taille, moi, parId, support]);
 
   const { pos, murL, murH, poly } = scene;
   const pctX = (cm) => `${(cm / murL) * 100}%`;
   const pctY = (cm) => `${(cm / murH) * 100}%`;
   const murC = MURS.find((m) => m.id === mur);
   const sombre = estSombre(murC.c);
-  const Groupe = ({ nom, items, val, set, rond }) => (
-    <fieldset className="n-groupe">
-      <legend>{nom}</legend>
-      <div>
+  const Chips = ({ label, items, val, set, rond, petit }) => (
+    <div className={petit ? "n-barre-ligne petit" : "n-barre-ligne"} role="group" aria-label={label}>
+      <span className="n-barre-titre">{label}</span>
+      <div className="n-barre-choix">
         {items.map((x) => (
-          <button key={x.id} type="button" aria-pressed={val === x.id} className={val === x.id ? "on" : ""} onClick={() => set(x.id)}>
+          <button key={x.id} type="button" aria-pressed={val === x.id} className={val === x.id ? "on" : ""} onClick={() => set(x.id)} title={x[lang]}>
             {rond && <i style={{ background: rond(x) }} />}{x[lang]}
           </button>
         ))}
       </div>
-    </fieldset>
+    </div>
   );
   const visibles = collection.filter((c) => (filtreP === "toutes" || c.palette.includes(filtreP)) && (filtreF === "tous" || c.format === filtreF));
+  const cadreC = CADRES.find((c) => c.id === cadre);
+  const prixDe = (o) => { const v = prix(o.taille, support, cadre); return v == null ? null : v * (o.panneaux ? o.panneaux.length : 1); };
+  const prixListe = pos.map(prixDe);
+  const total = prixListe.every((v) => v != null) && pos.length ? prixListe.reduce((t, v) => t + v, 0) : null;
+  // une image, nue ou encadrée (baguette + passe-partout blanc)
+  const Image = ({ src, u }) => (support === "cadre" && u
+    ? <span className="n-cadre" style={{ background: cadreC.c, padding: `${(BAGUETTE_CM / u.w) * 100}%` }}>
+        <span className="n-pp" style={{ padding: `${((PASSE_PARTOUT_PO * 2.54) / (u.w - 2 * BAGUETTE_CM)) * 100}%` }}><img src={src} alt="" /></span>
+      </span>
+    : <img src={src} alt="" />);
 
   return (
     <div className="n-composer">
-      <div className="n-reglages">
-        <fieldset className="n-groupe">
-          <legend>{txt.mur} : <span className="n-teinte-nom">{murC[lang]}</span></legend>
-          <div className="n-teintes">
-            {MURS.map((m) => (
-              <button key={m.id} type="button" title={m[lang]} aria-label={m[lang]} aria-pressed={mur === m.id} className={mur === m.id ? "on" : ""} style={{ background: m.c }} onClick={() => setMur(m.id)} />
-            ))}
-          </div>
-        </fieldset>
-        <Groupe nom={txt.compo} items={LAYS} val={lay} set={(v) => { setLay(v); setGraine(0); }} />
-        {lay !== "moi" && <Groupe nom={txt.palette} items={palettes} val={pal} set={(v) => { setPal(v); setGraine(0); }} rond={(x) => x.c} />}
-        {lay !== "moi" && lay !== "libre" && <Groupe nom={txt.taille} items={TAILLES} val={taille} set={setTaille} />}
-        {lay === "libre" && (
-          <fieldset className="n-groupe n-libre">
-            <legend>{fr ? "Nombre d'œuvres" : "Number of artworks"}</legend>
-            <div>
-              <span className="n-nombre">
-                <button type="button" aria-label="−" onClick={() => setNombre((n) => Math.max(2, n - 1))}>−</button>
-                <b>{nombre} {txt.oeuvres}</b>
-                <button type="button" aria-label="+" onClick={() => setNombre((n) => Math.min(8, n + 1))}>+</button>
-              </span>
-            </div>
-          </fieldset>
-        )}
-      </div>
-
-      {lay !== "moi" && (
-        <div className="n-relancer">
-          <button type="button" className="n-btn" onClick={() => setGraine((g) => g + 1)}><span aria-hidden="true">↻</span> {txt.autre}</button>
-          <span className="n-petit">{txt.autreS}</span>
-        </div>
-      )}
-
-      <div className="n-scene-cadre"><div className="n-scene" style={{ background: murC.c, aspectRatio: `${murL} / ${murH}` }} role="img" aria-label={txt.aria + pos.map((o) => `${o.titre} (${etiquette(o, lang)})`).join(", ")}>
+      <div className="n-scene-cadre"><div className={`n-scene s-${support}`} style={{ background: murC.c, aspectRatio: `${murL} / ${murH}` }} role="img" aria-label={txt.aria + pos.map((o) => `${o.titre} (${etiquette(o, lang)})`).join(", ")}>
         {pos.map((o, k) => (
-          <figure key={o.id + k} className="n-piece" style={{ left: pctX(o.x), bottom: pctY(o.b), width: pctX(o.w), height: pctY(o.h) }}>
+          <figure key={o.id + k} className={`n-piece s-${support}`} style={{ left: pctX(o.x), bottom: pctY(o.b), width: pctX(o.w), height: support === "cadre" ? "auto" : pctY(o.h) }}>
             {o.panneaux
-              ? <div className="n-piece-panneaux" style={{ gap: `${(ECART_PANNEAUX / o.w) * 100}%` }}>{o.panneaux.map((p) => <img key={p.id} src={p.img} alt="" />)}</div>
-              : <img src={o.img} alt="" />}
+              ? <div className="n-piece-panneaux" style={{ gap: `${(ECART_PANNEAUX / o.w) * 100}%` }}>{o.panneaux.map((p) => <Image key={p.id} src={p.img} u={o.unite} />)}</div>
+              : <Image src={o.img} u={o.unite} />}
             <figcaption className={sombre ? "clair" : ""}>{etiquette(o, lang)}</figcaption>
           </figure>
         ))}
         <img className="n-silhouette" src="/ambiance/silhouette-2.webp" alt="" style={{ width: pctX(258.3), left: pctX(murL / 2 - 136.2), bottom: pctY(-2.6) }} />
-        <p className={sombre ? "n-echelle-note clair" : "n-echelle-note"}>{txt.echelle}</p>
+        {lay !== "moi" && <button type="button" className="n-relance" onClick={() => setGraine((g) => g + 1)} title={txt.autre} aria-label={txt.autre}>↻</button>}
         {lay === "moi" && !pos.length && <p className="n-scene-vide">{fr ? "Choisissez vos œuvres dans la collection, ci-dessous." : "Pick your artworks from the collection, below."}</p>}
       </div></div>
+      <p className="n-echelle-sous">{txt.echelle}</p>
+
+      <div className="n-barre">
+        <Chips label={txt.compo} items={LAYS} val={lay} set={(v) => { setLay(v); setGraine(0); }} />
+        <Chips label={fr ? "Support" : "Medium"} items={SUPPORTS} val={support} set={setSupport} />
+        {support === "cadre" && <Chips label={fr ? "Cadre" : "Frame"} items={CADRES} val={cadre} set={setCadre} rond={(x) => x.c} petit />}
+        {lay !== "moi" && lay !== "libre" && <Chips label={txt.taille} items={TAILLES} val={taille} set={setTaille} petit />}
+        {lay === "libre" && (
+          <div className="n-barre-ligne petit">
+            <span className="n-barre-titre">{fr ? "Nombre" : "Number"}</span>
+            <div className="n-barre-choix">
+              <button type="button" aria-label="−" onClick={() => setNombre((n) => Math.max(2, n - 1))}>−</button>
+              <b className="n-barre-nombre">{nombre}</b>
+              <button type="button" aria-label="+" onClick={() => setNombre((n) => Math.min(8, n + 1))}>+</button>
+            </div>
+          </div>
+        )}
+        {lay !== "moi" && <Chips label={txt.palette} items={palettes} val={pal} set={(v) => { setPal(v); setGraine(0); }} rond={(x) => x.c} petit />}
+        <div className="n-barre-ligne petit" role="group" aria-label={txt.mur}>
+          <span className="n-barre-titre">{txt.mur}</span>
+          <div className="n-teintes petit">
+            {MURS.map((m) => (
+              <button key={m.id} type="button" title={m[lang]} aria-label={m[lang]} aria-pressed={mur === m.id} className={mur === m.id ? "on" : ""} style={{ background: m.c }} onClick={() => setMur(m.id)} />
+            ))}
+          </div>
+        </div>
+      </div>
 
       <div className="n-composer-pied">
-        <div>
-          <strong>{poly ? poly.titre : lay === "moi" ? L[lang] : `${L[lang]} · ${palettes.find((p) => p.id === pal)[lang]}`}</strong>
-          <ul className="n-legende">
-            {pos.map((o, k) => (
-              <li key={o.id + k}>
-                <a href={o.href}>{o.titre}</a> <span>{etiquette(o, lang)}</span>
-                {lay === "moi" && (
-                  <span className="n-legende-tailles">
-                    {taillesPictorem(o).map((x, i) => {
-                      const m = moi.find((y) => y.id === o.id);
-                      return <button key={i} type="button" className={m && m.i === i ? "on" : ""} aria-pressed={m && m.i === i} onClick={() => majMoi(moi.map((y) => (y.id === o.id ? { ...y, i } : y)))}>{libelle(x, lang)}</button>;
-                    })}
-                    <button type="button" className="n-retirer" aria-label={fr ? `Retirer ${o.titre}` : `Remove ${o.titre}`} onClick={() => basculerMoi(o.id)}>×</button>
-                  </span>
-                )}
-                {o.url && <a className="n-acheter" href={o.url} target="_blank" rel="noopener noreferrer">{fr ? "Acheter" : "Buy"}</a>}
-              </li>
-            ))}
-          </ul>
-          {!pos.length && lay !== "moi" && <p>{txt.vide}</p>}
-        </div>
+        <ul className="n-legende">
+          {pos.map((o, k) => (
+            <li key={o.id + k}>
+              <a href={o.href}>{o.titre}</a> <span>{etiquette(o, lang)}</span> <b>{enDollars(prixListe[k], lang)}</b>
+              {lay === "moi" && (
+                <span className="n-legende-tailles">
+                  {taillesPictorem(o).map((x, i) => {
+                    const m = moi.find((y) => y.id === o.id);
+                    return <button key={i} type="button" className={m && m.i === i ? "on" : ""} aria-pressed={m && m.i === i} onClick={() => majMoi(moi.map((y) => (y.id === o.id ? { ...y, i } : y)))}>{libelle(x, lang)}</button>;
+                  })}
+                  <button type="button" className="n-retirer" aria-label={fr ? `Retirer ${o.titre}` : `Remove ${o.titre}`} onClick={() => basculerMoi(o.id)}>×</button>
+                </span>
+              )}
+              {o.url && <a className="n-acheter" href={o.url} target="_blank" rel="noopener noreferrer">{fr ? "Acheter" : "Buy"}</a>}
+            </li>
+          ))}
+        </ul>
+        {!pos.length && lay !== "moi" && <p>{txt.vide}</p>}
+        {pos.length > 0 && (
+          <div className="n-total">
+            <strong>{fr ? "Estimation" : "Estimate"} : {total != null ? enDollars(total, lang) : (fr ? "sur demande" : "on request")}</strong>
+            <p className="n-petit">
+              {fr
+                ? `${SUPPORTS.find((x) => x.id === support).fr}${support === "cadre" ? `, cadre ${cadreC.fr.toLowerCase()} et passe-partout blanc 5 cm` : ""}. Prix publics Pictorem en dollars US, hors taxes et promotions, livraison offerte aux États-Unis et au Canada. Le prix exact s'affiche chez Pictorem. Autres options possibles à la commande : cadres, couleurs et largeurs de passe-partout, caisses américaines pour les toiles.`
+                : `${SUPPORTS.find((x) => x.id === support).en}${support === "cadre" ? `, ${cadreC.en.toLowerCase()} frame and 2 in white mat` : ""}. Pictorem public prices in US dollars, before taxes and promotions, free shipping in the USA and Canada. The exact price is shown on Pictorem. More options when ordering: frames, mat colours and widths, floater frames for canvas.`}
+            </p>
+          </div>
+        )}
       </div>
 
       {lay === "moi" && (
         <section className="n-choix">
           <h2>{fr ? "Choisir dans la collection" : "Choose from the collection"}</h2>
           <p className="n-petit">{fr ? `Touchez une œuvre pour l'ajouter ou la retirer (${MAX_MUR} au plus). Votre sélection reste dans ce navigateur ; vous pouvez aussi l'enrichir depuis chaque fiche avec « Ajouter à mon mur ».` : `Tap an artwork to add or remove it (${MAX_MUR} at most). Your selection stays in this browser; you can also add to it from each artwork page with “Add to my wall”.`}</p>
-          <div className="n-groupe"><div>
+          <div className="n-barre-choix">
             {[{ id: "toutes", fr: "Toutes", en: "All" }, ...palettes].map((x) => (
               <button key={x.id} type="button" className={filtreP === x.id ? "on" : ""} aria-pressed={filtreP === x.id} onClick={() => setFiltreP(x.id)}>{x.c && <i style={{ background: x.c }} />}{x[lang]}</button>
             ))}
-          </div></div>
-          <div className="n-groupe"><div>
+          </div>
+          <div className="n-barre-choix">
             {FORMATS_F.map((x) => (
               <button key={x.id} type="button" className={filtreF === x.id ? "on" : ""} aria-pressed={filtreF === x.id} onClick={() => setFiltreF(x.id)}>{x[lang]}</button>
             ))}
-          </div></div>
+          </div>
           <div className="n-choix-grille">
             {visibles.map((c) => {
               const on = moi.some((x) => x.id === c.id);
