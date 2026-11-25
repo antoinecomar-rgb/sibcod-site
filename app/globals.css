@@ -765,3 +765,7 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
   .n-section { padding-top:36px; padding-bottom:36px; }
   .n-apports { padding:28px 16px 36px; }
 }
+.n-choix-taille li { display:flex; align-items:center; }
+.n-choix-taille li button { flex:1; }
+.n-choix-acheter { flex:none; padding:8px 18px 8px 6px; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); }
+.n-choix-sel { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:rgba(0,0,0,.6); }
