@@ -623,3 +623,47 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 .n-piece-panneaux img { flex:1; min-width:0; height:100%; object-fit:cover; display:block; box-shadow:0 6px 14px rgba(0,0,0,.25); }
 .n-choix-poly { display:flex; gap:3px; aspect-ratio:1; align-items:center; }
 .n-choix-poly img { flex:1; min-width:0; width:auto!important; aspect-ratio:auto!important; height:auto; object-fit:contain; }
+
+/* Composer : le mur d'abord, réglages compacts dessous */
+.n-composer-tete { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 18px; padding:18px 0 12px; }
+.n-composer-tete h1 { margin:0; font-family:var(--serif); font-weight:400; font-size:clamp(24px,2.4vw,32px); }
+.n-composer-tete p { margin:0; font-size:15px; color:var(--muted); }
+.n-composer { gap:10px; }
+.n-scene-cadre .n-scene { position:relative; }
+@media (min-width:701px){ .n-scene-cadre .n-scene { height:min(78vh, calc((100vw - 64px) * 230 / 320)); } }
+.n-echelle-sous { margin:0; font-size:12px; color:var(--muted); text-align:center; }
+.n-relance { position:absolute; right:12px; top:12px; width:40px; height:40px; border-radius:50%; border:0; background:rgba(255,255,255,.85); font-size:20px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.15); color:var(--ink); }
+.n-barre { display:flex; flex-direction:column; gap:8px; padding:12px 0 6px; border-top:1px solid #E3DDD2; }
+.n-barre-ligne { display:flex; align-items:center; gap:12px; min-width:0; }
+.n-barre-titre { flex:none; width:96px; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
+.n-barre-choix { display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; padding:2px; min-width:0; flex-wrap:nowrap; }
+.n-barre-choix::-webkit-scrollbar { display:none; }
+.n-barre-choix button { flex:none; display:inline-flex; align-items:center; gap:7px; min-height:34px; padding:0 13px; border:1px solid #CFC8BC; border-radius:999px; background:var(--bg); cursor:pointer; font:13px var(--sans); color:var(--ink); white-space:nowrap; }
+.n-barre-choix button.on { border-color:var(--ink); box-shadow:inset 0 0 0 1px var(--ink); background:#fff; }
+.n-barre-choix button i { width:14px; height:14px; border-radius:50%; border:1px solid rgba(0,0,0,.15); }
+.n-barre-nombre { align-self:center; min-width:22px; text-align:center; font-weight:500; }
+.n-choix .n-barre-choix { flex-wrap:wrap; }
+.n-teintes.petit { display:flex; gap:6px; flex-wrap:wrap; }
+.n-teintes.petit button { width:24px; height:24px; }
+@media (max-width:700px){ .n-barre-titre { width:auto; display:none; } .n-composer-tete { padding:10px 0 6px; } }
+.n-composer-pied { display:grid; grid-template-columns:minmax(0,1fr) minmax(240px,360px); gap:16px 32px; align-items:start; }
+@media (max-width:800px){ .n-composer-pied { grid-template-columns:1fr; } }
+.n-legende { margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px; font-size:14px; }
+.n-legende b { font-weight:500; }
+.n-total strong { font-family:var(--serif); font-weight:400; font-size:22px; }
+.n-total p { margin:6px 0 0; }
+/* rendus des supports */
+.n-piece.s-affiche img, .n-piece.s-affiche .n-piece-panneaux img { box-shadow:0 2px 6px rgba(0,0,0,.18); }
+.n-piece.s-toile img, .n-piece.s-toile .n-piece-panneaux img { box-shadow:2px 3px 0 rgba(0,0,0,.22), 0 8px 18px rgba(0,0,0,.25); }
+.n-piece.s-bois img, .n-piece.s-bois .n-piece-panneaux img { box-shadow:1px 2px 0 rgba(90,60,30,.45), 0 6px 14px rgba(0,0,0,.22); filter:sepia(.12) saturate(1.05); }
+.n-piece.s-metal::after, .n-piece.s-acrylique::after { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(125deg, rgba(255,255,255,.28), rgba(255,255,255,0) 38%, rgba(255,255,255,.10) 62%, rgba(255,255,255,0) 80%); }
+.n-piece.s-acrylique::after { background:linear-gradient(125deg, rgba(255,255,255,.40), rgba(255,255,255,0) 35%, rgba(255,255,255,.16) 60%, rgba(255,255,255,0) 78%); }
+.n-piece.s-metal img, .n-piece.s-acrylique img { box-shadow:0 10px 20px rgba(0,0,0,.28); }
+.n-cadre { display:block; box-shadow:0 8px 18px rgba(0,0,0,.28); flex:1; min-width:0; }
+.n-pp { display:block; background:#FBFAF7; box-shadow:inset 0 0 2px rgba(0,0,0,.25); }
+.n-cadre img, .n-pp img { display:block; width:100%; height:auto!important; box-shadow:none!important; }
+.n-piece.s-cadre figcaption { top:auto; bottom:-1.4em; }
+.n-composer > * { min-width:0; max-width:100%; }
+.n-barre { align-items:stretch; width:100%; }
+.n-barre-ligne { width:100%; max-width:100%; }
+.n-barre-choix, .n-barre .n-teintes { flex:1 1 auto; }
