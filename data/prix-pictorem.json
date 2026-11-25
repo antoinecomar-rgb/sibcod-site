@@ -185,6 +185,62 @@
     "12x16": 222
    }
   },
-  "maxPouces": "le cadre n'est pas proposé au-delà d'environ 39 po de côté ; pas de cadre pour les panoramas"
+  "maxPouces": "le cadre n'est pas proposé au-delà d'environ 39 po de côté ; pas de cadre pour les panoramas",
+  "sansPassePartout": {
+   "modele": "832-745 noir, sans passe-partout, plexiglas",
+   "points": [
+    [
+     21,
+     107
+    ],
+    [
+     28,
+     139
+    ],
+    [
+     35,
+     176
+    ],
+    [
+     36,
+     182
+    ],
+    [
+     42,
+     217
+    ],
+    [
+     48,
+     258
+    ],
+    [
+     53,
+     298
+    ],
+    [
+     63,
+     368
+    ],
+    [
+     72,
+     451
+    ]
+   ]
+  },
+  "passePartoutParPouceCarre": 0.23,
+  "note": "Prix encadré = prix sans passe-partout pour la taille extérieure (image + passe-partout) + 0,23 $ par pouce carré de passe-partout (vérifié à ±3 % sur 6 tailles avec 2 po). Passe-partout proposés par Pictorem : aucun, ou 1 à 8 po, 15 couleurs."
+ },
+ "caisseAmericaine": {
+  "modeles": {
+   "noir": "FL-814-67",
+   "blanc": "301-22",
+   "bois": "303-12"
+  },
+  "coef": 1.55,
+  "note": "Toile en caisse américaine (floating frame) : environ +55 % sur la toile seule (relevé sur le configurateur Pictorem : 12×8 po 49 → 75 $, 36×24 po 119 → 189 $). Le cadre ajoute 1 po de chaque côté."
+ },
+ "metalCadre": {
+  "coef": 1.43,
+  "note": "Métal HD avec cadre flottant noir (With Moulding) : 9×12 po 138 $, 12×16 po 194 $, contre 100 et 130 $ pour le métal seul."
  }
 }
