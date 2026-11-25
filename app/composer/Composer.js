@@ -188,14 +188,21 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
     const premiere = tourner(pool, 1)[0];
     const ref = premiere ? choisirTaille(premiere, taille) : null;
     const cibleL = ref ? long(ref.l[ref.i]) : 0;
-    const memes = pool.filter((o) => taillesPictorem(o).some((x) => long(x) === cibleL));
-    const serie = memes.length >= L.n ? memes : pool;
+    const cible = ref ? ref.l[ref.i] : null;
+    const offre = (o, ok) => [o, ...(o.autres || [])].some((v) => taillesPictorem(v).some(ok));
+    const exactes = pool.filter((o) => offre(o, (x) => cible && x.w === cible.w && x.h === cible.h));
+    const memes = pool.filter((o) => offre(o, (x) => long(x) === cibleL));
+    const serie = exactes.length >= L.n ? exactes : memes.length >= L.n ? memes : pool;
     const c = remplacer(tourner(serie, L.n));
+    // même taille exacte que la première œuvre si l'œuvre (ou l'une de ses autres images) la propose, sinon la plus proche
     const items = c.map((o, r) => {
-      const l = taillesPictorem(o);
-      let j = 0;
-      l.forEach((x, k) => { if (Math.abs(long(x) - cibleL) < Math.abs(long(l[j]) - cibleL)) j = k; });
-      return { ...enPlace(o, j), rang: r };
+      let best = null;
+      [o, ...(o.autres || [])].forEach((v) => taillesPictorem(v).forEach((x, k) => {
+        const score = (cible && x.w === cible.w && x.h === cible.h ? 0 : 1000) + Math.abs(long(x) - cibleL) * 10 + (v === o ? 0 : 1);
+        if (!best || score < best.score) best = { v, k, score };
+      }));
+      const v = best ? best.v : o;
+      return { ...enPlace({ ...o, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, fiches: v.fiches, href: v.href }, best ? best.k : 0), rang: r };
     });
     const rangees = lay === "colonne" ? items.map((x) => [x]) : lay === "grille" ? enRangees(items, 2) : lay === "grille6" ? enRangees(items, 3) : [items];
     return { ...placer(rangees), pool: serie };

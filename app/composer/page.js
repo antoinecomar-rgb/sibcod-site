@@ -44,7 +44,11 @@ export default async function Page({ searchParams }) {
     id: v.id, titre: v.titre, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, fiches: v.fiches,
     palette: o.palette, format: o.format === "panorama" || v.ratio >= 1.75 ? "panorama" : o.format, href: `/oeuvre/${v.id}${Q}`,
   });
-  const liste = oeuvres.filter((o) => o.palette.length && o.img).map((o) => fiche(o.variantes[0], o));
+  // chaque œuvre garde ses autres images (une même œuvre existe souvent en 3:4 et en 4:5) : une série peut ainsi être montrée dans une seule proportion
+  const liste = oeuvres.filter((o) => o.palette.length && o.img).map((o) => ({
+    ...fiche(o.variantes[0], o),
+    autres: o.variantes.slice(1).filter((v) => v.img && v.ratio < 1.75).map((v) => fiche(v, o)),
+  }));
   // collection à parcourir pour « Ma sélection » : chaque image distincte une fois
   const parId = Object.fromEntries(oeuvres.map((o) => [o.id, o]));
   const collection = images.filter((v) => v.img).map((v) => {
