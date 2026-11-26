@@ -999,19 +999,6 @@
   "format": "portrait"
  },
  {
-  "id": "F182",
-  "fichiers": [
-   "F182"
-  ],
-  "titre_fr": "Grand'Rivière, manzelle, quai et planche",
-  "titre_en": "Grand'Rivière, Manzelle, Pier and Board",
-  "theme": "mer",
-  "palette": [
-   "lagon"
-  ],
-  "format": "portrait"
- },
- {
   "id": "F023",
   "fichiers": [
    "F023"
@@ -1495,20 +1482,39 @@
  {
   "id": "F282",
   "fichiers": [
-   "F183",
-   "F184",
+   "F282",
    "F253",
+   "F184",
    "F254",
+   "F183",
    "F255",
-   "F282"
+   "F182"
   ],
-  "titre_fr": "Manzelle en mer",
-  "titre_en": "Manzelle at Sea",
+  "titre_fr": "Manzelle prend le large",
+  "titre_en": "Manzelle Sets Sail",
   "theme": "mer",
   "palette": [
    "lagon"
   ],
-  "format": "panorama"
+  "format": "panorama",
+  "ancien_titre": {
+   "fr": "Manzelle en mer",
+   "en": "Manzelle at Sea"
+  },
+  "titres_versions": {
+   "F184": {
+    "fr": "Manzelle prend le large — I (gauche)",
+    "en": "Manzelle Sets Sail I"
+   },
+   "F183": {
+    "fr": "Manzelle prend le large — II (centre)",
+    "en": "Manzelle Sets Sail II"
+   },
+   "F182": {
+    "fr": "Manzelle prend le large — III (droite)",
+    "en": "Manzelle Sets Sail III"
+   }
+  }
  },
  {
   "id": "F298",
