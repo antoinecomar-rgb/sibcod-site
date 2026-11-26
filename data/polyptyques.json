@@ -143,5 +143,14 @@
    "F111",
    "F112"
   ]
+ },
+ {
+  "id": "barque",
+  "titre_fr": "Barque en mer",
+  "titre_en": "Boat at Sea",
+  "panneaux": [
+   "F040",
+   "F041"
+  ]
  }
 ]

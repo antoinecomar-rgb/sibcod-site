@@ -170,8 +170,9 @@
  {
   "id": "F208",
   "fichiers": [
-   "F041",
-   "F208"
+   "F208",
+   "F040",
+   "F041"
   ],
   "titre_fr": "Barque en mer",
   "titre_en": "Boat at Sea",
@@ -179,20 +180,17 @@
   "palette": [
    "lagon"
   ],
-  "format": "paysage"
- },
- {
-  "id": "F040",
-  "fichiers": [
-   "F040"
-  ],
-  "titre_fr": "Barque en mer I",
-  "titre_en": "Boat at Sea I",
-  "theme": "mer",
-  "palette": [
-   "lagon"
-  ],
-  "format": "portrait"
+  "format": "paysage",
+  "titres_versions": {
+   "F040": {
+    "fr": "Barque en mer — I (gauche)",
+    "en": "Boat at Sea I"
+   },
+   "F041": {
+    "fr": "Barque en mer — II (droite)",
+    "en": "Boat at Sea II"
+   }
+  }
  },
  {
   "id": "F295",
@@ -755,12 +753,11 @@
  {
   "id": "F306",
   "fichiers": [
-   "F033",
-   "F110",
-   "F121",
-   "F204",
+   "F306",
    "F302",
-   "F306"
+   "F204",
+   "F121",
+   "F033"
   ],
   "titre_fr": "De quai en nuages",
   "titre_en": "Pier to the Clouds",
@@ -768,7 +765,25 @@
   "palette": [
    "lagon"
   ],
-  "format": "carre"
+  "format": "carre",
+  "titres_versions": {
+   "F306": {
+    "fr": "De quai en nuages, carré",
+    "en": "Pier to the Clouds, Square"
+   },
+   "F302": {
+    "fr": "De quai en nuages",
+    "en": "Pier to the Clouds"
+   },
+   "F204": {
+    "fr": "De quai en nuages",
+    "en": "Pier to the Clouds"
+   },
+   "F121": {
+    "fr": "De quai en nuages",
+    "en": "Pier to the Clouds"
+   }
+  }
  },
  {
   "id": "F289",
@@ -787,8 +802,9 @@
   "format": "portrait"
  },
  {
-  "id": "F174",
+  "id": "F173",
   "fichiers": [
+   "F173",
    "F174"
   ],
   "titre_fr": "Duchamps",
@@ -798,21 +814,13 @@
    "lagon",
    "vegetal"
   ],
-  "format": "portrait"
- },
- {
-  "id": "F173",
-  "fichiers": [
-   "F173"
-  ],
-  "titre_fr": "Duchamps II",
-  "titre_en": "Duchamps II",
-  "theme": "paysages",
-  "palette": [
-   "lagon",
-   "vegetal"
-  ],
-  "format": "paysage"
+  "format": "paysage",
+  "titres_versions": {
+   "F174": {
+    "fr": "Duchamps, portrait",
+    "en": "Duchamps, Portrait"
+   }
+  }
  },
  {
   "id": "F290",
