@@ -65,7 +65,13 @@
   "palette": [
    "vegetal"
   ],
-  "format": "carre"
+  "format": "carre",
+  "titres_versions": {
+   "F105": {
+    "fr": "Arbre en mer, paysage",
+    "en": "Tree at Sea, Landscape"
+   }
+  }
  },
  {
   "id": "F147",
@@ -81,7 +87,13 @@
    "lagon",
    "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "titres_versions": {
+   "F047": {
+    "fr": "Depuis le balcon",
+    "en": "From the Balcony"
+   }
+  }
  },
  {
   "id": "F050",
@@ -207,7 +219,17 @@
    "corail",
    "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "titres_versions": {
+   "F077": {
+    "fr": "Barques de Grand'Rivière",
+    "en": "Boats of Grand Riviere"
+   },
+   "F181": {
+    "fr": "Barques de Grand'Rivière",
+    "en": "Boats of Grand Riviere"
+   }
+  }
  },
  {
   "id": "F151",
@@ -222,7 +244,13 @@
    "vegetal",
    "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "titres_versions": {
+   "F052": {
+    "en": "Fence",
+    "fr": "Barrière"
+   }
+  }
  },
  {
   "id": "F053",
@@ -278,7 +306,13 @@
    "vegetal",
    "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "titres_versions": {
+   "F054": {
+    "fr": "Bougainvillier au latanier",
+    "en": "Bougainvillea and Palm"
+   }
+  }
  },
  {
   "id": "F055",
@@ -348,7 +382,13 @@
   "palette": [
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "titres_versions": {
+   "F157": {
+    "fr": "Bougainvilliers dans la brume",
+    "en": "Bougainvillea in the Mist"
+   }
+  }
  },
  {
   "id": "F155",
@@ -512,7 +552,13 @@
   "palette": [
    "vegetal"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "titres_versions": {
+   "F061": {
+    "fr": "Cannes texturées",
+    "en": "Textured Canes"
+   }
+  }
  },
  {
   "id": "F011",
@@ -721,7 +767,13 @@
   "palette": [
    "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "titres_versions": {
+   "F070": {
+    "fr": "Couleuvre dans les herbes II",
+    "en": "Snake in the Grass II"
+   }
+  }
  },
  {
   "id": "F016",
@@ -799,7 +851,15 @@
   "palette": [
    "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "titres_versions": {
+   "F071": {
+    "en": "From the Shore"
+   },
+   "F171": {
+    "en": "From the Shore"
+   }
+  }
  },
  {
   "id": "F173",
@@ -837,7 +897,16 @@
   "palette": [
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "titres_versions": {
+   "F064": {
+    "fr": "En salon",
+    "en": "Creole Parlor"
+   },
+   "F175": {
+    "en": "Creole Parlor"
+   }
+  }
  },
  {
   "id": "F091",
@@ -897,7 +966,6 @@
  {
   "id": "F272",
   "fichiers": [
-   "F021",
    "F107",
    "F272"
   ],
@@ -908,7 +976,13 @@
    "lagon",
    "vegetal"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "titres_versions": {
+   "F107": {
+    "fr": "Flamboyant en ciel",
+    "en": "Flamboyant Sky"
+   }
+  }
  },
  {
   "id": "F310",
@@ -917,6 +991,19 @@
   ],
   "titre_fr": "Flora Martinicensis — Bannannan",
   "titre_en": "Flora Martinicensis Banana",
+  "theme": "botanique",
+  "palette": [
+   "corail"
+  ],
+  "format": "portrait"
+ },
+ {
+  "id": "F021",
+  "fichiers": [
+   "F021"
+  ],
+  "titre_fr": "Flora Martinicensis — Flamboyant",
+  "titre_en": "Flora Martinicensis Flamboyant",
   "theme": "botanique",
   "palette": [
    "corail"
@@ -990,7 +1077,13 @@
   "palette": [
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "titres_versions": {
+   "F133": {
+    "fr": "Gouttes de bougainvilliers",
+    "en": "Bougainvillea Drops"
+   }
+  }
  },
  {
   "id": "F145",
@@ -1182,6 +1275,14 @@
    "F186": {
     "fr": "Jungle en sous-bois, portrait",
     "en": "Jungle Undergrowth, Portrait"
+   },
+   "F087": {
+    "fr": "Jungle en sous-bois, portrait",
+    "en": "Jungle Undergrowth, Portrait"
+   },
+   "F088": {
+    "fr": "Jungle en sous-bois",
+    "en": "Jungle Undergrowth"
    }
   }
  },
@@ -1201,11 +1302,23 @@
  {
   "id": "F286",
   "fichiers": [
-   "F185",
    "F286"
   ],
   "titre_fr": "L'îlet Thierry",
   "titre_en": "Thierry Islet",
+  "theme": "mer",
+  "palette": [
+   "sable"
+  ],
+  "format": "paysage"
+ },
+ {
+  "id": "F185",
+  "fichiers": [
+   "F185"
+  ],
+  "titre_fr": "L'îlet Thierry, haut en couleur",
+  "titre_en": "Thierry Islet, Colorful",
   "theme": "mer",
   "palette": [
    "sable"
@@ -1224,7 +1337,13 @@
   "palette": [
    "lagon"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "titres_versions": {
+   "F096": {
+    "fr": "L'îlet orange",
+    "en": "The Orange Islet"
+   }
+  }
  },
  {
   "id": "F287",
@@ -1239,7 +1358,17 @@
   "palette": [
    "lagon"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "titres_versions": {
+   "F109": {
+    "fr": "La Montagne Pelée",
+    "en": "Mount Pelee"
+   },
+   "F200": {
+    "fr": "La Montagne Pelée",
+    "en": "Mount Pelee"
+   }
+  }
  },
  {
   "id": "F281",
@@ -1339,23 +1468,10 @@
   "format": "paysage"
  },
  {
-  "id": "F172",
-  "fichiers": [
-   "F172"
-  ],
-  "titre_fr": "Le Diamant",
-  "titre_en": "Diamond Rock",
-  "theme": "mer",
-  "palette": [
-   "vegetal",
-   "sable"
-  ],
-  "format": "portrait"
- },
- {
   "id": "F269",
   "fichiers": [
-   "F269"
+   "F269",
+   "F172"
   ],
   "titre_fr": "Le Diamant, plage claire",
   "titre_en": "Diamond Rock Beach",
@@ -1364,7 +1480,13 @@
    "lagon",
    "vegetal"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "titres_versions": {
+   "F172": {
+    "fr": "Le Diamant, plage claire, portrait",
+    "en": "Diamond Rock Beach, Portrait"
+   }
+  }
  },
  {
   "id": "F268",
@@ -1392,7 +1514,13 @@
   "palette": [
    "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "titres_versions": {
+   "F152": {
+    "fr": "Le bœuf",
+    "en": "The Ox"
+   }
+  }
  },
  {
   "id": "F279",
@@ -1481,7 +1609,29 @@
    "lagon",
    "vegetal"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "titres_versions": {
+   "F074": {
+    "fr": "Le grand figuier (gauche)",
+    "en": "The Great Fig Tree (Left)"
+   },
+   "F075": {
+    "fr": "Le grand figuier (droite)",
+    "en": "The Great Fig Tree (Right)"
+   },
+   "F177": {
+    "fr": "Le grand figuier (gauche)",
+    "en": "The Great Fig Tree (Left)"
+   },
+   "F178": {
+    "fr": "Le grand figuier (droite)",
+    "en": "The Great Fig Tree (Right)"
+   },
+   "F179": {
+    "fr": "Le grand figuier",
+    "en": "The Great Fig Tree"
+   }
+  }
  },
  {
   "id": "F027",
@@ -1510,7 +1660,17 @@
   "palette": [
    "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "titres_versions": {
+   "F095": {
+    "fr": "Manzelle en mer",
+    "en": "Manzelle at Sea"
+   },
+   "F193": {
+    "fr": "Manzelle en mer",
+    "en": "Manzelle at Sea"
+   }
+  }
  },
  {
   "id": "F282",
@@ -1562,7 +1722,17 @@
   "palette": [
    "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "titres_versions": {
+   "F094": {
+    "fr": "Manzelle n'est plus là",
+    "en": "Manzelle Has Sailed"
+   },
+   "F192": {
+    "fr": "Manzelle n'est plus là",
+    "en": "Manzelle Has Sailed"
+   }
+  }
  },
  {
   "id": "F207",
@@ -2248,7 +2418,25 @@
   "palette": [
    "lagon"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "titres_versions": {
+   "F036": {
+    "fr": "Véliplanchistes I",
+    "en": "Windsurfers I"
+   },
+   "F037": {
+    "fr": "Véliplanchistes II",
+    "en": "Windsurfers II"
+   },
+   "F125": {
+    "fr": "Véliplanchistes",
+    "en": "Windsurfers"
+   },
+   "F126": {
+    "fr": "Véliplanchistes",
+    "en": "Windsurfers"
+   }
+  }
  },
  {
   "id": "F262",
@@ -2265,7 +2453,17 @@
    "lagon",
    "vegetal"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "titres_versions": {
+   "F097": {
+    "fr": "À l'ombre du raisinier",
+    "en": "In the Shade of the Sea Grape"
+   },
+   "F205": {
+    "fr": "À l'ombre du raisinier",
+    "en": "In the Shade of the Sea Grape"
+   }
+  }
  },
  {
   "id": "F073",
