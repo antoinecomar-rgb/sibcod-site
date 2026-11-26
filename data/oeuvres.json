@@ -1236,19 +1236,30 @@
  {
   "id": "F281",
   "fichiers": [
-   "F252",
+   "F281",
    "F250",
    "F251",
-   "F281"
+   "F191",
+   "F252"
   ],
-  "titre_fr": "La mer derrière les feuilles",
-  "titre_en": "Sea Behind the Leaves",
+  "titre_fr": "Fenêtre de paradis",
+  "titre_en": "Paradise Window",
   "theme": "mer",
   "palette": [
    "vegetal",
    "corail"
   ],
-  "format": "panorama"
+  "format": "panorama",
+  "ancien_titre": {
+   "fr": "La mer derrière les feuilles",
+   "en": "Sea Behind the Leaves"
+  },
+  "titres_versions": {
+   "F191": {
+    "fr": "Fenêtre de paradis — II (centre)",
+    "en": "Paradise Window II"
+   }
+  }
  },
  {
   "id": "F305",
@@ -1318,20 +1329,6 @@
    "vegetal"
   ],
   "format": "paysage"
- },
- {
-  "id": "F191",
-  "fichiers": [
-   "F191"
-  ],
-  "titre_fr": "Lataniers, paradis et yoles",
-  "titre_en": "Latania Palms, Paradise and Yoles",
-  "theme": "vegetal",
-  "palette": [
-   "vegetal",
-   "lagon"
-  ],
-  "format": "portrait"
  },
  {
   "id": "F172",
