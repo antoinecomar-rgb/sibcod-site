@@ -1155,19 +1155,6 @@
   "format": "paysage"
  },
  {
-  "id": "F086",
-  "fichiers": [
-   "F086"
-  ],
-  "titre_fr": "Jungle en fête",
-  "titre_en": "Jungle Festival",
-  "theme": "vegetal",
-  "palette": [
-   "corail"
-  ],
-  "format": "portrait"
- },
- {
   "id": "F196",
   "fichiers": [
    "F087",
@@ -1175,22 +1162,28 @@
    "F186",
    "F196"
   ],
-  "titre_fr": "Jungle multicolore II",
-  "titre_en": "Multicolor Jungle II",
+  "titre_fr": "Jungle en sous-bois",
+  "titre_en": "Jungle Undergrowth",
   "theme": "graphique",
   "palette": [
    "corail",
    "vegetal"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "titres_versions": {
+   "F186": {
+    "fr": "Jungle en sous-bois, portrait",
+    "en": "Jungle Undergrowth, Portrait"
+   }
+  }
  },
  {
   "id": "F089",
   "fichiers": [
    "F089"
   ],
-  "titre_fr": "Jungle party",
-  "titre_en": "Jungle Party",
+  "titre_fr": "Jungle en fête, plein soleil",
+  "titre_en": "Jungle Party, Full Sun",
   "theme": "vegetal",
   "palette": [
    "corail"
@@ -1399,23 +1392,58 @@
  {
   "id": "F279",
   "fichiers": [
-   "F187",
-   "F188",
-   "F189",
-   "F190",
+   "F279",
    "F247",
    "F248",
    "F249",
-   "F279"
+   "F188",
+   "F190",
+   "F187",
+   "F189",
+   "F086"
   ],
-  "titre_fr": "Le cœur de la jungle",
-  "titre_en": "Heart of the Jungle",
+  "titre_fr": "Jungle en paradis",
+  "titre_en": "Paradise Jungle",
   "theme": "vegetal",
   "palette": [
    "corail",
    "vegetal"
   ],
-  "format": "panorama"
+  "format": "panorama",
+  "titres_versions": {
+   "F247": {
+    "fr": "Jungle en paradis — I (gauche)",
+    "en": "Paradise Jungle I"
+   },
+   "F248": {
+    "fr": "Jungle en paradis — II (centre)",
+    "en": "Paradise Jungle II"
+   },
+   "F249": {
+    "fr": "Jungle en paradis — III (droite)",
+    "en": "Paradise Jungle III"
+   },
+   "F188": {
+    "fr": "Jungle en paradis (gauche)",
+    "en": "Paradise Jungle (Left)"
+   },
+   "F190": {
+    "fr": "Jungle en paradis",
+    "en": "Paradise Jungle"
+   },
+   "F086": {
+    "fr": "Jungle en paradis",
+    "en": "Paradise Jungle"
+   },
+   "F187": {
+    "fr": "Jungle en paradis (droite)",
+    "en": "Paradise Jungle (Right)"
+   },
+   "F189": {
+    "fr": "Jungle en paradis, paysage",
+    "en": "Paradise Jungle, Landscape"
+   }
+  }
  },
  {
   "id": "F285",
@@ -1632,8 +1660,8 @@
   "fichiers": [
    "F194"
   ],
-  "titre_fr": "Multicolore",
-  "titre_en": "Multicolor",
+  "titre_fr": "Jungle en fête, dansée",
+  "titre_en": "Jungle Party, Twirling",
   "theme": "graphique",
   "palette": [
    "corail"
@@ -1645,8 +1673,8 @@
   "fichiers": [
    "F195"
   ],
-  "titre_fr": "Multicolore II",
-  "titre_en": "Multicolor II",
+  "titre_fr": "Jungle en fête, carnaval",
+  "titre_en": "Jungle Party, Carnival",
   "theme": "graphique",
   "palette": [
    "corail"

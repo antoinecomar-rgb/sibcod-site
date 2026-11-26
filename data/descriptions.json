@@ -31,10 +31,6 @@
   "fr": "Une fin de journée au nord de la Martinique, où les barques reposent sur l'eau calme face aux falaises. La lumière chaude du soir enveloppe la scène d'une douceur intemporelle.",
   "en": "Late afternoon in the north of Martinique, where boats rest on calm water facing the cliffs. The warm evening light wraps the scene in timeless softness."
  },
- "F086": {
-  "fr": "Une célébration végétale, ensoleillée et luxuriante, dans une palette délicate. Un équilibre entre exubérance naturelle et douceur contemporaine.",
-  "en": "A sunlit, lush celebration of plants in a delicate palette. A balance between natural exuberance and contemporary softness."
- },
  "F299": {
   "fr": "Une embarcation immobile sur l'eau turquoise, suspendue entre ciel et reflet, dans une lumière où la mer devient miroir. Les feuillages sombres encadrent la scène comme un secret dévoilé.",
   "en": "A boat at rest on turquoise water, suspended between sky and reflection, in a light that turns the sea into a mirror. Dark foliage frames the scene like a secret revealed."
@@ -118,5 +114,9 @@
  "F288": {
   "fr": "Un incontournable, qui a conquis le cœur des amoureux de la mer. Il s'accorde à merveille avec de nombreuses œuvres de la collection.",
   "en": "A favourite that has won the hearts of sea lovers. It pairs beautifully with many pieces in the collection."
+ },
+ "F279": {
+  "fr": "Une célébration végétale, ensoleillée et luxuriante, dans une palette délicate. Un équilibre entre exubérance naturelle et douceur contemporaine.",
+  "en": "A sunlit, lush celebration of plants in a delicate palette. A balance between natural exuberance and contemporary softness."
  }
 }
