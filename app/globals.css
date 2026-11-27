@@ -770,3 +770,4 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 .n-choix-acheter { flex:none; padding:8px 18px 8px 6px; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); }
 .n-choix-sel { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:rgba(0,0,0,.6); }
 .n-scene-cadre { position:relative; }
+.n-depart { margin:6px 0 0; } .n-depart .n-lien { background:none; border:0; padding:0; cursor:pointer; font:inherit; text-decoration:underline; }
