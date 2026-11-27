@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MURS, estSombre } from "../../lib/murs";
-import { taillesPictorem, enCm, libelle } from "../../lib/tailles";
+import { taillesPictorem, taillesReunies, enCm, libelle } from "../../lib/tailles";
 import { lireSel, ecrireSel, MAX_MUR, cleTaille } from "../../lib/monmur";
 import { SUPPORTS, cadresDe, BORDS, PASSE_PARTOUTS, habillage, prix, enDollars } from "../../lib/prix";
 import RAL from "../../data/ral-classique.json";
@@ -152,6 +152,13 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
     const avant = Object.fromEntries(lireSel().map((x) => [x.id, x]));
     ecrireSel(l.map((x) => ({ s: support, c: cadre, p: pp, b: bord, ...(avant[x.id] || {}), id: x.id, t: cleTaille(taillesPictorem(parId[x.id])[x.i]) })));
   };
+  // pastilles de « Ma sélection » : toutes les tailles proposées pour cette image, quel que soit le fichier qui les porte
+  // (le 30x40 porte 9×12 et 12×16, le 40x50 porte 16×20, le grand format la suite) ; choisir une taille place le bon fichier au mur
+  const taillesDeLOeuvre = (id) => {
+    const c = parId[id];
+    if (!c) return [];
+    return taillesReunies(c, collection.filter((v) => v.oeuvre === c.oeuvre)).map(({ v, x }) => ({ vid: v.id, i: taillesPictorem(v).findIndex((y) => y.w === x.w && y.h === x.h), x }));
+  };
   const basculerMoi = (id) => {
     if (moi.some((x) => x.id === id)) majMoi(moi.filter((x) => x.id !== id));
     else if (moi.length < MAX_MUR) majMoi([...moi, { id, i: taillesPictorem(parId[id]).length - 1 }]);
@@ -248,6 +255,15 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
   const droite = pos.length ? Math.max(...pos.map((o) => o.x + o.w)) : murL;
   const ecartCentre = Math.max(Math.abs(gauche - murL / 2), Math.abs(droite - murL / 2));
   const zoomTel = Math.min(2.2, Math.max(1, murL / (2 * ecartCentre + 40)));
+  // téléphone : le mur entier à ses vraies proportions, que l'on fait glisser du doigt ; il s'ouvre centré
+  const cadreRef = useRef(null);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      const el = cadreRef.current;
+      if (el && el.scrollWidth > el.clientWidth) el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2;
+    });
+    return () => cancelAnimationFrame(id);
+  }, [zoomTel, murL]);
   const pctX = (cm) => `${(cm / murL) * 100}%`;
   const pctY = (cm) => `${(cm / murH) * 100}%`;
   const murC = mur === "perso" ? { id: "perso", c: murPerso, fr: saisieMur || "Couleur choisie", en: saisieMur || "Custom colour" } : MURS.find((m) => m.id === mur);
@@ -329,7 +345,7 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
 
   return (
     <div className="n-composer">
-      <div className="n-scene-cadre" style={{ "--zoom": zoomTel }}><div className={`n-scene s-${support}`} style={{ background: murC.c, aspectRatio: `${murL} / ${murH}` }} role="img" aria-label={txt.aria + pos.map((o) => `${o.titre} (${etiquette(o, lang)})`).join(", ")}>
+      <div className="n-scene-cadre" ref={cadreRef} style={{ "--zoom": zoomTel }}><div className={`n-scene s-${support}`} style={{ background: murC.c, aspectRatio: `${murL} / ${murH}` }} role="img" aria-label={txt.aria + pos.map((o) => `${o.titre} (${etiquette(o, lang)})`).join(", ")}>
         {pos.map((o, k) => (
           <figure key={o.id + k} className={`n-piece s-${support}${encadre ? " s-cadre" : ""}`} style={{ left: pctX(o.x), bottom: pctY(o.b), width: pctX(o.w), height: o.unite ? "auto" : pctY(o.h) }}>
             {o.panneaux
@@ -344,6 +360,7 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
         {lay === "moi" && !pos.length && <p className="n-scene-vide">{fr ? "Choisissez vos œuvres dans la collection, ci-dessous." : "Pick your artworks from the collection, below."}</p>}
       </div>
       </div>
+      {zoomTel > 1.02 && <p className="n-salon-glisser" aria-hidden="true">← {fr ? "faites glisser" : "swipe"} →</p>}
       <p className="n-echelle-sous">{txt.echelle}</p>
 
       <div className="n-barre">
@@ -394,9 +411,9 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
               <a href={o.href}>{o.titre}</a> <span>{etiquette(o, lang)}</span> <b>{enDollars(prixListe[k], lang)}</b>
               {lay === "moi" && (
                 <span className="n-legende-tailles">
-                  {taillesPictorem(o).map((x, i) => {
-                    const m = moi.find((y) => y.id === o.id);
-                    return <button key={i} type="button" className={m && m.i === i ? "on" : ""} aria-pressed={m && m.i === i} onClick={() => majMoi(moi.map((y) => (y.id === o.id ? { ...y, i } : y)))}>{libelle(x, lang)}</button>;
+                  {taillesDeLOeuvre(o.id).map(({ vid, i, x }) => {
+                    const on = vid === o.id && moi.some((y) => y.id === o.id && y.i === i);
+                    return <button key={vid + i} type="button" className={on ? "on" : ""} aria-pressed={on} onClick={() => majMoi(moi.filter((y) => y.id === o.id || y.id !== vid).map((y) => (y.id === o.id ? { id: vid, i } : y)))}>{libelle(x, lang)}</button>;
                   })}
                   <button type="button" className="n-retirer" aria-label={fr ? `Retirer ${o.titre}` : `Remove ${o.titre}`} onClick={() => basculerMoi(o.id)}>×</button>
                 </span>
