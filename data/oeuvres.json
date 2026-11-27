@@ -6,11 +6,16 @@
   ],
   "titre_fr": "Amandier",
   "titre_en": "Almond Tree",
-  "theme": "vegetal",
+  "theme": "botanique",
   "palette": [
+   "sable",
    "vegetal"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "botanique",
+   "vegetal"
+  ]
  },
  {
   "id": "F046",
@@ -21,9 +26,13 @@
   "titre_en": "Pineapple",
   "theme": "botanique",
   "palette": [
-   "vegetal"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique",
+   "graphique"
+  ]
  },
  {
   "id": "F001",
@@ -35,9 +44,14 @@
   "theme": "mer",
   "palette": [
    "vegetal",
-   "sable"
+   "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "mer",
+   "paysages",
+   "vegetal"
+  ]
  },
  {
   "id": "F002",
@@ -48,10 +62,15 @@
   "titre_en": "Sail Cove II",
   "theme": "mer",
   "palette": [
-   "corail",
-   "vegetal"
+   "vegetal",
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "mer",
+   "paysages",
+   "vegetal"
+  ]
  },
  {
   "id": "F308",
@@ -63,7 +82,8 @@
   "titre_en": "Tree at Sea",
   "theme": "mer",
   "palette": [
-   "vegetal"
+   "vegetal",
+   "lagon"
   ],
   "format": "carre",
   "titres_versions": {
@@ -71,7 +91,12 @@
     "fr": "Arbre en mer, paysage",
     "en": "Tree at Sea, Landscape"
    }
-  }
+  },
+  "themes": [
+   "mer",
+   "vegetal",
+   "paysages"
+  ]
  },
  {
   "id": "F147",
@@ -93,7 +118,10 @@
     "fr": "Depuis le balcon",
     "en": "From the Balcony"
    }
-  }
+  },
+  "themes": [
+   "maisons"
+  ]
  },
  {
   "id": "F050",
@@ -104,9 +132,14 @@
   "titre_en": "Bananas",
   "theme": "botanique",
   "palette": [
-   "vegetal"
+   "sable",
+   "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique",
+   "graphique"
+  ]
  },
  {
   "id": "F148",
@@ -118,10 +151,14 @@
   "titre_en": "Banana Truck",
   "theme": "botanique",
   "palette": [
-   "vegetal",
-   "lagon"
+   "sable",
+   "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique",
+   "vegetal"
+  ]
  },
  {
   "id": "F149",
@@ -133,9 +170,14 @@
   "titre_en": "Banana Plant",
   "theme": "vegetal",
   "palette": [
-   "vegetal"
+   "vegetal",
+   "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "botanique"
+  ]
  },
  {
   "id": "F048",
@@ -146,9 +188,14 @@
   "titre_en": "Didier's Banana Plant",
   "theme": "vegetal",
   "palette": [
-   "vegetal"
+   "vegetal",
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "botanique"
+  ]
  },
  {
   "id": "F005",
@@ -162,7 +209,10 @@
    "vegetal",
    "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F150",
@@ -174,10 +224,16 @@
   "titre_en": "Boat Under the Bougainvillea",
   "theme": "mer",
   "palette": [
-   "lagon",
-   "vegetal"
+   "corail",
+   "vegetal",
+   "lagon"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer",
+   "vegetal",
+   "botanique"
+  ]
  },
  {
   "id": "F208",
@@ -190,7 +246,8 @@
   "titre_en": "Boat at Sea",
   "theme": "mer",
   "palette": [
-   "lagon"
+   "lagon",
+   "sable"
   ],
   "format": "paysage",
   "titres_versions": {
@@ -202,7 +259,10 @@
     "fr": "Barque en mer — II (droite)",
     "en": "Boat at Sea II"
    }
-  }
+  },
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F295",
@@ -229,7 +289,11 @@
     "fr": "Barques de Grand'Rivière",
     "en": "Boats of Grand Riviere"
    }
-  }
+  },
+  "themes": [
+   "mer",
+   "paysages"
+  ]
  },
  {
   "id": "F151",
@@ -241,8 +305,8 @@
   "titre_en": "Fence",
   "theme": "maisons",
   "palette": [
-   "vegetal",
-   "lagon"
+   "lagon",
+   "sable"
   ],
   "format": "portrait",
   "titres_versions": {
@@ -250,7 +314,12 @@
     "en": "Fence",
     "fr": "Barrière"
    }
-  }
+  },
+  "themes": [
+   "maisons",
+   "vegetal",
+   "botanique"
+  ]
  },
  {
   "id": "F053",
@@ -264,7 +333,12 @@
    "corail",
    "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "maisons",
+   "vegetal",
+   "botanique"
+  ]
  },
  {
   "id": "F006",
@@ -275,10 +349,13 @@
   "titre_en": "Ti Baume Wood",
   "theme": "botanique",
   "palette": [
-   "corail",
+   "sable",
    "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F056",
@@ -287,11 +364,16 @@
   ],
   "titre_fr": "Bougainvillier",
   "titre_en": "Bougainvillea",
-  "theme": "vegetal",
+  "theme": "botanique",
   "palette": [
-   "corail"
+   "corail",
+   "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique",
+   "vegetal"
+  ]
  },
  {
   "id": "F292",
@@ -304,6 +386,7 @@
   "theme": "vegetal",
   "palette": [
    "vegetal",
+   "sable",
    "lagon"
   ],
   "format": "portrait",
@@ -312,7 +395,11 @@
     "fr": "Bougainvillier au latanier",
     "en": "Bougainvillea and Palm"
    }
-  }
+  },
+  "themes": [
+   "vegetal",
+   "botanique"
+  ]
  },
  {
   "id": "F055",
@@ -321,17 +408,21 @@
   ],
   "titre_fr": "Bougainvillier et raisiniers",
   "titre_en": "Bougainvillea and Sea Grapes",
-  "theme": "mer",
+  "theme": "botanique",
   "palette": [
+   "sable",
    "vegetal",
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique",
+   "vegetal"
+  ]
  },
  {
   "id": "F153",
   "fichiers": [
-   "F031",
    "F113",
    "F153"
   ],
@@ -339,9 +430,15 @@
   "titre_en": "Bougainvillea, Plumbago and Sugar Apple",
   "theme": "botanique",
   "palette": [
-   "vegetal"
+   "vegetal",
+   "lagon",
+   "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique",
+   "vegetal"
+  ]
  },
  {
   "id": "F008",
@@ -355,7 +452,10 @@
    "corail",
    "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F057",
@@ -364,11 +464,16 @@
   ],
   "titre_fr": "Bougainvilliers",
   "titre_en": "Bougainvillea",
-  "theme": "vegetal",
+  "theme": "botanique",
   "palette": [
-   "vegetal"
+   "vegetal",
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique",
+   "vegetal"
+  ]
  },
  {
   "id": "F293",
@@ -378,9 +483,10 @@
   ],
   "titre_fr": "Bougainvilliers dans la brume",
   "titre_en": "Bougainvillea in the Mist",
-  "theme": "vegetal",
+  "theme": "botanique",
   "palette": [
-   "corail"
+   "corail",
+   "sable"
   ],
   "format": "portrait",
   "titres_versions": {
@@ -388,7 +494,11 @@
     "fr": "Bougainvilliers dans la brume",
     "en": "Bougainvillea in the Mist"
    }
-  }
+  },
+  "themes": [
+   "botanique",
+   "vegetal"
+  ]
  },
  {
   "id": "F155",
@@ -401,7 +511,11 @@
   "palette": [
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique",
+   "graphique"
+  ]
  },
  {
   "id": "F154",
@@ -410,11 +524,15 @@
   ],
   "titre_fr": "Bougainvilliers à contre-jour",
   "titre_en": "Backlit Bougainvillea",
-  "theme": "vegetal",
+  "theme": "botanique",
   "palette": [
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique",
+   "vegetal"
+  ]
  },
  {
   "id": "F158",
@@ -426,10 +544,14 @@
   "titre_en": "Blue Bouliki",
   "theme": "vegetal",
   "palette": [
-   "sable",
-   "lagon"
+   "lagon",
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F159",
@@ -442,7 +564,11 @@
   "palette": [
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique",
+   "graphique"
+  ]
  },
  {
   "id": "F160",
@@ -454,9 +580,14 @@
   "theme": "botanique",
   "palette": [
    "corail",
-   "vegetal"
+   "vegetal",
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique",
+   "vegetal"
+  ]
  },
  {
   "id": "F060",
@@ -467,9 +598,15 @@
   "titre_en": "Cactus",
   "theme": "vegetal",
   "palette": [
+   "corail",
    "lagon"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "vegetal",
+   "paysages",
+   "graphique"
+  ]
  },
  {
   "id": "F009",
@@ -480,9 +617,13 @@
   "titre_en": "Cane and Zikak",
   "theme": "botanique",
   "palette": [
-   "corail"
+   "corail",
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F263",
@@ -497,7 +638,12 @@
    "sable",
    "corail"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "paysages",
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F264",
@@ -508,9 +654,14 @@
   "titre_en": "Sugarcane Sky",
   "theme": "paysages",
   "palette": [
-   "lagon"
+   "lagon",
+   "sable"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "paysages",
+   "vegetal"
+  ]
  },
  {
   "id": "F209",
@@ -522,9 +673,14 @@
   "titre_en": "Sugarcane",
   "theme": "paysages",
   "palette": [
-   "lagon"
+   "lagon",
+   "sable"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "paysages",
+   "vegetal"
+  ]
  },
  {
   "id": "F284",
@@ -538,7 +694,10 @@
   "palette": [
    "corail"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "paysages"
+  ]
  },
  {
   "id": "F163",
@@ -550,7 +709,9 @@
   "titre_en": "Textured Canes",
   "theme": "paysages",
   "palette": [
-   "vegetal"
+   "sable",
+   "vegetal",
+   "corail"
   ],
   "format": "paysage",
   "titres_versions": {
@@ -558,7 +719,12 @@
     "fr": "Cannes texturées",
     "en": "Textured Canes"
    }
-  }
+  },
+  "themes": [
+   "paysages",
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F011",
@@ -571,7 +737,10 @@
   "palette": [
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F296",
@@ -584,7 +753,10 @@
   "palette": [
    "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal"
+  ]
  },
  {
   "id": "F297",
@@ -595,10 +767,13 @@
   "titre_en": "Dry Season II",
   "theme": "vegetal",
   "palette": [
-   "vegetal",
-   "lagon"
+   "sable",
+   "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal"
+  ]
  },
  {
   "id": "F164",
@@ -611,9 +786,15 @@
   "titre_en": "Creole House",
   "theme": "maisons",
   "palette": [
-   "lagon"
+   "lagon",
+   "vegetal",
+   "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "maisons",
+   "vegetal"
+  ]
  },
  {
   "id": "F065",
@@ -638,9 +819,14 @@
   "titre_en": "House and Staircase",
   "theme": "maisons",
   "palette": [
+   "sable",
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "maisons",
+   "vegetal"
+  ]
  },
  {
   "id": "F165",
@@ -652,10 +838,13 @@
   "titre_en": "House and Hen",
   "theme": "maisons",
   "palette": [
-   "corail",
-   "sable"
+   "sable",
+   "lagon"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "maisons"
+  ]
  },
  {
   "id": "F012",
@@ -666,10 +855,13 @@
   "titre_en": "Taro Leaves",
   "theme": "botanique",
   "palette": [
-   "corail",
-   "sable"
+   "vegetal",
+   "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F166",
@@ -680,9 +872,15 @@
   "titre_en": "Cabbage Palm",
   "theme": "botanique",
   "palette": [
-   "corail"
+   "vegetal",
+   "corail",
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique",
+   "vegetal"
+  ]
  },
  {
   "id": "F168",
@@ -694,10 +892,13 @@
   "titre_en": "Coconut Palm",
   "theme": "vegetal",
   "palette": [
-   "vegetal",
-   "lagon"
+   "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "botanique"
+  ]
  },
  {
   "id": "F014",
@@ -708,10 +909,13 @@
   "titre_en": "Coconut Palms",
   "theme": "botanique",
   "palette": [
-   "corail",
+   "vegetal",
    "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F265",
@@ -722,10 +926,13 @@
   "titre_en": "Coconut Jungle",
   "theme": "vegetal",
   "palette": [
-   "corail",
-   "sable"
+   "sable",
+   "vegetal"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "vegetal"
+  ]
  },
  {
   "id": "F169",
@@ -736,9 +943,13 @@
   "titre_en": "Northern Coconut Palms",
   "theme": "vegetal",
   "palette": [
-   "sable"
+   "sable",
+   "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal"
+  ]
  },
  {
   "id": "F294",
@@ -753,7 +964,10 @@
    "vegetal",
    "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal"
+  ]
  },
  {
   "id": "F170",
@@ -763,9 +977,10 @@
   ],
   "titre_fr": "Couleuvre dans les herbes II",
   "titre_en": "Snake in the Grass II",
-  "theme": "paysages",
+  "theme": "maisons",
   "palette": [
-   "sable"
+   "sable",
+   "corail"
   ],
   "format": "portrait",
   "titres_versions": {
@@ -773,7 +988,11 @@
     "fr": "Couleuvre dans les herbes II",
     "en": "Snake in the Grass II"
    }
-  }
+  },
+  "themes": [
+   "maisons",
+   "paysages"
+  ]
  },
  {
   "id": "F016",
@@ -786,7 +1005,11 @@
   "palette": [
    "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "mer",
+   "graphique"
+  ]
  },
  {
   "id": "F017",
@@ -800,7 +1023,10 @@
    "vegetal",
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F306",
@@ -835,7 +1061,10 @@
     "fr": "De quai en nuages",
     "en": "Pier to the Clouds"
    }
-  }
+  },
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F289",
@@ -849,7 +1078,8 @@
   "titre_en": "From the Shore",
   "theme": "mer",
   "palette": [
-   "lagon"
+   "lagon",
+   "vegetal"
   ],
   "format": "portrait",
   "titres_versions": {
@@ -859,7 +1089,12 @@
    "F171": {
     "en": "From the Shore"
    }
-  }
+  },
+  "themes": [
+   "mer",
+   "paysages",
+   "vegetal"
+  ]
  },
  {
   "id": "F173",
@@ -869,10 +1104,9 @@
   ],
   "titre_fr": "Duchamps",
   "titre_en": "Duchamps",
-  "theme": "paysages",
+  "theme": "mer",
   "palette": [
-   "lagon",
-   "vegetal"
+   "lagon"
   ],
   "format": "paysage",
   "titres_versions": {
@@ -880,7 +1114,11 @@
     "fr": "Duchamps, portrait",
     "en": "Duchamps, Portrait"
    }
-  }
+  },
+  "themes": [
+   "mer",
+   "paysages"
+  ]
  },
  {
   "id": "F290",
@@ -895,7 +1133,9 @@
   "titre_en": "Creole Parlor",
   "theme": "maisons",
   "palette": [
-   "corail"
+   "corail",
+   "lagon",
+   "sable"
   ],
   "format": "portrait",
   "titres_versions": {
@@ -906,7 +1146,10 @@
    "F175": {
     "en": "Creole Parlor"
    }
-  }
+  },
+  "themes": [
+   "maisons"
+  ]
  },
  {
   "id": "F091",
@@ -917,10 +1160,13 @@
   "titre_en": "Light Leaf I",
   "theme": "vegetal",
   "palette": [
-   "vegetal",
    "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F092",
@@ -931,10 +1177,13 @@
   "titre_en": "Light Leaf II",
   "theme": "vegetal",
   "palette": [
-   "lagon",
-   "corail"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F093",
@@ -945,9 +1194,13 @@
   "titre_en": "Light Leaf III",
   "theme": "vegetal",
   "palette": [
-   "corail"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F020",
@@ -958,10 +1211,13 @@
   "titre_en": "Strangler Fig",
   "theme": "botanique",
   "palette": [
-   "lagon",
-   "vegetal"
+   "vegetal",
+   "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F272",
@@ -973,8 +1229,9 @@
   "titre_en": "Flamboyant Sky",
   "theme": "vegetal",
   "palette": [
+   "vegetal",
    "lagon",
-   "vegetal"
+   "corail"
   ],
   "format": "paysage",
   "titres_versions": {
@@ -982,7 +1239,11 @@
     "fr": "Flamboyant en ciel",
     "en": "Flamboyant Sky"
    }
-  }
+  },
+  "themes": [
+   "vegetal",
+   "paysages"
+  ]
  },
  {
   "id": "F310",
@@ -993,7 +1254,27 @@
   "titre_en": "Flora Martinicensis Banana",
   "theme": "botanique",
   "palette": [
-   "corail"
+   "sable"
+  ],
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
+ },
+ {
+  "id": "F031",
+  "fichiers": [
+   "F031"
+  ],
+  "titre_fr": "Flora Martinicensis — Pomme cannelle",
+  "titre_en": "Flora Martinicensis Sugar Apple",
+  "theme": "botanique",
+  "themes": [
+   "botanique"
+  ],
+  "palette": [
+   "vegetal",
+   "lagon"
   ],
   "format": "portrait"
  },
@@ -1006,9 +1287,13 @@
   "titre_en": "Flora Martinicensis Flamboyant",
   "theme": "botanique",
   "palette": [
+   "vegetal",
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F311",
@@ -1021,7 +1306,10 @@
   "palette": [
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F309",
@@ -1032,10 +1320,12 @@
   "titre_en": "Flora Martinicensis Pineapple",
   "theme": "botanique",
   "palette": [
-   "sable",
-   "vegetal"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F176",
@@ -1044,11 +1334,16 @@
   ],
   "titre_fr": "Fort-de-France",
   "titre_en": "Fort-de-France",
-  "theme": "maisons",
+  "theme": "mer",
   "palette": [
-   "lagon"
+   "lagon",
+   "corail"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer",
+   "maisons"
+  ]
  },
  {
   "id": "F180",
@@ -1061,7 +1356,11 @@
   "palette": [
    "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "maisons",
+   "graphique"
+  ]
  },
  {
   "id": "F156",
@@ -1073,9 +1372,10 @@
   ],
   "titre_fr": "Gouttes de bougainvilliers",
   "titre_en": "Bougainvillea Drops",
-  "theme": "vegetal",
+  "theme": "graphique",
   "palette": [
-   "corail"
+   "corail",
+   "lagon"
   ],
   "format": "portrait",
   "titres_versions": {
@@ -1083,7 +1383,11 @@
     "fr": "Gouttes de bougainvilliers",
     "en": "Bougainvillea Drops"
    }
-  }
+  },
+  "themes": [
+   "graphique",
+   "botanique"
+  ]
  },
  {
   "id": "F145",
@@ -1095,9 +1399,13 @@
   "theme": "maisons",
   "palette": [
    "lagon",
-   "corail"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "maisons",
+   "graphique"
+  ]
  },
  {
   "id": "F023",
@@ -1108,10 +1416,12 @@
   "titre_en": "Ox Grass",
   "theme": "botanique",
   "palette": [
-   "sable",
-   "corail"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F273",
@@ -1124,7 +1434,11 @@
   "palette": [
    "sable"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "paysages",
+   "vegetal"
+  ]
  },
  {
   "id": "F078",
@@ -1135,9 +1449,13 @@
   "titre_en": "Hibiscus",
   "theme": "botanique",
   "palette": [
+   "vegetal",
    "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F024",
@@ -1150,7 +1468,10 @@
   "palette": [
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F267",
@@ -1161,9 +1482,14 @@
   "titre_en": "Coral Garden",
   "theme": "mer",
   "palette": [
-   "sable"
+   "sable",
+   "corail"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer",
+   "graphique"
+  ]
  },
  {
   "id": "F082",
@@ -1174,10 +1500,13 @@
   "titre_en": "Jungle",
   "theme": "vegetal",
   "palette": [
-   "sable",
-   "lagon"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F083",
@@ -1188,10 +1517,13 @@
   "titre_en": "Jungle",
   "theme": "vegetal",
   "palette": [
-   "sable",
-   "lagon"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F084",
@@ -1202,10 +1534,13 @@
   "titre_en": "Jungle",
   "theme": "vegetal",
   "palette": [
-   "sable",
-   "lagon"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F280",
@@ -1220,12 +1555,16 @@
   ],
   "titre_fr": "Jungle Pop",
   "titre_en": "Jungle Pop",
-  "theme": "graphique",
+  "theme": "vegetal",
   "palette": [
-   "corail",
-   "vegetal"
+   "sable",
+   "corail"
   ],
-  "format": "panorama"
+  "format": "panorama",
+  "themes": [
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F274",
@@ -1236,10 +1575,13 @@
   "titre_en": "Moonlit Jungle",
   "theme": "vegetal",
   "palette": [
-   "lagon",
+   "sable",
    "vegetal"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "vegetal"
+  ]
  },
  {
   "id": "F275",
@@ -1250,10 +1592,12 @@
   "titre_en": "Dry Season Jungle",
   "theme": "vegetal",
   "palette": [
-   "sable",
-   "vegetal"
+   "sable"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "vegetal"
+  ]
  },
  {
   "id": "F196",
@@ -1265,7 +1609,7 @@
   ],
   "titre_fr": "Jungle en sous-bois",
   "titre_en": "Jungle Undergrowth",
-  "theme": "graphique",
+  "theme": "vegetal",
   "palette": [
    "corail",
    "vegetal"
@@ -1284,7 +1628,11 @@
     "fr": "Jungle en sous-bois",
     "en": "Jungle Undergrowth"
    }
-  }
+  },
+  "themes": [
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F089",
@@ -1295,9 +1643,14 @@
   "titre_en": "Jungle Party, Full Sun",
   "theme": "vegetal",
   "palette": [
-   "corail"
+   "corail",
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F286",
@@ -1310,7 +1663,12 @@
   "palette": [
    "sable"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer",
+   "maisons",
+   "paysages"
+  ]
  },
  {
   "id": "F185",
@@ -1321,9 +1679,15 @@
   "titre_en": "Thierry Islet, Colorful",
   "theme": "mer",
   "palette": [
-   "sable"
+   "sable",
+   "corail"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer",
+   "maisons",
+   "paysages"
+  ]
  },
  {
   "id": "F278",
@@ -1335,7 +1699,8 @@
   "titre_en": "The Orange Islet",
   "theme": "mer",
   "palette": [
-   "lagon"
+   "lagon",
+   "sable"
   ],
   "format": "paysage",
   "titres_versions": {
@@ -1343,7 +1708,11 @@
     "fr": "L'îlet orange",
     "en": "The Orange Islet"
    }
-  }
+  },
+  "themes": [
+   "mer",
+   "paysages"
+  ]
  },
  {
   "id": "F287",
@@ -1354,7 +1723,7 @@
   ],
   "titre_fr": "La Montagne Pelée",
   "titre_en": "Mount Pelee",
-  "theme": "paysages",
+  "theme": "mer",
   "palette": [
    "lagon"
   ],
@@ -1368,7 +1737,11 @@
     "fr": "La Montagne Pelée",
     "en": "Mount Pelee"
    }
-  }
+  },
+  "themes": [
+   "mer",
+   "paysages"
+  ]
  },
  {
   "id": "F281",
@@ -1383,8 +1756,9 @@
   "titre_en": "Paradise Window",
   "theme": "mer",
   "palette": [
+   "corail",
    "vegetal",
-   "corail"
+   "sable"
   ],
   "format": "panorama",
   "ancien_titre": {
@@ -1396,7 +1770,12 @@
     "fr": "Fenêtre de paradis — II (centre)",
     "en": "Paradise Window II"
    }
-  }
+  },
+  "themes": [
+   "mer",
+   "vegetal",
+   "paysages"
+  ]
  },
  {
   "id": "F305",
@@ -1405,11 +1784,16 @@
   ],
   "titre_fr": "La mer en transparence",
   "titre_en": "Sea Through",
-  "theme": "mer",
+  "theme": "vegetal",
   "palette": [
-   "corail"
+   "corail",
+   "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "mer"
+  ]
  },
  {
   "id": "F025",
@@ -1420,9 +1804,13 @@
   "titre_en": "Mother-in-Law's Tongues",
   "theme": "botanique",
   "palette": [
-   "corail"
+   "corail",
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F277",
@@ -1434,10 +1822,13 @@
   "titre_en": "Fan Palms",
   "theme": "vegetal",
   "palette": [
-   "lagon",
-   "vegetal"
+   "vegetal",
+   "lagon"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "vegetal"
+  ]
  },
  {
   "id": "F026",
@@ -1451,7 +1842,10 @@
    "vegetal",
    "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F276",
@@ -1462,10 +1856,13 @@
   "titre_en": "Russet Palms",
   "theme": "vegetal",
   "palette": [
-   "sable",
-   "vegetal"
+   "vegetal",
+   "sable"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "vegetal"
+  ]
  },
  {
   "id": "F269",
@@ -1477,8 +1874,8 @@
   "titre_en": "Diamond Rock Beach",
   "theme": "mer",
   "palette": [
-   "lagon",
-   "vegetal"
+   "sable",
+   "lagon"
   ],
   "format": "paysage",
   "titres_versions": {
@@ -1486,7 +1883,11 @@
     "fr": "Le Diamant, plage claire, portrait",
     "en": "Diamond Rock Beach, Portrait"
    }
-  }
+  },
+  "themes": [
+   "mer",
+   "paysages"
+  ]
  },
  {
   "id": "F268",
@@ -1497,10 +1898,14 @@
   "titre_en": "Diamond Rock in Red",
   "theme": "mer",
   "palette": [
-   "lagon",
+   "sable",
    "corail"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer",
+   "paysages"
+  ]
  },
  {
   "id": "F291",
@@ -1512,7 +1917,8 @@
   "titre_en": "The Ox",
   "theme": "paysages",
   "palette": [
-   "lagon"
+   "lagon",
+   "sable"
   ],
   "format": "portrait",
   "titres_versions": {
@@ -1520,7 +1926,10 @@
     "fr": "Le bœuf",
     "en": "The Ox"
    }
-  }
+  },
+  "themes": [
+   "paysages"
+  ]
  },
  {
   "id": "F279",
@@ -1576,7 +1985,11 @@
     "fr": "Jungle en paradis, paysage",
     "en": "Paradise Jungle, Landscape"
    }
-  }
+  },
+  "themes": [
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F285",
@@ -1587,10 +2000,14 @@
   "titre_en": "The Gommier Tree",
   "theme": "vegetal",
   "palette": [
+   "lagon",
    "vegetal",
-   "lagon"
+   "corail"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "vegetal"
+  ]
  },
  {
   "id": "F270",
@@ -1606,8 +2023,8 @@
   "titre_en": "The Great Fig Tree",
   "theme": "vegetal",
   "palette": [
-   "lagon",
-   "vegetal"
+   "vegetal",
+   "lagon"
   ],
   "format": "paysage",
   "titres_versions": {
@@ -1631,7 +2048,10 @@
     "fr": "Le grand figuier",
     "en": "The Great Fig Tree"
    }
-  }
+  },
+  "themes": [
+   "vegetal"
+  ]
  },
  {
   "id": "F027",
@@ -1643,9 +2063,12 @@
   "theme": "botanique",
   "palette": [
    "sable",
-   "corail"
+   "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F299",
@@ -1658,7 +2081,8 @@
   "titre_en": "Manzelle at Sea",
   "theme": "mer",
   "palette": [
-   "lagon"
+   "lagon",
+   "corail"
   ],
   "format": "portrait",
   "titres_versions": {
@@ -1670,7 +2094,10 @@
     "fr": "Manzelle en mer",
     "en": "Manzelle at Sea"
    }
-  }
+  },
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F282",
@@ -1687,7 +2114,8 @@
   "titre_en": "Manzelle Sets Sail",
   "theme": "mer",
   "palette": [
-   "lagon"
+   "lagon",
+   "sable"
   ],
   "format": "panorama",
   "ancien_titre": {
@@ -1707,7 +2135,10 @@
     "fr": "Manzelle prend le large — III (droite)",
     "en": "Manzelle Sets Sail III"
    }
-  }
+  },
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F298",
@@ -1732,7 +2163,10 @@
     "fr": "Manzelle n'est plus là",
     "en": "Manzelle Has Sailed"
    }
-  }
+  },
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F207",
@@ -1745,9 +2179,13 @@
   "titre_en": "Sea and Sky",
   "theme": "mer",
   "palette": [
-   "lagon"
+   "lagon",
+   "sable"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F215",
@@ -1758,10 +2196,13 @@
   "titre_en": "Yellow Sea",
   "theme": "mer",
   "palette": [
-   "vegetal",
+   "sable",
    "lagon"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F099",
@@ -1772,9 +2213,13 @@
   "titre_en": "Seascape",
   "theme": "mer",
   "palette": [
-   "vegetal"
+   "lagon",
+   "sable"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F098",
@@ -1787,7 +2232,10 @@
   "palette": [
    "lagon"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F100",
@@ -1798,9 +2246,13 @@
   "titre_en": "Sea, Signature (Left)",
   "theme": "mer",
   "palette": [
-   "lagon"
+   "lagon",
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F198",
@@ -1810,11 +2262,15 @@
   ],
   "titre_fr": "Montagne Pelée",
   "titre_en": "Mount Pelée",
-  "theme": "paysages",
+  "theme": "mer",
   "palette": [
    "lagon"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer",
+   "paysages"
+  ]
  },
  {
   "id": "F199",
@@ -1837,11 +2293,16 @@
   ],
   "titre_fr": "Jungle en fête, dansée",
   "titre_en": "Jungle Party, Twirling",
-  "theme": "graphique",
+  "theme": "vegetal",
   "palette": [
-   "corail"
+   "corail",
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F195",
@@ -1850,11 +2311,15 @@
   ],
   "titre_fr": "Jungle en fête, carnaval",
   "titre_en": "Jungle Party, Carnival",
-  "theme": "graphique",
+  "theme": "vegetal",
   "palette": [
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F197",
@@ -1865,12 +2330,16 @@
   ],
   "titre_fr": "Oies",
   "titre_en": "Geese",
-  "theme": "paysages",
+  "theme": "maisons",
   "palette": [
    "vegetal",
    "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "maisons",
+   "paysages"
+  ]
  },
  {
   "id": "F030",
@@ -1884,7 +2353,10 @@
    "corail",
    "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F103",
@@ -1896,9 +2368,13 @@
   "theme": "mer",
   "palette": [
    "lagon",
-   "vegetal"
+   "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "mer",
+   "graphique"
+  ]
  },
  {
   "id": "F136",
@@ -1911,7 +2387,11 @@
   "palette": [
    "corail"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer",
+   "graphique"
+  ]
  },
  {
   "id": "F104",
@@ -1922,10 +2402,14 @@
   "titre_en": "Zamana Landscape",
   "theme": "paysages",
   "palette": [
-   "sable",
-   "vegetal"
+   "vegetal",
+   "sable"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "paysages",
+   "vegetal"
+  ]
  },
  {
   "id": "F106",
@@ -1934,11 +2418,16 @@
   ],
   "titre_fr": "Paysage de Bally",
   "titre_en": "Bally Landscape",
-  "theme": "paysages",
+  "theme": "mer",
   "palette": [
-   "lagon"
+   "lagon",
+   "vegetal"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer",
+   "paysages"
+  ]
  },
  {
   "id": "F167",
@@ -1951,10 +2440,14 @@
   "titre_en": "Coconut Beach",
   "theme": "mer",
   "palette": [
-   "vegetal",
-   "lagon"
+   "sable",
+   "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "mer",
+   "vegetal"
+  ]
  },
  {
   "id": "F201",
@@ -1965,9 +2458,13 @@
   "titre_en": "Windsurfers and Coconut Palm",
   "theme": "mer",
   "palette": [
-   "lagon"
+   "lagon",
+   "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F111",
@@ -1976,12 +2473,15 @@
   ],
   "titre_fr": "Plumbagos, liane",
   "titre_en": "Plumbago Vine",
-  "theme": "botanique",
+  "theme": "vegetal",
   "palette": [
-   "vegetal",
-   "lagon"
+   "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "botanique"
+  ]
  },
  {
   "id": "F112",
@@ -1990,12 +2490,15 @@
   ],
   "titre_fr": "Plumbagos, tronc",
   "titre_en": "Plumbago Trunk",
-  "theme": "botanique",
+  "theme": "vegetal",
   "palette": [
-   "vegetal",
-   "sable"
+   "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "botanique"
+  ]
  },
  {
   "id": "F271",
@@ -2006,9 +2509,14 @@
   "titre_en": "Lagoon Fish",
   "theme": "mer",
   "palette": [
-   "lagon"
+   "lagon",
+   "sable"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer",
+   "graphique"
+  ]
  },
  {
   "id": "F032",
@@ -2021,7 +2529,10 @@
   "palette": [
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F115",
@@ -2032,9 +2543,14 @@
   "titre_en": "Pop Bougainvillea",
   "theme": "graphique",
   "palette": [
-   "corail"
+   "corail",
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "graphique",
+   "botanique"
+  ]
  },
  {
   "id": "F203",
@@ -2046,10 +2562,14 @@
   "titre_en": "Pop Bougainvillea II",
   "theme": "graphique",
   "palette": [
-   "lagon",
-   "corail"
+   "corail",
+   "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "graphique",
+   "botanique"
+  ]
  },
  {
   "id": "F116",
@@ -2060,9 +2580,14 @@
   "titre_en": "Pop Coconut Palm",
   "theme": "graphique",
   "palette": [
-   "lagon"
+   "lagon",
+   "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "graphique",
+   "vegetal"
+  ]
  },
  {
   "id": "F117",
@@ -2073,9 +2598,14 @@
   "titre_en": "Pop Wasteland",
   "theme": "graphique",
   "palette": [
-   "lagon"
+   "lagon",
+   "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "graphique",
+   "vegetal"
+  ]
  },
  {
   "id": "F312",
@@ -2086,9 +2616,14 @@
   "titre_en": "Popotte and Sugarcane",
   "theme": "botanique",
   "palette": [
-   "corail"
+   "corail",
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique",
+   "graphique"
+  ]
  },
  {
   "id": "F307",
@@ -2102,7 +2637,11 @@
    "sable",
    "vegetal"
   ],
-  "format": "carre"
+  "format": "carre",
+  "themes": [
+   "paysages",
+   "vegetal"
+  ]
  },
  {
   "id": "F034",
@@ -2113,10 +2652,13 @@
   "titre_en": "Sea Grape Trees",
   "theme": "botanique",
   "palette": [
-   "vegetal",
+   "sable",
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "botanique"
+  ]
  },
  {
   "id": "F123",
@@ -2125,12 +2667,16 @@
   ],
   "titre_fr": "Raisiniers",
   "titre_en": "Sea Grape Trees",
-  "theme": "mer",
+  "theme": "vegetal",
   "palette": [
    "lagon",
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "vegetal",
+   "graphique"
+  ]
  },
  {
   "id": "F206",
@@ -2141,9 +2687,13 @@
   "titre_en": "Saint-Pierre Ruins",
   "theme": "maisons",
   "palette": [
-   "sable"
+   "sable",
+   "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "maisons"
+  ]
  },
  {
   "id": "F127",
@@ -2153,12 +2703,15 @@
   ],
   "titre_fr": "Saint-Louis",
   "titre_en": "Saint Louis",
-  "theme": "mer",
+  "theme": "maisons",
   "palette": [
    "vegetal",
    "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "maisons"
+  ]
  },
  {
   "id": "F067",
@@ -2170,9 +2723,12 @@
   "theme": "maisons",
   "palette": [
    "corail",
-   "vegetal"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "maisons"
+  ]
  },
  {
   "id": "F210",
@@ -2186,7 +2742,11 @@
    "sable",
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "maisons",
+   "vegetal"
+  ]
  },
  {
   "id": "F132",
@@ -2199,7 +2759,11 @@
   "palette": [
    "corail"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "graphique",
+   "vegetal"
+  ]
  },
  {
   "id": "F134",
@@ -2210,9 +2774,13 @@
   "titre_en": "Color Spots III",
   "theme": "graphique",
   "palette": [
-   "corail"
+   "corail",
+   "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "graphique"
+  ]
  },
  {
   "id": "F135",
@@ -2223,10 +2791,13 @@
   "titre_en": "Leaf Spots",
   "theme": "graphique",
   "palette": [
-   "lagon",
    "vegetal"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "graphique",
+   "vegetal"
+  ]
  },
  {
   "id": "F211",
@@ -2237,10 +2808,14 @@
   "titre_en": "Rug Against the Wall",
   "theme": "maisons",
   "palette": [
-   "corail",
-   "sable"
+   "sable",
+   "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "maisons",
+   "graphique"
+  ]
  },
  {
   "id": "F146",
@@ -2252,9 +2827,13 @@
   "theme": "maisons",
   "palette": [
    "lagon",
-   "corail"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "maisons",
+   "graphique"
+  ]
  },
  {
   "id": "F213",
@@ -2266,10 +2845,13 @@
   "titre_en": "Wave",
   "theme": "mer",
   "palette": [
-   "vegetal",
-   "lagon"
+   "lagon",
+   "sable"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F138",
@@ -2283,9 +2865,13 @@
   "titre_en": "Red Wave",
   "theme": "mer",
   "palette": [
-   "lagon"
+   "sable",
+   "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F139",
@@ -2294,11 +2880,15 @@
   ],
   "titre_fr": "Verres",
   "titre_en": "Glasses",
-  "theme": "maisons",
+  "theme": "graphique",
   "palette": [
-   "corail"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "graphique",
+   "maisons"
+  ]
  },
  {
   "id": "F140",
@@ -2307,12 +2897,15 @@
   ],
   "titre_fr": "Verres I",
   "titre_en": "Glasses I",
-  "theme": "maisons",
+  "theme": "graphique",
   "palette": [
-   "corail",
-   "vegetal"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "graphique",
+   "maisons"
+  ]
  },
  {
   "id": "F141",
@@ -2321,12 +2914,15 @@
   ],
   "titre_fr": "Verres II",
   "titre_en": "Glasses II",
-  "theme": "maisons",
+  "theme": "graphique",
   "palette": [
-   "vegetal",
-   "corail"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "graphique",
+   "maisons"
+  ]
  },
  {
   "id": "F142",
@@ -2335,12 +2931,15 @@
   ],
   "titre_fr": "Verres III",
   "titre_en": "Glasses III",
-  "theme": "maisons",
+  "theme": "graphique",
   "palette": [
-   "vegetal",
-   "corail"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "graphique",
+   "maisons"
+  ]
  },
  {
   "id": "F143",
@@ -2349,11 +2948,16 @@
   ],
   "titre_fr": "Verres IV",
   "titre_en": "Glasses IV",
-  "theme": "maisons",
+  "theme": "graphique",
   "palette": [
+   "sable",
    "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "graphique",
+   "maisons"
+  ]
  },
  {
   "id": "F301",
@@ -2363,12 +2967,16 @@
   ],
   "titre_fr": "Vers la Pelée",
   "titre_en": "Toward Mount Pelee",
-  "theme": "paysages",
+  "theme": "mer",
   "palette": [
    "lagon",
    "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "mer",
+   "paysages"
+  ]
  },
  {
   "id": "F283",
@@ -2386,9 +2994,12 @@
   "theme": "mer",
   "palette": [
    "lagon",
-   "vegetal"
+   "sable"
   ],
-  "format": "panorama"
+  "format": "panorama",
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F124",
@@ -2399,9 +3010,13 @@
   "titre_en": "Sail in the Storm",
   "theme": "mer",
   "palette": [
-   "lagon"
+   "lagon",
+   "sable"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F288",
@@ -2436,7 +3051,10 @@
     "fr": "Véliplanchistes",
     "en": "Windsurfers"
    }
-  }
+  },
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F262",
@@ -2463,7 +3081,11 @@
     "fr": "À l'ombre du raisinier",
     "en": "In the Shade of the Sea Grape"
    }
-  }
+  },
+  "themes": [
+   "mer",
+   "vegetal"
+  ]
  },
  {
   "id": "F073",
@@ -2474,9 +3096,14 @@
   "titre_en": "Star",
   "theme": "mer",
   "palette": [
-   "lagon"
+   "lagon",
+   "corail"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "mer",
+   "graphique"
+  ]
  },
  {
   "id": "F214",
@@ -2489,7 +3116,11 @@
   "palette": [
    "sable"
   ],
-  "format": "paysage"
+  "format": "paysage",
+  "themes": [
+   "mer",
+   "paysages"
+  ]
  },
  {
   "id": "F079",
@@ -2500,10 +3131,13 @@
   "titre_en": "Yellow Islet",
   "theme": "mer",
   "palette": [
-   "vegetal",
+   "sable",
    "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F080",
@@ -2514,10 +3148,13 @@
   "titre_en": "Yellow Islet",
   "theme": "mer",
   "palette": [
-   "lagon",
-   "vegetal"
+   "sable",
+   "lagon"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "mer"
+  ]
  },
  {
   "id": "F081",
@@ -2528,8 +3165,12 @@
   "titre_en": "Yellow Islet, Alane",
   "theme": "mer",
   "palette": [
-   "corail"
+   "sable"
   ],
-  "format": "portrait"
+  "format": "portrait",
+  "themes": [
+   "mer",
+   "vegetal"
+  ]
  }
 ]
