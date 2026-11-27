@@ -4,6 +4,8 @@ import { catalogue } from "../../lib/catalogue";
 import { PALETTES, THEMES, FORMATS, nom, ratioPoly, typePoly, ECART_POLY } from "../../lib/libelles";
 import { alternates } from "../../lib/seo";
 import DEROULE from "../../data/deroule.json";
+// ordre de chaque famille : un dégradé de couleur qui part d'une œuvre emblème
+import ORDRES from "../../data/ordres.json";
 
 const T = {
   en: {
@@ -52,7 +54,7 @@ export default async function Collection({ searchParams }) {
   const familles = (mode === "couleur" ? PALETTES : THEMES).map((f) => ({
     ...f,
     dot: mode === "couleur" ? f.c : null,
-    liste: filtre(oeuvres.filter((o) => (mode === "couleur" ? o.palette[0] === f.id : o.theme === f.id))),
+    liste: filtre(rangerFamille(oeuvres.filter((o) => (mode === "couleur" ? o.palette.includes(f.id) : o.themes.includes(f.id))), (mode === "couleur" ? "p:" : "t:") + f.id)),
   }));
   const rang = Object.fromEntries(DEROULE.map((id, i) => [id, i]));
   // le filtre Panorama montre les panoramas eux-mêmes (dans la galerie, une œuvre en panneaux montre ses panneaux)
@@ -141,6 +143,12 @@ export default async function Collection({ searchParams }) {
       <Pied lang={lang} />
     </div>
   );
+}
+
+// range une famille selon l'ordre enregistré ; les œuvres absentes de cet ordre viennent à la fin
+function rangerFamille(liste, cle) {
+  const r = Object.fromEntries((ORDRES[cle] || []).map((id, i) => [id, i]));
+  return [...liste].sort((a, b) => (r[a.id] ?? 1e4) - (r[b.id] ?? 1e4));
 }
 
 function Carte({ o, lang, mode, Q }) {
