@@ -25,7 +25,7 @@ export default function AjouterMur({ id, lang, Q }) {
         {dedans ? (fr ? "✓ Dans ma sélection" : "✓ In my selection") : (fr ? "+ Ajouter à ma sélection" : "+ Add to my selection")}
       </button>
       {/* « Voir sur mon mur » montre cette version-ci : elle rejoint la sélection si elle n'y est pas déjà */}
-      <a className="n-lien" href={`/composer${q ? q + "&" : "?"}mode=moi`} onClick={() => { if (!dedans && !plein) ajouterSel({ id }); }}>{fr ? "Voir sur mon mur" : "See on my wall"} →</a>
+      <a className="n-lien" href={`/composer${q ? q + "&" : "?"}mode=moi&depart=${id}`} onClick={() => { if (!dedans && !plein) ajouterSel({ id }); }}>{fr ? "Voir sur mon mur" : "See on my wall"} →</a>
       {liste.length > 0 && <a className="n-lien" href={`/selection${q}`}>{fr ? `Ma sélection (${liste.length})` : `My selection (${liste.length})`} →</a>}
       {plein && <span className="n-petit">{fr ? `${MAX_MUR} œuvres au plus.` : `${MAX_MUR} artworks at most.`}</span>}
     </p>
