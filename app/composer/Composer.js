@@ -339,7 +339,7 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
             {o.rang != null && <button type="button" className="n-changer" onClick={() => changer(o.rang)} title={fr ? "Changer celle-ci" : "Swap this one"} aria-label={fr ? `Changer ${o.titre}` : `Swap ${o.titre}`}>↻</button>}
           </figure>
         ))}
-        <img className="n-silhouette" src="/ambiance/silhouette-2.webp" alt="" style={{ width: pctX(258.3), left: pctX(murL / 2 - 136.2), bottom: pctY(-2.6) }} />
+        <img className="n-silhouette" src="/ambiance/silhouette-3.webp" alt="" style={{ width: pctX(258.3), left: pctX(murL / 2 - 136.2), bottom: pctY(-2.6) }} />
         {lay !== "moi" && <button type="button" className="n-relance" onClick={() => setGraine((g) => g + 1)} title={txt.autre} aria-label={txt.autre}>↻</button>}
         {lay === "moi" && !pos.length && <p className="n-scene-vide">{fr ? "Choisissez vos œuvres dans la collection, ci-dessous." : "Pick your artworks from the collection, below."}</p>}
       </div>
