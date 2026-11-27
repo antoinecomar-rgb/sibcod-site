@@ -554,7 +554,7 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 /* composer sur téléphone : le mur d'abord, vu de plus près ; réglages compacts */
 .n-scene-cadre { width:100%; display:flex; justify-content:center; }
 /* sur ordinateur, le mur entier (canapé compris) tient dans l'écran */
-@media (min-width:701px){ .n-scene-cadre .n-scene { width:auto; height:min(74vh, calc((100vw - 64px) * 230 / 320)); max-width:100%; } }
+@media (min-width:701px){ .n-scene-cadre .n-scene { width:min(100%, calc(78vh * 320 / 230)); height:auto; max-width:100%; } }
 @media (max-width:700px){
   .n-composer { gap:16px; }
   .n-scene-cadre { order:-2; overflow:hidden; margin:0 -16px; width:calc(100% + 32px); }
@@ -630,7 +630,7 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 .n-composer-tete p { margin:0; font-size:15px; color:var(--muted); }
 .n-composer { gap:10px; }
 .n-scene-cadre .n-scene { position:relative; }
-@media (min-width:701px){ .n-scene-cadre .n-scene { height:min(78vh, calc((100vw - 64px) * 230 / 320)); } }
+/* la hauteur découle de la largeur (proportions du mur toujours justes, quelle que soit la largeur de l'écran) */
 .n-echelle-sous { margin:0; font-size:12px; color:var(--muted); text-align:center; }
 .n-relance { position:absolute; right:12px; top:12px; width:40px; height:40px; border-radius:50%; border:0; background:rgba(255,255,255,.85); font-size:20px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.15); color:var(--ink); }
 .n-barre { display:flex; flex-direction:column; gap:8px; padding:12px 0 6px; border-top:1px solid #E3DDD2; }
