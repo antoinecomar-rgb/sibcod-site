@@ -753,7 +753,8 @@ button { color:inherit; -webkit-appearance:none; appearance:none; }
 
 /* téléphone (25/11) : le mur entier, réglages sur plusieurs lignes, sections moins espacées */
 @media (max-width:700px){
-  .n-scene-cadre { margin:0; width:100%; overflow:hidden; justify-content:center; }
+  .n-scene-cadre { margin:0; width:100%; overflow-x:auto; overflow-y:hidden; justify-content:flex-start; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .n-scene-cadre::-webkit-scrollbar { display:none; }
   .n-scene-cadre .n-scene { width:calc(var(--zoom, 1) * 100%); margin-left:0; flex:none; }
   .n-relance { width:32px; height:32px; font-size:16px; right:calc((var(--zoom, 1) - 1) / (2 * var(--zoom, 1)) * 100% + 8px); top:8px; }
   .n-changer { width:20px; height:20px; line-height:20px; font-size:11px; top:3px; right:3px; }
