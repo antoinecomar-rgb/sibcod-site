@@ -97,11 +97,24 @@ function enRangees(items, parRangee) {
   return out;
 }
 
-export default function Composer({ oeuvres, collection, alias, polys, palettes, lang, txt, mode }) {
+export default function Composer({ oeuvres, collection, alias, polys, palettes, lang, txt, mode, depart: departInit }) {
+  // l'œuvre qui a amené le visiteur ici (« Voir sur mon mur ») : les compositions proposées partent d'elle
+  const [depart, setDepart] = useState(departInit || null);
+  const departO = useMemo(() => {
+    if (!depart) return null;
+    const o = oeuvres.find((x) => x.id === depart || (x.autres || []).some((a) => a.id === depart));
+    if (o) {
+      // la version cliquée (un panneau, un 40x50…) : c'est elle qui est accrochée
+      const v = o.id === depart ? o : o.autres.find((a) => a.id === depart) || o;
+      return { ...o, id: o.id, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, fiches: v.fiches, href: v.href, titre: v.titre || o.titre, autres: [], vid: v.id };
+    }
+    const c = collection.find((x) => x.id === depart) || collection.find((x) => x.id === alias[depart]);
+    return c ? { ...c, autres: [], vid: c.id } : null;
+  }, [depart, oeuvres, collection, alias]);
   const fr = lang === "fr";
   const [mur, setMur] = useState("blanc");
   const [lay, setLay] = useState(mode === "moi" ? "moi" : "trio");
-  const [pal, setPal] = useState(palettes[0].id);
+  const [pal, setPal] = useState(() => { const o = departInit && oeuvres.find((x) => x.id === departInit || (x.autres || []).some((a) => a.id === departInit)); return (o && o.palette[0]) || palettes[0].id; });
   const [taille, setTaille] = useState("g");
   const [graine, setGraine] = useState(0);
   const [nombre, setNombre] = useState(5);
@@ -181,14 +194,15 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
       let c = polys.filter((p) => p.palette[0] === pal);
       if (!c.length) c = polys.filter((p) => p.palette.includes(pal));
       if (!c.length) c = polys;
-      const p = c[graine % c.length];
+      const avecDepart = departO && polys.find((q) => q.panneaux.some((v) => v.id === departO.vid || v.id === departO.id));
+      const p = avecDepart && graine === 0 ? avecDepart : c[graine % c.length];
       if (!p) return placer([]);
       const items = p.panneaux.map((v) => ({ ...dim(v), palette: p.palette }));
       return { ...placer([items], 4), poly: p };
     }
     if (lay === "libre") {
       const pool = avecPal((o) => o.format !== "panorama");
-      const c = remplacer(tourner(pool, nombre));
+      const c = remplacer(departO ? [departO, ...tourner(pool.filter((o) => o.id !== departO.id), nombre - 1)] : tourner(pool, nombre));
       // des tailles variées : chaque œuvre reçoit à tour de rôle sa plus petite, sa moyenne ou sa plus grande taille
       const items = c.map((o, k) => { const { i } = choisirTaille(o, ["g", "m", "p"][(k + graine) % 3]); return { ...enPlace(o, i), rang: k }; });
       return { ...placer(enRangees(items)), pool };
@@ -205,20 +219,20 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
     if (!pool.length) pool = oeuvres.filter(filtre);
     // une série homogène : de préférence des œuvres proposées dans la même taille que la première
     const long = (x) => Math.max(x.w, x.h);
-    const premiere = tourner(pool, 1)[0];
-    const ref = premiere ? choisirTailleOeuvre(premiere, taille) : null;
+    const premiere = departO || tourner(pool, 1)[0];
+    const ref = premiere ? (departO ? choisirTaille(departO, taille) : choisirTailleOeuvre(premiere, taille)) : null;
     const cibleL = ref ? long(ref.l[ref.i]) : 0;
     const cible = ref ? ref.l[ref.i] : null;
     const offre = (o, ok) => [o, ...(o.autres || [])].some((v) => taillesPictorem(v).some(ok));
     const exactes = pool.filter((o) => offre(o, (x) => cible && x.w === cible.w && x.h === cible.h));
     const memes = pool.filter((o) => offre(o, (x) => long(x) === cibleL));
     const serie = exactes.length >= L.n ? exactes : memes.length >= L.n ? memes : pool;
-    const c = remplacer(tourner(serie, L.n));
+    const c = remplacer(departO ? [departO, ...tourner(serie.filter((o) => o.id !== departO.id), L.n - 1)] : tourner(serie, L.n));
     // même taille exacte que la première œuvre si l'œuvre (ou l'une de ses autres images) la propose, sinon la plus proche
     const items = c.map((o, r) => {
       let best = null;
       [o, ...(o.autres || [])].forEach((v) => taillesPictorem(v).forEach((x, k) => {
-        const score = (cible && x.w === cible.w && x.h === cible.h ? 0 : 1000) + Math.abs(long(x) - cibleL) * 10 + (v === o ? 0 : 1);
+        const score = (cible && x.w === cible.w && x.h === cible.h ? 0 : 1000) + Math.abs(long(x) - cibleL) * 10 + (o.vid && v.id === o.vid ? -0.5 : v === o ? 0 : 1);
         if (!best || score < best.score) best = { v, k, score };
       }));
       const v = best ? best.v : o;
@@ -226,7 +240,7 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
     });
     const rangees = lay === "colonne" ? items.map((x) => [x]) : lay === "grille" ? enRangees(items, 2) : lay === "grille6" ? enRangees(items, 3) : [items];
     return { ...placer(rangees), pool: serie };
-  }, [oeuvres, polys, pal, lay, graine, nombre, taille, moi, parId, hab && hab.type, hab && hab.cadre, hab && hab.interieur, remplace]);
+  }, [departO, oeuvres, polys, pal, lay, graine, nombre, taille, moi, parId, hab && hab.type, hab && hab.cadre, hab && hab.interieur, remplace]);
 
   const { pos, murL, murH, poly } = scene;
   // téléphone : on cadre le mur sur les œuvres pour qu'elles restent grandes (le canapé peut être coupé sur les côtés)
@@ -334,6 +348,12 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
 
       <div className="n-barre">
         <Chips label={txt.compo} items={LAYS} val={lay} set={(v) => { setLay(v); setGraine(0); }} />
+        {departO && lay !== "moi" && (
+          <p className="n-petit n-depart">
+            {fr ? "Composition autour de" : "Composition around"} « {departO.titre} »{" "}
+            <button type="button" className="n-lien" onClick={() => setDepart(null)}>{fr ? "partir d'une autre œuvre" : "start from another artwork"}</button>
+          </p>
+        )}
         <Chips label={fr ? "Support" : "Medium"} items={SUPPORTS} val={support} set={setSupport} />
         {cadres.length > 0 && <Chips label={fr ? "Cadre" : "Frame"} items={cadres} val={cadre} set={setCadre} rond={(x) => x.c} petit />}
         {support === "affiche" && cadre !== "sans" && <Chips label={fr ? "Passe-partout" : "Mat"} items={PASSE_PARTOUTS} val={pp} set={setPp} petit />}

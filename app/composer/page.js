@@ -46,7 +46,7 @@ export default async function Page({ searchParams }) {
         <h1>{t.h1}</h1>
         <p>{t.s}</p>
       </section>
-      <Composer oeuvres={liste} collection={collection} alias={alias} polys={polys} mode={sp.mode === "moi" ? "moi" : null} lang={lang} txt={t} palettes={PALETTES.map(({ id, c, fr, en }) => ({ id, c, fr, en }))} />
+      <Composer oeuvres={liste} collection={collection} alias={alias} polys={polys} mode={sp.mode === "moi" ? "moi" : null} depart={typeof sp.depart === "string" ? sp.depart : null} lang={lang} txt={t} palettes={PALETTES.map(({ id, c, fr, en }) => ({ id, c, fr, en }))} />
       <Pied lang={lang} />
     </div>
   );
