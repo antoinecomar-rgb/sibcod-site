@@ -39,6 +39,16 @@ const choisirTaille = (o, t) => {
   const i = t === "p" ? 0 : t === "g" ? l.length - 1 : Math.floor((l.length - 1) / 2);
   return { l, i };
 };
+// mêmes choix, en réunissant les tailles de toutes les versions de l'œuvre (son 30x40, son 40x50, son grand format) :
+// chaque fichier n'est vendu qu'à ses propres tailles, Petit / Moyen / Grand vont donc chercher la version qui convient
+const choisirTailleOeuvre = (o, t) => {
+  const vus = new Map();
+  [o, ...(o.autres || [])].forEach((v) => taillesPictorem(v).forEach((x) => { const k = Math.max(x.w, x.h); if (!vus.has(k)) vus.set(k, x); }));
+  const l = [...vus.values()].sort((a, b) => Math.max(a.w, a.h) - Math.max(b.w, b.h));
+  if (!l.length) return choisirTaille(o, t);
+  const i = t === "p" ? 0 : t === "g" ? l.length - 1 : Math.floor((l.length - 1) / 2);
+  return { l, i };
+};
 const ECART_PANNEAUX = 4; // cm entre les panneaux d'un diptyque ou d'un triptyque
 const enPlaceNu = (o, i) => {
   const l = taillesPictorem(o), x = l[Math.max(0, Math.min(i, l.length - 1))];
@@ -196,7 +206,7 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
     // une série homogène : de préférence des œuvres proposées dans la même taille que la première
     const long = (x) => Math.max(x.w, x.h);
     const premiere = tourner(pool, 1)[0];
-    const ref = premiere ? choisirTaille(premiere, taille) : null;
+    const ref = premiere ? choisirTailleOeuvre(premiere, taille) : null;
     const cibleL = ref ? long(ref.l[ref.i]) : 0;
     const cible = ref ? ref.l[ref.i] : null;
     const offre = (o, ok) => [o, ...(o.autres || [])].some((v) => taillesPictorem(v).some(ok));
@@ -284,7 +294,7 @@ export default function Composer({ oeuvres, collection, alias, polys, palettes, 
     setAjoute(true);
     setMoi(l.filter((x) => parId[x.id]).map((x) => { const ts = taillesPictorem(parId[x.id]); const i = ts.findIndex((t) => cleTaille(t) === x.t); return { id: x.id, i: i >= 0 ? i : ts.length - 1 }; }));
   };
-  const visibles = collection.filter((c) => (filtreP === "toutes" || c.palette.includes(filtreP)) && (filtreF === "tous" || c.format === filtreF));
+  const visibles = collection.filter((c) => !c.cache && (filtreP === "toutes" || c.palette.includes(filtreP)) && (filtreF === "tous" || c.format === filtreF));
   const prixDe = (o) => { const v = prix(o.taille, support, cadre, pp); return v == null ? null : v * (o.panneaux ? o.panneaux.length : 1); };
   const prixListe = pos.map(prixDe);
   const total = prixListe.every((v) => v != null) && pos.length ? prixListe.reduce((t, v) => t + v, 0) : null;
