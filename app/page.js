@@ -1,6 +1,7 @@
 import Pied from "./Pied";
 import Entete from "./Entete";
 import BandeauGala from "./BandeauGala";
+import SalonAccueil from "./SalonAccueil";
 import SELECTION from "../data/selection-accueil.json";
 import { catalogue } from "../lib/catalogue";
 import { PALETTES, THEMES, TOUT, q } from "../lib/libelles";
@@ -28,6 +29,7 @@ const T = {
     ],
     formats: ["Portrait", "Landscape", "Panorama", "Trio", "Column"],
     supports: ["Fine art paper", "Canvas", "Metal", "Wood", "Acrylic"],
+    saK: "At home", saT: "Bring your walls to life", saS: "One colour family, a whole wall of artworks. A new composition at every visit.",
     colK: "Collection", colT: "A collection designed like a colour chart",
     colS: "From the gentlest to the most vivid, colours flow from one artwork to the next.",
     tout: "All", voir: (n) => `See all ${n} artworks`,
@@ -66,6 +68,7 @@ const T = {
     ],
     formats: ["Portrait", "Paysage", "Panorama", "Trio", "Colonne"],
     supports: ["Papier d'art", "Toile tendue", "Métal", "Bois", "Acrylique"],
+    saK: "Chez vous", saT: "Ravivez vos murs", saS: "Une famille de couleur, tout un mur d'œuvres. Une nouvelle composition à chaque visite.",
     colK: "Collection", colT: "Une collection pensée comme un nuancier",
     colS: "Du plus doux au plus coloré, les teintes glissent d'une œuvre à l'autre.",
     tout: "Toutes", voir: (n) => `Voir les ${n} œuvres`,
@@ -118,6 +121,11 @@ export default async function Accueil({ searchParams }) {
     return null;
   }).filter(Boolean);
 
+  // candidats du salon : œuvres simples (pas les polyptyques), avec leur famille de couleur
+  const salon = classees.filter((o) => !(o.variantes[0]?.membres?.length > 1)).map((o) => ({
+    id: o.id, titre: o.titre, img: o.img, ratio: o.ratio, palette: o.palette, href: `/oeuvre/${o.id}${Q}`,
+  }));
+
   return (
     <>
       <section className="n-hero">
@@ -157,6 +165,13 @@ export default async function Accueil({ searchParams }) {
           ))}
         </div>
         <a className="n-lien" href={`/collection${Q}`}>{t.voir(oeuvres.length)} →</a>
+      </section>
+
+      <section className="wrap n-section n-salon-section">
+        <div className="n-entete large">
+          <div><p className="n-k">{t.saK}</p><h2>{t.saT}</h2><p className="n-lead">{t.saS}</p></div>
+        </div>
+        <SalonAccueil oeuvres={salon} palettes={PALETTES.map((p) => p.id)} lang={lang} lien={`/composer${Q}`} />
       </section>
 
       <section className="wrap n-apports">
@@ -228,7 +243,7 @@ export default async function Accueil({ searchParams }) {
             <div className="n-mur-oeuvres">
               {["F298", "F299", "F302"].map((i) => <img key={i} src={vign[i]} alt="" />)}
             </div>
-            <img className="n-canape-img" src="/ambiance/silhouette-2.webp" alt="" />
+            <img className="n-canape-img" src="/ambiance/silhouette-3.webp" alt="" />
           </div>
         </div>
       </section>
