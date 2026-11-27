@@ -51,7 +51,7 @@ export default function ScaleView({ init, lang, title, hint }) {
           <img src={src} alt={alt} />
         </div>
         {/* canapé : 220 cm de large, 85 cm de haut */}
-        <img className="n-silhouette" src="/ambiance/silhouette-2.webp" alt="" aria-hidden="true" style={{ width: `${(258.3 / WALL_W) * 100}%`, left: `${((WALL_W / 2 - 136.2) / WALL_W) * 100}%`, bottom: `${6 - (2.6 / WALL_H) * 94}%` }} />
+        <img className="n-silhouette" src="/ambiance/silhouette-3.webp" alt="" aria-hidden="true" style={{ width: `${(258.3 / WALL_W) * 100}%`, left: `${((WALL_W / 2 - 136.2) / WALL_W) * 100}%`, bottom: `${6 - (2.6 / WALL_H) * 94}%` }} />
         <div className="dim" style={{ bottom: `${(6 + ((bottomCm + h) / WALL_H) * 94) + 1}%`, display: (bottomCm + h) / WALL_H > 0.93 ? "none" : "block" }}>{label}</div>
       </div>
     </section>
