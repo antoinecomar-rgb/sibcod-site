@@ -94,9 +94,9 @@ export default async function Oeuvre({ params, searchParams }) {
           <div className="by">{t.by}</div>
           {desc.map((d) => <p key={d}>{d}</p>)}
           {principale && (principale.fiches || []).length > 1
-            ? <ChoixTaille v={principale} label={t.choose} lang={lang} />
+            ? <ChoixTaille v={principale} freres={o.variantes} label={t.choose} lang={lang} />
             : principale
-              ? <ChoixTaille v={principale} label={t.choose} lang={lang} />
+              ? <ChoixTaille v={principale} freres={o.variantes} label={t.choose} lang={lang} />
               : <span className="soonbig">{t.soon}</span>}
           {o.variantes.length > 1 && (
             <div className="n-variantes">
@@ -148,7 +148,7 @@ export default async function Oeuvre({ params, searchParams }) {
         </section>
       )}
 
-      {img.img && <ScaleView key={img.id} init={{ id: img.id, img: img.img, ratio: img.ratio, maxPo: img.maxPo, url: img.url, fiches: img.fiches, titre: img.titre }} lang={lang} title={t.scaleT} hint={t.scaleH} />}
+      {img.img && <ScaleView key={img.id} init={{ id: img.id, img: img.img, ratio: img.ratio, maxPo: img.maxPo, url: img.url, fiches: img.fiches, titre: img.titre }} lang={lang} title={t.scaleT} hint={t.scaleH} freres={o.variantes.map((v) => ({ id: v.id, img: v.img, ratio: v.ratio, maxPo: v.maxPo, url: v.url, fiches: v.fiches, titre: v.titre }))} />}
 
       {accords.length > 0 && (
         <section className="n-accords">
