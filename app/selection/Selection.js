@@ -2,7 +2,7 @@
 // « Ma sélection » : le panier du visiteur. Il règle chaque œuvre (taille, support, cadre) sur le site,
 // voit le total estimé, puis commande œuvre par œuvre chez l'atelier, avec les réglages à reprendre.
 import { useEffect, useMemo, useState } from "react";
-import { taillesPictorem, libelle } from "../../lib/tailles";
+import { taillesPictorem, taillesReunies, libelle } from "../../lib/tailles";
 import { lireSel, ecrireSel, cleTaille, EVT } from "../../lib/monmur";
 import { SUPPORTS, cadresDe, BORDS, PASSE_PARTOUTS, prix, enDollars } from "../../lib/prix";
 
@@ -45,13 +45,15 @@ export default function Selection({ collection, alias, lang }) {
     const o = parId[l.id];
     const ts = taillesPictorem(o);
     const t = ts.find((x) => cleTaille(x) === l.t) || ts[ts.length - 1];
+    // toutes les tailles de l'image, même portées par un autre fichier (choisir l'une d'elles change de fichier)
+    const choix = o.panneaux ? ts.map((x) => ({ v: o, x })) : taillesReunies(o, collection.filter((c) => c.oeuvre === o.oeuvre));
     const s = SUPPORTS.some((x) => x.id === l.s) ? l.s : "toile";
     const cadres = cadresDe(s);
     const c = cadres.some((x) => x.id === l.c) ? l.c : "sans";
     const p = Number.isFinite(l.p) ? l.p : 2;
     const n = o.panneaux ? o.panneaux.length : 1;
     const v = prix(t, s, c, p);
-    return { l: { ...l, s, c, p }, o, ts, t, cadres, n, prix: v == null ? null : v * n };
+    return { l: { ...l, s, c, p }, o, ts, choix, t, cadres, n, prix: v == null ? null : v * n };
   });
   const total = lignes.length && lignes.every((x) => x.prix != null) ? lignes.reduce((a, x) => a + x.prix, 0) : null;
   const restants = lignes.filter((x) => !x.l.fait).length;
@@ -71,15 +73,15 @@ export default function Selection({ collection, alias, lang }) {
   return (
     <div className="n-sel">
       <ol className="n-sel-lignes">
-        {lignes.map(({ l, o, ts, t, cadres, n, prix: pv }) => (
+        {lignes.map(({ l, o, ts, choix, t, cadres, n, prix: pv }) => (
           <li key={l.id} className={l.fait ? "fait" : ""}>
             <a href={o.href} className="n-sel-img"><img src={o.img} alt={o.titre} loading="lazy" /></a>
             <div className="n-sel-corps">
               <h2><a href={o.href}>{o.titre}</a>{n > 1 && <small> · {n} {fr ? "panneaux" : "panels"}</small>}</h2>
               <div className="n-sel-reglages">
                 <label>{fr ? "Taille" : "Size"}
-                  <select value={cleTaille(t)} onChange={(e) => maj(l.id, { t: e.target.value })}>
-                    {ts.map((x) => <option key={cleTaille(x)} value={cleTaille(x)}>{libelle(x, lang)}{n > 1 ? (fr ? " chacun" : " each") : ""}</option>)}
+                  <select value={`${o.id}|${cleTaille(t)}`} onChange={(e) => { const [id, tt] = e.target.value.split("|"); maj(l.id, { id, t: tt }); }}>
+                    {choix.map(({ v, x }) => <option key={v.id + cleTaille(x)} value={`${v.id}|${cleTaille(x)}`}>{libelle(x, lang)}{n > 1 ? (fr ? " chacun" : " each") : ""}</option>)}
                   </select>
                 </label>
                 <label>{fr ? "Support" : "Medium"}
