@@ -465,9 +465,10 @@ h2 { font-family:var(--serif); font-weight:400; }
 .n-planche.petite { height:auto; aspect-ratio:4/4.2; gap:8px; }
 @media (max-width:900px){ .n-planche{height:460px} }
 /* fiche œuvre : chez soi / de près */
-.n-photos-oeuvre { display:flex; flex-wrap:wrap; gap:18px; margin-top:48px; }
+.n-photos-oeuvre { display:flex; flex-wrap:wrap; gap:18px; margin-top:48px; align-items:flex-start; }
 .n-photos-oeuvre figure { margin:0; flex:1 1 300px; max-width:520px; }
 .n-photos-oeuvre img { width:100%; aspect-ratio:4/5; object-fit:cover; display:block; }
+.n-photos-oeuvre .n-situ img { aspect-ratio:auto; height:auto; object-fit:contain; }
 .n-photos-oeuvre figcaption { padding-top:8px; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
 
 /* collection : toute la galerie en un seul déroulé, par association de couleurs */

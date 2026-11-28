@@ -143,7 +143,7 @@ export default async function Oeuvre({ params, searchParams }) {
       {(o.photos || []).length > 0 && (
         <section className="n-photos-oeuvre">
           {o.photos.map((ph) => (
-            <figure key={ph.src}><img src={ph.src} alt={`${o.titre} – ${ph.type === "pres" ? t.pres : t.chez}`} loading="lazy" /><figcaption>{ph.type === "pres" ? t.pres : t.chez}</figcaption></figure>
+            <figure key={ph.src} className={ph.src.startsWith("/situ/") ? "n-situ" : undefined}><img src={ph.src} alt={`${o.titre} – ${ph.type === "pres" ? t.pres : t.chez}`} loading="lazy" /><figcaption>{ph.type === "pres" ? t.pres : t.chez}</figcaption></figure>
           ))}
         </section>
       )}
